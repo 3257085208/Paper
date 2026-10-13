@@ -67,15 +67,17 @@ window.MathJax = {
 <div class="page">
 <header class="paper">
 <h1 class="title">识别、预测、行动：截断需求、相位结构与分域无回归约束下的 VPS 安全密度最大化</h1>
-<div class="subtitle">技术报告 · 初稿 v0.7.3</div>
+<div class="subtitle">技术报告 · 初稿 v0.8</div>
 <div class="authors">Kaixiang Nie</div>
 <div class="affil">Fujian Chuanzheng Communications College</div>
-<div class="meta">2026-10-13 · <a href="https://github.com/3257085208/Paper">GitHub</a> · <a href="changelog.html">修订记录</a> · <a href="report.html">汇报版</a> · <a href="report.pptx">汇报 PPT</a> · <a href="paper.pptx">论文 PPT 通读版</a> · 数据快照 v0.7.3</div>
+<div class="meta">2026-10-13 · <a href="https://github.com/3257085208/Paper">GitHub</a> · <a href="changelog.html">修订记录</a> · <a href="report.html">汇报版</a> · <a href="report.pptx">汇报 PPT</a> · <a href="paper.pptx">论文 PPT 通读版</a> · 数据快照 v0.8</div>
 </header>
 
 
 <main>
 <blockquote>面向"审稿意见 → 处置"的可追溯记录。版本号随重大修改递增；每版标注对应评审轮次。</blockquote>
+<h2 id="s-v0-8-2026-10-13-对决完整-14-局落地-端到端优势确立">v0.8 — 2026-10-13（对决完整 14 局落地：端到端优势确立）</h2>
+<ul><li><strong>§7.4b 完整 14 局对照表（图 20）</strong>：ours/ours_p 是<strong>唯一在对齐相位停在已验证档位（8 台）的策略</strong>（随机 16/20）；audible 式与 util80 在同步相位冲帽 40（n=18 起客户 P5=16%）；fixed 同步 16 违主口径；worstcase/quantile 永远 8。util80 同策略双相位两极（28 安全 vs 40 崩）把"平均利用率判据相位盲"从断言变成实测。</li><li>摘要/结论/速览表同步更新（端到端结论入 abstract）。</li><li>采样缺陷（sync 局探针先于速率采样）修复 + <strong>show5 全 7 局重跑队列</strong>（show4 之后）；show4（rand 第二轮）亦在队列尾。</li><li>版本号 v0.8。</li></ul>
 <h2 id="s-v0-7-4-2026-10-13-六轮评审四处修复-多轮复测队列">v0.7.4 — 2026-10-13（六轮评审四处修复 + 多轮复测队列）</h2>
 <ul><li><strong>消融叙述纠偏</strong>：承认配额缩放在本样本聚合误差更小（+0.01 vs −0.20）；改为"聚合巧合 vs 逐租户正确性"双口径——饱和客户两者均精确，阵发客户上整窗 t 稀释致节流法低估（0.033 vs 真 0.10），多分辨率修正挂第 9 章模块（zh 摘要/引言 + en/00/01）。</li><li><strong>"24 台 ≠ 精确 oracle"</strong>：全部改为"已验证阶梯档位"（§7.4b/§8.4/§11），断点由细扫钉定。</li><li><strong>伪代码条件化</strong>：下界 q(1+t) 仅在"持续节流证据"分支启用（zh/en §5.3.1），与 3.3.1 命题 2 边界一致。</li><li><strong>微周期吞吐口径</strong>：明确速率为墙钟吞吐（停顿计入分母），补池忙率（56.1% vs 48.1%）与节流累计（44.3s vs 54.4s）旁证；边界标注"待真实负载类型复验"。</li><li><strong>新增 show4 队列</strong>：key 策略（worstcase/audible/ours/ours_p/util80）rand 相位第二轮复测（canary2 之后自动跑）。</li><li>附带：文件同步审计（发现摘要表①一行回滚为旧文，已修复重推；其余修改存活）。</li></ul>
 <h2 id="s-v0-7-3-2026-10-13-对决-rand-定稿-C5-消融实测回填">v0.7.3 — 2026-10-13（对决 rand 定稿 + C5 + 消融实测回填）</h2>
