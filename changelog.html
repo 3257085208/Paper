@@ -67,15 +67,17 @@ window.MathJax = {
 <div class="page">
 <header class="paper">
 <h1 class="title">识别、预测、行动：截断需求、相位结构与分域无回归约束下的 VPS 安全密度最大化</h1>
-<div class="subtitle">技术报告 · 初稿 v0.9.4</div>
+<div class="subtitle">技术报告 · 初稿 v0.9.5</div>
 <div class="authors">Kaixiang Nie</div>
 <div class="affil">Fujian Chuanzheng Communications College</div>
-<div class="meta">2026-10-13 · <a href="https://github.com/3257085208/Paper">GitHub</a> · <a href="changelog.html">修订记录</a> · <a href="report.html">汇报版</a> · <a href="report.pptx">汇报 PPT</a> · <a href="paper.pptx">论文 PPT 通读版</a> · 数据快照 v0.9.4</div>
+<div class="meta">2026-10-13 · <a href="https://github.com/3257085208/Paper">GitHub</a> · <a href="changelog.html">修订记录</a> · <a href="report.html">汇报版</a> · <a href="report.pptx">汇报 PPT</a> · <a href="paper.pptx">论文 PPT 通读版</a> · 数据快照 v0.9.5</div>
 </header>
 
 
 <main>
 <blockquote>面向"审稿意见 → 处置"的可追溯记录。版本号随重大修改递增；每版标注对应评审轮次。</blockquote>
+<h2 id="s-v0-9-5-2026-10-14-多窗-PPC-收窄-降压编辑">v0.9.5 — 2026-10-14（多窗 PPC + 收窄/降压编辑）</h2>
+<ul><li><strong>多窗 PPC 复验</strong>（<code>ppc_multiwindow.py</code>）：3 小时稠密遥测切 5 个非重叠 30 分钟窗、每窗独立三段前向预测——<strong>方向命中 5/5</strong>（预测 P(峰&gt;8)=98–100% vs 实测超池 3.5–8.3%），峰值同阶（预测 P50 11–19 vs 实测 12–16；逐窗偏差 +5/±1/−2/−1/0 如实报告）；"单条短轨迹"局限由多窗复验部分缓解。</li><li><strong>收窄主线（2+2）</strong>：贡献表重构——主贡献 = 识别（截断可识别性）+ 行动（相位感知准入 + C5 干预 + 细档钉定）；支撑 = 容量预测（PPC 三工件）+ 资源效率账本（中英同步）。</li><li><strong>Ch9 降权</strong>：定位改为"支撑性扩展"（验证无回归原则跨资源扩展、非独立主张）；结论资源句收紧。</li><li><strong>理论 framing 降压</strong>："三个不可能性" → "三个构造性反例 + 最小充分观测集（经验）"（§3.6 标题/导语、摘要/引言组织命题，中英同步；附录 A 证明保留）。</li><li>版本 v0.9.5。</li></ul>
 <h2 id="s-v0-9-4-2026-10-14-show5-细扫-PPC-修订-9-全量回填">v0.9.4 — 2026-10-14（show5/细扫/PPC 修订/§9 全量回填：数据整合批）</h2>
 <ul><li><strong>show5 客户 P5 入库</strong>（4 轮阶梯复测）：N=8≈<strong>98.8%</strong>（worstcase/quantile/ours/ours_p 双达标定稿）、N=10=62.2%（首失败）、N=16=<strong>48.6%</strong>（fixed 停在 16 台违约确认）；audible/util80 在 40 台：show5 复测 8/8 活跃客户 &lt;70%。<strong>全稿"待 show5"限定词清零。</strong></li><li><strong>边界细扫完成</strong>（sync 3 细轮 + rand 2 细轮 + capmix 各 3 轮，乱序缺陷段显式排除）：<strong>sync [8,10)、rand [28,32)、mix25 [24,28)</strong>（mix50/mix75 不变）；质量口径容量比收敛为 <strong>3.5×–4×</strong>；图 16/21 按 4 轮合并重生成，fig28 边界更新。</li><li><strong>PPC 预测质量如实修订</strong>：4/5 零超接——sync 离线预测 10 恰为首失败档（安全性由在线峰值门禁兜底、作动器停 8）；rand 保守 4、mix25 保守 8、mix50/mix75 贴边命中。§8.6 口径改为"离线预测=档位建议 + 风险排序，安全=在线门禁"。</li><li><strong>§9 全量回填</strong>：zram3b（1120 GB 达标、<strong>176.8 GB 溢出被 zram 吸收</strong>、P99 0.745 ms 平；disk 臂 96 GB swapfile 先耗尽中止）、ioctl2（66k IOPS 风暴不触服务 0.74–0.76 ms）、fpr5（回收 303 MB）、canary3（四配置 max gap 0.1 ms）；<strong>replay1 在线回放</strong>（峰值饱和 100%、服务 0.71–0.73 ms）→ §8.6。</li><li>摘要/引言/03/07/08/11 中英同步（10+23 处修订）；SUBMISSION 清单 5 项勾销。</li><li>版本 v0.9.4。</li></ul>
 <h2 id="s-v0-9-3-2026-10-13-评审三修-PPC-真前向预测-B2-任意窗长">v0.9.3 — 2026-10-13（评审三修：PPC 真前向预测 / B2 任意窗长 / "唯一"口径统一）</h2>
