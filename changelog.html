@@ -76,6 +76,8 @@ window.MathJax = {
 
 <main>
 <blockquote>面向"审稿意见 → 处置"的可追溯记录。版本号随重大修改递增；每版标注对应评审轮次。</blockquote>
+<h2 id="s-v0-7-3-2026-10-13-对决-rand-定稿-C5-消融实测回填">v0.7.3 — 2026-10-13（对决 rand 定稿 + C5 + 消融实测回填）</h2>
+<ul><li><strong>§7.4b rand 相位定稿（图 20 左）</strong>：worstcase 8 / quantile 8 / fixed 16 / audible 16 / ours 16 / ours_p 20 / util80 28（p5=78%）；零超接；三个诚实观察（轮间方差 16vs20、util80 的相位依赖、断档 [24,32) 待细扫）。</li><li><strong>§8.5 C5 反相编排（干预级证据）</strong>：16 台同相 50% → 两组 101%（×2）→ 四组 32 台 101%（×4）；窗口校验 8/8。</li><li><strong>混合占用消融实测</strong>：naive −2.31 / 缩放 +0.01 / 节流 −0.20（最准）/ 满 vCPU +2.70（浪费 45% 席位）/ 不封顶 −0.16——替换旧的理论"高估 21%"表述（zh/en）。</li><li>canary 部署缺陷修复（stall.py 未落客机）→ canary2 排队（FPR4 之后）；修正 ours_p 崩溃根因（last_p5 未初始化）后 sync 7 局重跑进行中。</li></ul>
 <h2 id="s-v0-7-2-2026-10-13-首批完成数据回填">v0.7.2 — 2026-10-13（首批完成数据回填）</h2>
 <ul><li>§9.1 微周期配额：<strong>qp2c 实测</strong>——同样 50% 配额，周期 1 s→2 ms 客户速率 59%→80%（+35%），服务侧全程 0.73–0.75 ms；内核配额下界 1 ms 如实标注。</li><li>§9.2 内存：KSM 21.9 GB/33.4%；FPR 手动验证 300 MB（宿主 315→629→回落、guest 不变）+ fpr4 自动化排队；zram 在链尾。</li><li>§7.4b：对决 v2 rand 相位 5/7 中期结果（worstcase/quantile 8、fixed/audible 16、util80 <strong>28/p5=78%</strong>、ours 进行中）；util80 提前止损 = 采样敏感证据；28 落在 [24,32) = rand 断点或高于 24 的首证。</li><li>英文镜像同步（en/07、en/09）。</li></ul>
 <h2 id="s-v0-7-1-2026-10-13-五轮评审小修">v0.7.1 — 2026-10-13（五轮评审小修）</h2>
