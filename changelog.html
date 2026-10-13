@@ -1,0 +1,118 @@
+<!doctype html><html lang="zh"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>修订记录</title>
+<style>
+:root { --ink:#1a1a1c; --muted:#5a6472; --rule:#d8dde5; --link:#1d4e89; --accent:#123a63; }
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; color: var(--ink);
+  font: 17px/1.9 "Source Serif Pro", Georgia, "Songti SC", "Noto Serif SC", "Source Han Serif SC", serif;
+  background: #fbfbfa;
+}
+.page { max-width: 860px; margin: 0 auto; padding: 48px 28px 96px; }
+header.paper { text-align: center; margin-bottom: 8px; }
+header.paper h1.title { font-size: 30px; line-height: 1.45; margin: 0 0 10px; color: var(--accent); }
+header.paper .subtitle { color: var(--muted); font-size: 16px; margin-bottom: 6px; }
+header.paper .authors { font-size: 16.5px; margin: 10px 0 2px; }
+header.paper .affil { color: var(--muted); font-size: 14.5px; margin-bottom: 6px; }
+header.paper .meta { color: var(--muted); font-size: 13.5px; }
+.abstract { border-top: 2.5px solid var(--accent); border-bottom: 1px solid var(--rule);
+  padding: 16px 4px; margin: 26px 0 10px; }
+.abstract h2 { font-size: 17px; letter-spacing: .35em; text-align: center; color: var(--accent);
+  margin: 2px 0 12px; }
+.abstract p, .abstract li { font-size: 15.5px; line-height: 1.85; text-align: justify; }
+.kw { color: var(--muted); font-size: 14px; margin-top: 10px; }
+nav.toc { background: #f4f6f9; border: 1px solid var(--rule); border-radius: 8px;
+  padding: 14px 20px; margin: 22px 0 30px; font-size: 14.5px; }
+nav.toc h2 { font-size: 15px; margin: 0 0 8px; color: var(--accent); letter-spacing: .2em; }
+nav.toc ol { margin: 0; padding-left: 22px; column-gap: 28px; }
+nav.toc a { color: var(--link); text-decoration: none; }
+main { text-align: justify; }
+h1, h2, h3, h4 { font-family: "Source Serif Pro", Georgia, "Songti SC", serif; line-height: 1.45;
+  color: var(--accent); }
+main > h1 { font-size: 24px; border-bottom: 1.5px solid var(--accent); padding-bottom: 7px;
+  margin: 54px 0 16px; }
+h2 { font-size: 20px; margin: 34px 0 10px; }
+h3 { font-size: 17.5px; margin: 26px 0 8px; }
+h4 { font-size: 16.5px; margin: 20px 0 6px; }
+p { margin: 10px 0; }
+a { color: var(--link); }
+code { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 86%;
+  background: #f1f3f6; padding: 1px 5px; border-radius: 4px; }
+blockquote { border-left: 3px solid #9db2cc; background: #f6f8fb; color: #414b58;
+  margin: 14px 0; padding: 9px 16px; font-size: 15.5px; text-align: left; }
+figure { margin: 26px 0; text-align: center; }
+figure img { max-width: 100%; border: 1px solid var(--rule); border-radius: 5px; background: #fff; }
+figcaption { color: var(--muted); font-size: 14px; margin-top: 8px; line-height: 1.6; }
+table { border-collapse: collapse; width: 100%; margin: 16px 0; font-size: 14.5px; }
+th, td { padding: 6px 10px; text-align: left; vertical-align: top; }
+thead th { border-top: 2px solid var(--ink); border-bottom: 1px solid var(--ink); }
+tbody tr:last-child td { border-bottom: 2px solid var(--ink); }
+tbody td { border-bottom: 1px solid #e8ebf0; }
+hr { border: none; border-top: 1px solid var(--rule); margin: 34px 0; }
+footer.site { margin-top: 60px; border-top: 1px solid var(--rule); padding-top: 14px;
+  color: var(--muted); font-size: 13.5px; text-align: center; }
+@media (max-width: 720px) { .page { padding: 26px 16px 60px; } header.paper h1.title { font-size: 23px; } }
+@media print { body { background: #fff; } .page { max-width: 100%; } nav.toc { display: none; } }
+</style>
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['$','$']], displayMath: [['$$','$$']], processEscapes: true },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre','code'] }
+};
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head><body>
+<div class="page">
+<header class="paper">
+<h1 class="title">识别、预测、行动：截断需求、相位结构与无回归约束下的 VPS 安全密度最大化</h1>
+<div class="subtitle">技术报告 · 初稿 v0.6</div>
+<div class="authors">作者（待填）</div>
+<div class="affil">小型 VPS 安全超售研究</div>
+<div class="meta">2026-10-13 · <a href="https://github.com/3257085208/Paper">GitHub</a> · <a href="changelog.html">修订记录</a> · <a href="report.html">汇报版</a></div>
+</header>
+
+
+<main>
+<blockquote>面向"审稿意见 → 处置"的可追溯记录。版本号随重大修改递增；每版标注对应评审轮次。</blockquote>
+<h2 id="s-v0-6-2026-10-13-新增研究点-PPC-模型-认证协议-节流断层扫描">v0.6 — 2026-10-13（新增研究点：PPC 模型 / 认证协议 / 节流断层扫描）</h2>
+<ul><li><strong>§8.6 相位剖面卷积（PPC）与"边际幻觉"命题（新增，图 28）</strong>：构造性证明"安全容量不由边际分布决定"</li></ul>
+<p>（同 burner 同占空比、随机 vs 对齐 → 容量 24 vs 8）；PPC（在联合相位结构上卷积）vs iid 卷积（对五种结构给出同一预测 24 = 全盲）；PPC 预测 4/5 落入实测断档区间。工具 <code>tools/ppc_sim.py</code>。</p>
+<ul><li><strong>§5.3.2 安全声明的认证协议（新增）</strong>：Clopper–Pearson 上界预算表（10/30/90/299 轮 → 25.9/9.5/3.3/1.0%）、</li></ul>
+<p>轮聚类修正、序贯预算；工具 <code>tools/certify.py</code>。</p>
+<ul><li><strong>节流断层扫描（估计技术，数据排队中）</strong>：<code>tools/tb_throttle_tomo.py</code>（六种形状 × 30% 配额 × 逐秒</li></ul>
+<p>用量/节流；分类 sustained/bursty/rare 选估计器）——验证跨形状估计误差。链条：master→capmix2→tomo。</p>
+<ul><li>版本号统一 v0.6。</li></ul>
+<h2 id="s-v0-5-2026-10-13-三轮模拟评审处置-Major-完整性-一致性">v0.5 — 2026-10-13（三轮模拟评审处置：Major 完整性/一致性）</h2>
+<ul><li><strong>§7.4b 在线准入对决（新增，图 20 运行中）</strong>：7 策略 × 2 相位、统一到达流与证据、主口径 P5≥70%、</li></ul>
+<p>oracle 对照、安全 VM-hours 指标；v1 十局初步结果写明（ours 对齐场景停在 8=oracle；audible 放开至帽 40；v1 随机前 4 局旧格式已标注），v2 十四局富指标重跑进行中。</p>
+<ul><li><strong>§5.3.1 记账尺度与残差风险论证（新增）</strong>：容量计账限定为 1 秒尺度；亚秒脉冲不进入容量预留，</li></ul>
+<p>由隔离 + 服务侧护栏兜底；三者的证据链不叠加承诺。</p>
+<ul><li><strong>§7.6 租户间相关性（新增）</strong>：204 台/20706 对：r 均值 0.12、中位 0.07、P95 0.45、15.7% 对 &gt;0.3</li></ul>
+<p>——弱正相关而非独立；亚分钟同步边界注明；跨天轻量流持续采集。</p>
+<ul><li><strong>排版</strong>：全部 20 图内联到对应小节（不再堆在文末）；ch10 小节编号 8.x→10.x；ch9 增加"支撑性模块"定位。</li><li><strong>机制</strong>：建立本修订记录；正文版本号统一为 v0.5。</li></ul>
+<h2 id="s-v0-4-2026-10-13-二轮模拟评审处置-理论-统计-归因">v0.4 — 2026-10-13（二轮模拟评审处置：理论/统计/归因）</h2>
+<ul><li><strong>§3.3.1 命题 1 修正（Critical）</strong>："当且仅当需求恒定"错误 → 正确精确条件 <code>d̄_thr = d̄_run</code>；</li></ul>
+<p>加入非常数反例；命题 2 降格为<strong>条件性下界</strong>（“全窗 d≥q”不可从聚合验证）。</p>
+<ul><li><strong>§5.3.1 伪代码</strong>：背景预留改为<strong>残差 Q95</strong>（消除与 peak 的重复计账）；校准协议删除"1% 保证"，</li></ul>
+<p>改 Clopper–Pearson 上界 + 试验数（≤1% 需 ≥299 次独立试验）。</p>
+<ul><li><strong>§8.5</strong>：容量"律"降格为<strong>明确假设下的安全容量近似模型</strong>（章名/文件同步为"物理机验证与安全容量模型"）；</li></ul>
+<p>随机端二项尾界讨论、φ=0.25 偏保守改述、单轮边界显式化；排队 6 局多随机种子重复验证。</p>
+<ul><li><strong>§7.5b</strong>：j1 标注为历史试点；完整对决指向 7.4b/图 20。</li><li><strong>质量口径</strong>：P5 措辞修正（低尾分位）；轮聚类统计；二项上界（24 轮 11.7%/28 轮 10.1%）；P99 主指标/P999 诊断。</li><li><strong>机制边界</strong>：io.weight 结论限定为所测调度器/路径（不否定 iocost/io.latency）；SMT/NUMA 拓扑核验；</li></ul>
+<p>嵌套床"vCPU 级不相交、物理放置不可控"边界。</p>
+<ul><li><strong>生产遥测</strong>：170×60 s 深挖（单位校验、类别 71.9/27.1/1.0%、突发结构、fig27）+ 宿主全量清点</li></ul>
+<p>（285 VM/276 运行；vCPU 8.3×、内存 2.0×、磁盘 4.9× 薄分配）；定位为"作者自有、免费 VPS 开放外部用户"。</p>
+<ul><li><strong>公平对照（Major 5）</strong>：新增 <code>worstcase</code>、<code>ours_p</code> 策略；混合占用三估计器消融 <code>tb_mixedq.py</code>。</li></ul>
+<h2 id="s-v0-3-2026-10-13-三支柱重构">v0.3 — 2026-10-13（三支柱重构）</h2>
+<ul><li>论文主张重构为<strong>识别→预测→行动</strong>三支柱；章节重排：实现→6、评估→7、物理机→8、资源效率→9（占位）、</li></ul>
+<p>讨论→10、结论→11；英文版镜像同步（新增 en/08、en/09）。</p>
+<ul><li>引言 v0.2、结论 v0.2；<code>REPRODUCE.md</code>、<code>references.md</code> 建立；汇报版生成器 <code>make_report.py</code>。</li></ul>
+<h2 id="s-v0-2-2026-10-13-海量复测与物理机数据并入">v0.2 — 2026-10-13（海量复测与物理机数据并入）</h2>
+<ul><li>v2 复测：膝点 50 轮（图 17）、截断 90 cycle（图 18）、三风暴 24 轮（图 19）；</li><li>物理机：细膝点 4 轮、同步 3 轮复现（图 14/15）、阈值化售卖容量（图 16/口径体系）、密度律首验（图 21）；</li><li>单文件 HTML（图片内嵌）交付。</li></ul>
+<h2 id="s-v0-1-2026-10-12">v0.1 — 2026-10-12</h2>
+<ul><li>九章初稿（中文）+ 英文镜像骨架；pilot 实验数据（膝点/同步/截断/控制手段/三风暴/联合验证）。</li></ul>
+</main>
+<footer class="site">本文为持续修订的公开草稿；数字口径与异常记录见《修订记录》。</footer>
+</div>
+</body></html>
