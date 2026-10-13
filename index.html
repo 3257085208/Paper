@@ -288,7 +288,7 @@ window.MathJax = {
 <h2 id="s-7-4b-在线准入对决-图-20-v2-运行中">7.4b 在线准入对决（图 20，v2 运行中）</h2>
 <p><strong>协议。</strong> 在 8 核租户池上，7 个策略（<code>worstcase</code> 配额保守 / <code>fixed</code> 固定 2× / <code>util80</code> 80% 忙率 / <code>quantile</code> 历史分位 / <code>audible</code> 式 MC 卷积 / <code>ours</code> 相位剖面 / <code>ours_p</code> 相位剖面+暂停护栏）× 2 种相位（随机 / 对齐），使用<strong>统一到达流</strong>（每步 +2 台、25 s 稳定、15 s 双服务探针）与<strong>统一可用证据</strong>（同一套 cgroup 计数与历史）；客户负载 20%/60 s 占空比。质量口径为 §8.4 主口径（服务 P99 ≤ 10 ms 且客户速率 P5 ≥ 70%）；容量 oracle 取同口径实测阶梯（随机 24 台 / 对齐 8 台）。<strong>指标</strong>：停止席位、首次违背档位、<strong>安全 VM-hours</strong>（首次违背前 $\sum n_i \Delta t_i$）、以及相对 oracle 的差距。</p>
 <p><strong>v1 初步（10 局，旧采样口径，如实标注）。</strong> <code>fixed</code> 停 16、<code>quantile</code> 停 8、<code>util80</code> 无止损（冲到实验帽 40；50% 地板口径下 n=30 起出现慢客户）、<code>audible</code> 在对齐场景放开至 40（独立性假设抹掉相位相关性——正是其已知失效模式）；修复后的 <code>ours</code> 在<strong>对齐场景停在 8 台 = oracle</strong>（剖面峰值计数 0→2.01→4.02→6.01，第 10 台预判 8.4&gt;7.2 而拒绝）。v1 的随机相位前 4 局为旧格式（无逐客户速率），故本节结论以对齐场景与决策轨迹为主。</p>
-<p><strong>v2（运行中）。</strong> 富指标重跑 14 局（7 策略 × 2 相位，含 <code>worstcase</code> 与 <code>ours_p</code>），采样含逐客户速率序列并对齐突发窗；落地后本节将给出"同约束、同到达流"的<strong>安全接纳数 vs oracle 对照图（图 20）</strong>与安全 VM-hours 表，替换本段初步结果。</p>
+<p><strong>v2（运行中；rand 相位已完成 5/7 局）。</strong> 富指标重跑（7 策略 × 2 相位，含 <code>worstcase</code> 与 <code>ours_p</code>；逐客户速率序列采样）。<strong>中期结果（rand 相位）</strong>：<code>worstcase</code> 停 8、<code>quantile</code> 停 8、<code>fixed</code> 停 16、<code>audible</code> 停 16、<code>util80</code> 停 <strong>28</strong>（停点 p5=78% ≥ 70%，未违主口径）；<code>ours</code> 进行中（n=16 已放行，剖面峰值计数 6.01）。两点值得注意：（i）<code>util80</code> 在 v2 富采样下比 v1（当时冲帽 40）<strong>显著提前止损</strong>——平均忙率类判据对采样时刻高度敏感，这本身就是其不稳定的证据；（ii）其停点 28 落在实测断档 [24,32) 之内且达标，是<strong>rand 真实断点可能高于 24</strong>的首个直接证据——boundary 细扫（rand {16,20,22,24,26,28,32}，每档 180 s×2 轮）将钉死位置。sync 相位、<code>ours_p</code> 与安全 VM-hours 表随后补全（图 20 届时一并出图）。</p>
 <h2 id="s-7-5-三重风暴综合验证-图-10">7.5 三重风暴综合验证（图 10）</h2>
 <figure><img src="figs/fig10_synthesis.png" alt="图 10 三风暴综合验证（4 次）"><figcaption>图 10 三风暴综合验证（4 次）</figcaption></figure>
 <p><strong>方案组装</strong>：服务+探针绑核 0–1；16 台客户绑核 2–3；每客户 <code>memory.high=800 MiB</code>、<code>memory.swap.max=0</code>、<code>io.max=200/100</code> IOPS；准入按 censoring-aware 口径（本验证聚焦保护包络，准入不介入）。<strong>风暴构成</strong>：CPU 混打（8 闲 + 6 闲/阵发 + 2 满载）、内存 ballast、fio 4K 随机读写，同时进行；服务侧以 100 req/s 各探 60 秒。</p>
@@ -379,10 +379,15 @@ window.MathJax = {
 <h1 id="s-9-资源效率模块">9 资源效率模块</h1>
 <blockquote>本章承接"无回归的资源效率最大化"支柱（骨架 §9）：在"服务 P99 ≤ 10 ms + 客户速率不劣化 + VPS 可见内存不下降" 三条无回归约束下，逐资源给出精密控制的实测增益。Phase C 实验正在物理机上自动运行（screen <code>phasec</code>）， 数据落地后填入对应小节（规划图：Fig.22–26）。<strong>定位说明：本章为支撑性模块</strong>（核心贡献链在 3/5/7/8 章的识别—预测—行动三支柱）；若模块数据不齐，按评审建议缩减本章或移至后续工作。</blockquote>
 <hr>
-<h2 id="s-9-1-CPU-微周期配额扫描-图-22-待填">9.1 CPU：微周期配额扫描（图 22）— 待填</h2>
-<p>（数据源：<code>qp2</code>，1/5/10/100 ms/1 s 周期 × 50% 配额，服务 P99 + 客户速率 + 节流 delta；与 4.4.1 的 100 ms/1 s 对照衔接，回答"更高精度能否消灭配额脉冲税"。）</p>
-<h2 id="s-9-2-内存-无-balloon-回收三件套-图-23-25-待填">9.2 内存：无 balloon 回收三件套（图 23–25）— 待填</h2>
-<p>（数据源：<code>ksm1</code> 舰队去重时序 + <code>fpr1</code> 空闲页上报回收验证 + <code>zram1</code> 无 swap/zram/磁盘 swap 三臂；指标：宿主机回收量、租户可见内存不变性、压缩/去重比、PSI 与探针延迟代价。）</p>
+<h2 id="s-9-1-CPU-微周期配额-同样配额-精度决定客户速率-图-22">9.1 CPU：微周期配额——同样配额，精度决定客户速率（图 22）</h2>
+<p><strong>设置。</strong> 8 核池、5 台满载客户、各 50% 配额（<code>cpu.max</code>），周期取 <strong>2 / 4 / 10 / 100 ms / 1 s</strong> 五档 + 无配额基线；每档 15 s 稳定后读服务 P99、客户工作相速率与节流时长增量。<strong>注意内核下界</strong>：配额最小 1 ms，故 50% 配额的最小周期为 2 ms（500 µs 配额会被内核 EINVAL 拒绝——这是"高精度"的物理边界）。</p>
+<p><strong>结果（表/图 22）。</strong></p>
+<table><thead><tr><th>配额周期</th><th>服务 P99</th><th>客户速率（中位，M it/s）</th><th>相对无配额</th></tr></thead><tbody><tr><td>无配额</td><td>0.741 ms</td><td>25.5</td><td>100%</td></tr><tr><td><strong>2 ms</strong></td><td>0.727 ms</td><td><strong>20.3</strong></td><td><strong>80%</strong></td></tr><tr><td>4 ms</td><td>0.727 ms</td><td>17.8</td><td>70%</td></tr><tr><td>10 ms</td><td>0.742 ms</td><td>16.4</td><td>64%</td></tr><tr><td>100 ms</td><td>0.741 ms</td><td>15.6</td><td>61%</td></tr><tr><td>1 s</td><td>0.748 ms</td><td>15.0</td><td>59%</td></tr></tbody></table>
+<p><strong>读法。</strong> （i）服务侧全程 0.73–0.75 ms——隔离前提下配额精度对服务保护<strong>无影响</strong>（与 4.4.1 的"配额不增加安全席位"一致）。（ii）但客户侧代价差异巨大：<strong>同样 50% 配额，把周期从 1 s 缩到 2 ms，客户有效速率从 59% 提到 80%（+35%）</strong>；即配额"税"的大小主要由周期粒度决定，而非配额比例本身。（iii）各档节流时长合计相近（44–54 s）——速率差异不是"少被限"，而是<strong>细粒度交替（1 ms on / 1 ms off）让客户的工作相更满、调度损耗更小</strong>。（iv）这是"CPU 精密控制"的首个量化收益：在不提高配额比例（不危及密度结论）的前提下，把经济版客户的体验拉高约三分之一档。</p>
+<p><strong>边界。</strong> 单池、满载忙循环负载；速率为工作相均值；调度器/内核版本可能改变绝对值，机制（周期粒度→配额税）与具体数字无关。</p>
+<h2 id="s-9-2-内存-无-balloon-回收三件套-图-23-25-部分完成">9.2 内存：无 balloon 回收三件套（图 23–25）— 部分完成</h2>
+<p><strong>已完成（本批数据）。</strong> （i）<strong>KSM 舰队去重（ksm1）</strong>：64 台同镜像舰队共享 <strong>21.9 GB = 舰队内存的 33.4%</strong>；ksmd 平均 ~0.16 核；服务 P99 0.73→0.76 ms（零回归）。代价边界：写入 CoW 长尾未测；跨租户去重存在已知侧信道议题，生产上按信任域分层启用。（ii）<strong>空闲页上报（FPR）机制验证</strong>：手动 300 MB——宿主 <code>memory.current</code> 315→629 MB 随分配、释放后 <strong>6–12 s 回落</strong>至原位，guest <code>MemTotal</code> 恒 973 MB 不变；附带发现：<strong>空闲「1 GB」VM 的宿主实占仅 156–315 MB</strong>（FPR 一直在归还空闲页）。（iii）<strong>自动化 fpr4（300 MB、stderr 捕获修订版）已排队</strong>（final→replay 之后）。<strong>进行中</strong>：zram 三臂（无 swap / zram / 磁盘 swap × 1 TB 冷页压测）在 final 链尾执行。</p>
+<p><strong>指标口径</strong>：宿主回收量（ksm sharing / memory.current 回落）、租户可见内存不变性（guest MemTotal/可用内存）、压缩/去重比、PSI 与探针延迟代价。</p>
 <h2 id="s-9-3-IO-自适应限速对决-图-26-待填">9.3 IO：自适应限速对决（图 26）— 待填</h2>
 <p>（数据源：<code>ioc1</code>，8 台风暴客户 × none/static/adaptive 三臂；指标：宿主 IOPS、服务 P99、租户聚合 IOPS 与逐 op 尾延迟——检验"自适应比静态上限多交付且不伤服务"。）</p>
 <h2 id="s-9-4-与-无回归-约束的关系-待填">9.4 与"无回归"约束的关系 — 待填</h2>
