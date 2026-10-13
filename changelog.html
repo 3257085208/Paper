@@ -67,15 +67,17 @@ window.MathJax = {
 <div class="page">
 <header class="paper">
 <h1 class="title">识别、预测、行动：截断需求、相位结构与分域无回归约束下的 VPS 安全密度最大化</h1>
-<div class="subtitle">技术报告 · 初稿 v0.8.1</div>
+<div class="subtitle">技术报告 · 初稿 v0.9</div>
 <div class="authors">Kaixiang Nie</div>
 <div class="affil">Fujian Chuanzheng Communications College</div>
-<div class="meta">2026-10-13 · <a href="https://github.com/3257085208/Paper">GitHub</a> · <a href="changelog.html">修订记录</a> · <a href="report.html">汇报版</a> · <a href="report.pptx">汇报 PPT</a> · <a href="paper.pptx">论文 PPT 通读版</a> · 数据快照 v0.8.1</div>
+<div class="meta">2026-10-13 · <a href="https://github.com/3257085208/Paper">GitHub</a> · <a href="changelog.html">修订记录</a> · <a href="report.html">汇报版</a> · <a href="report.pptx">汇报 PPT</a> · <a href="paper.pptx">论文 PPT 通读版</a> · 数据快照 v0.9</div>
 </header>
 
 
 <main>
 <blockquote>面向"审稿意见 → 处置"的可追溯记录。版本号随重大修改递增；每版标注对应评审轮次。</blockquote>
+<h2 id="s-v0-9-2026-10-13-主贡献重构-观测必要性理论">v0.9 — 2026-10-13（主贡献重构：观测必要性理论）</h2>
+<ul><li><strong>新增 §3.6 观测必要性：三个不可能性</strong>——A 截断不可能性（3.3.1）；B <strong>边际+利用率不充分性</strong>（同边际、同 60 s 平均需求 4.8 核，安全容量 24 vs 8，且不安全组利用率更低：30.4% vs 66.4–68.0%——利用率与安全性反向）；C <strong>采样不充分性</strong>（突发宽度 &lt; 采样间隔时存在采样序列全同而安全容量不同的舰队；util80 的 28↔40 漂移为实测对应）。</li><li><strong>最小充分观测集表</strong>（① 截断识别 ② 相位分辨 ③ 时间分辨：各自必要、合起来充分）；§7.4b 增加"失效—观测轴归因表"（每条基线恰好缺一轴）；摘要/引言加入组织命题。</li><li>中英同步；版本 v0.9。</li></ul>
 <h2 id="s-v0-8-1-2026-10-13-七轮评审-论文-代码-证据三处对齐">v0.8.1 — 2026-10-13（七轮评审：论文—代码—证据三处对齐）</h2>
 <ul><li><strong>PPC 声明与工件对齐（§8.6）</strong>：拆成三个可指认模式——(a) 参数化仿真 <code>ppc_sim.py</code>；(b) <strong>经验联合块自助 <code>ppc_bootstrap.py</code>（新增）</strong>：真实轨迹、KS 选块长、前后半窗分离、跨租户联合块 vs iid 置换对照（真实轨迹：联合峰值 14 vs iid 12–15，低同步轨迹差异小、iid 危险随对齐增长）；(c) 在线作动器 = Taligned 式峰值包络（明确"近似而非重采样器"）。</li><li><strong>sync 对决证据标注（§7.4b）</strong>：worstcase/quantile/fixed/ours/ours_p 的 sync 单元格改为"服务侧✅；客户 P5 待 show5"（修正"两项约束均通过"的过示）；audible/util80 保留违约实录。</li><li><strong>条件性下界定性修正（§3.3.1/§5.3.1）</strong>：加入评审反例（q=0.2、前 20% 需求 1.0、其余 0.1 → 连续节流但真均值 0.28 &lt; 0.36），工程触发明确为<strong>经验保守启发（可能高估→更保守，不会超接）</strong>，认证地位仅归命题 2 的 d≥q 假设。</li><li>版本号 v0.8.1。</li></ul>
 <h2 id="s-v0-8-2026-10-13-对决完整-14-局落地-端到端优势确立">v0.8 — 2026-10-13（对决完整 14 局落地：端到端优势确立）</h2>
