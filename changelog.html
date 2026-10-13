@@ -67,7 +67,7 @@ window.MathJax = {
 <div class="page">
 <header class="paper">
 <h1 class="title">识别、预测、行动：截断需求、相位结构与无回归约束下的 VPS 安全密度最大化</h1>
-<div class="subtitle">技术报告 · 初稿 v0.6</div>
+<div class="subtitle">技术报告 · 初稿 v0.7</div>
 <div class="authors">Kaixiang Nie</div>
 <div class="affil">Fujian Chuanzheng Communications College</div>
 <div class="meta">2026-10-13 · <a href="https://github.com/3257085208/Paper">GitHub</a> · <a href="changelog.html">修订记录</a> · <a href="report.html">汇报版</a></div>
@@ -76,6 +76,8 @@ window.MathJax = {
 
 <main>
 <blockquote>面向"审稿意见 → 处置"的可追溯记录。版本号随重大修改递增；每版标注对应评审轮次。</blockquote>
+<h2 id="s-v0-7-2026-10-13-四级评审处置-一致性-严格性-宣称范围">v0.7 — 2026-10-13（四级评审处置：一致性/严格性/宣称范围）</h2>
+<ul><li><strong>统一安全定义（§8.4 前置块）</strong>：容量声明一律三元组（资源、质量约束、风险预算 ε）；服务侧违约含超时/错误；拐点 / 零违约容量（ε=0）/ 风险预算容量三者显式区分；4.1b 补口径（4 核床 ε=0 严格容量为 2 台；"3 台"属 ε≈7% 预算档）。</li><li><strong>估计器表述统一</strong>：4.3 的"需求下界"改为"有假设的点估计"（与 3.3.1 反例一致）；4.3b"90 次独立"改为"30 个独立轮（90 个时间相关 cycle，按轮聚类）"。</li><li><strong>PPC 形式化（§8.6）</strong>：保相关性重采样两档（参数化相位 / <strong>联合块自助</strong>，禁止逐租户独立平移）；伪代码、块长在训练半窗选择/测试半窗报告、复杂度 O(RNP)；断档≠oracle 的口径澄清（sync 预测 10 落在 [8,12) 系阶梯粒度）。</li><li><strong>"无回归"分域</strong>（标题与摘要适用）：严格限定为服务侧 SLO / 客户性能经验分布 / 客户配置可见性三类独立声明；宿主节约单列——摘要、引言、第 9 章同步。</li><li><strong>边界细扫与多周期队列</strong>：sync{4,8,10,12,14,16}×2 轮 + rand{16,20,22,24,26,28,32}×2 轮，每档 180 s（3 个完整周期）；估计器消融补齐 clamp（满 vCPU）与 no-clamp 两档（tomo/mixedq）。</li><li>版本号 v0.7。</li></ul>
 <h2 id="s-v0-6-2026-10-13-新增研究点-PPC-模型-认证协议-节流断层扫描">v0.6 — 2026-10-13（新增研究点：PPC 模型 / 认证协议 / 节流断层扫描）</h2>
 <ul><li><strong>§8.6 相位剖面卷积（PPC）与"边际幻觉"命题（新增，图 28）</strong>：构造性证明"安全容量不由边际分布决定"</li></ul>
 <p>（同 burner 同占空比、随机 vs 对齐 → 容量 24 vs 8）；PPC（在联合相位结构上卷积）vs iid 卷积（对五种结构给出同一预测 24 = 全盲）；PPC 预测 4/5 落入实测断档区间。工具 <code>tools/ppc_sim.py</code>。</p>
