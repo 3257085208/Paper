@@ -67,15 +67,17 @@ window.MathJax = {
 <div class="page">
 <header class="paper">
 <h1 class="title">识别、预测、行动：截断需求、相位结构与分域无回归约束下的 VPS 安全密度最大化</h1>
-<div class="subtitle">技术报告 · 初稿 v0.9.2</div>
+<div class="subtitle">技术报告 · 初稿 v0.9.3</div>
 <div class="authors">Kaixiang Nie</div>
 <div class="affil">Fujian Chuanzheng Communications College</div>
-<div class="meta">2026-10-13 · <a href="https://github.com/3257085208/Paper">GitHub</a> · <a href="changelog.html">修订记录</a> · <a href="report.html">汇报版</a> · <a href="report.pptx">汇报 PPT</a> · <a href="paper.pptx">论文 PPT 通读版</a> · 数据快照 v0.9.2</div>
+<div class="meta">2026-10-13 · <a href="https://github.com/3257085208/Paper">GitHub</a> · <a href="changelog.html">修订记录</a> · <a href="report.html">汇报版</a> · <a href="report.pptx">汇报 PPT</a> · <a href="paper.pptx">论文 PPT 通读版</a> · 数据快照 v0.9.3</div>
 </header>
 
 
 <main>
 <blockquote>面向"审稿意见 → 处置"的可追溯记录。版本号随重大修改递增；每版标注对应评审轮次。</blockquote>
+<h2 id="s-v0-9-3-2026-10-13-评审三修-PPC-真前向预测-B2-任意窗长">v0.9.3 — 2026-10-13（评审三修：PPC 真前向预测 / B2 任意窗长 / "唯一"口径统一）</h2>
+<ul><li><strong>PPC 真前向预测</strong>（<code>ppc_bootstrap.py</code> v3）：预测块<strong>仅从训练段抽取</strong>（不触碰验证/测试段——此前的"测试段自我重采样"只是分布校准，非前向预测）。结果：联合预测峰值 14/14/14（P(峰&gt;8)=99%）vs iid 预测 12/13/16（P=100%）vs 测试段实测 12（超池 8%）——该漂移型日程上两种预测均命中风险方向，分钟级联合 vs iid 差异小（如实报告）；§8.6 中英同步修订（替换"前一半/后一半窗"旧文）。</li><li><strong>命题 B2 推广至任意窗长 $L$</strong>：窗口利用率上限 = $\min(w,L)/L$（全周期 $L{=}P$ 时即 $\rho$）；util80 的 30 s 滚动窗上限 40% &lt; 其阈值 80%——实现与定理严格对齐（附录 A.3 + 可执行复核 T-B3）。</li><li><strong>"唯一"口径统一</strong>（摘要/对决表/结论，中英共 10 处）：唯一性锚定<strong>"随机相位 16–20 台 + 对齐相位守 8 台"的组合</strong>（worstcase/quantile 两相位都只卖 8，fixed 两相位都卖 16）；同步客户侧 P5 保留 show5 限定。</li><li>版本 v0.9.3。</li></ul>
 <h2 id="s-v0-9-2-2026-10-13-理论硬化-投稿骨架">v0.9.2 — 2026-10-13（理论硬化 + 投稿骨架）</h2>
 <ul><li><strong>附录 A（新）</strong>：三个不可能性的形式化证明 + 可执行反例（<code>tools/theory_tests.py</code> → <code>research_data/theory_checks.txt</code>，全部 PASS）；§3.3.1 命题 3 构造精确化为 d≡5/9（t=0.64 精确）。</li><li><strong>§3.6 升级</strong>：命题 B 拆为 <strong>B1（容量不由边际决定，构造）</strong> 与 <strong>B2（利用率阈值不可能性，可证定理：对齐舰队交付利用率恒 ≤ duty ρ ⇒ 任何 θ&gt;ρ 的阈值判据无界超接）</strong>；证据等级逐条标注（B2 定理级）。</li><li><strong>投稿骨架（新）</strong>：<code>SUBMISSION_JNSM.md</code>——定位/摘要要素/Highlights/章节图表冻结/数据可用声明/数据依赖开关清单/Cover Letter 要点。</li><li>版本 v0.9.2。</li></ul>
 <h2 id="s-v0-9-1-2026-10-13-八轮评审-PPC-三段分离-主张降级-口径统">v0.9.1 — 2026-10-13（八轮评审：PPC 三段分离 / 主张降级 / 口径统一）</h2>
