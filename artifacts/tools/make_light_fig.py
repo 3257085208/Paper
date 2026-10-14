@@ -33,8 +33,8 @@ for a, b in zip(rows, rows[1:]):
 fig, axes = plt.subplots(1, 2, figsize=(11, 3.6))
 ax = axes[0]
 ax.plot(T, busy, "-", color="tab:blue", linewidth=1.2)
-ax.axhline(statistics.mean(busy), color="tab:blue", linestyle=":", linewidth=0.9)
-ax.text(1, statistics.mean(busy) + 1.5, "mean %.1f%%" % statistics.mean(busy), fontsize=8)
+ax.axhline(statistics.mean([x for x in busy if x is not None]), color="tab:blue", linestyle=":", linewidth=0.9)
+ax.text(1, statistics.mean([x for x in busy if x is not None]) + 1.5, "mean %.1f%%" % statistics.mean([x for x in busy if x is not None]), fontsize=8)
 # dense 3h window: 2026-10-11 13:03-16:05 UTC -> hours 25.0-28.0
 ax.axvspan(25.0, 28.0, color="tab:orange", alpha=0.25)
 ax.text(25.2, 62, "dense 3 h\nexcerpt (night)", fontsize=8, color="tab:orange")
@@ -53,11 +53,11 @@ ax3.plot(T, psi, "-", color="tab:red", linewidth=1.0, alpha=0.7, label="CPU PSI 
 ax3.set_ylabel("CPU PSI some avg300 (%)", color="tab:red")
 ax3.tick_params(axis="y", labelcolor="tab:red")
 ax2.set_title("memory never stressed (min %.0f GB); CPU PSI mean %.1f%%" % (
-    min(mem), statistics.mean(psi)), fontsize=9.5)
+    min([x for x in mem if x is not None]), statistics.mean([x for x in psi if x is not None])), fontsize=9.5)
 ax2.grid(alpha=0.25)
 fig.suptitle("Production anchor (LEC-HK-1): 39-h light window vs the 3-h dense excerpt", fontsize=10)
 fig.tight_layout()
 fig.savefig(OUT, dpi=200)
 print("fig31 ok; busy mean %.1f p95 %.1f max %.1f | mem min %.1f | psi mean %.1f max %.1f" % (
-    statistics.mean(busy), sorted(busy)[int(0.95*(len(busy)-1))], max(busy),
-    min(mem), statistics.mean(psi), max(psi)))
+    statistics.mean([x for x in busy if x is not None]), sorted([x for x in busy if x is not None])[int(0.95*(len([x for x in busy if x is not None])-1))], max([x for x in busy if x is not None]),
+    min([x for x in mem if x is not None]), statistics.mean([x for x in psi if x is not None]), max([x for x in psi if x is not None])))
