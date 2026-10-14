@@ -1,5 +1,6 @@
 # Figure manifest (separate upload files)
 
+- `figures/fig1_pipeline.png` — Figure 1 Study pipeline: Identify -> Predict -> Actuate with the minimal observation set
 - `figures/fig2_knee.png` — Figure 2 Knee curve: service latency vs pegged co-tenants (nested bed)
 - `figures/fig3_sync_timeline.png` — Figure 3 Synchronized burst timeline
 - `figures/fig4_packing.png` — Figure 4 Phase-clustering experiment
@@ -21,7 +22,7 @@
 - `figures/fig20_showdown.png` — Figure 20 Online admission showdown: policy stops vs measured capacity brackets (14 rounds)
 - `figures/fig21_density_law.png` — Figure 21 Safe-capacity approximation: mixed-phase validation (3 rounds)
 - `figures/fig22_microperiod.png` — Figure 22 Micro-period self-audit: 2 ms and 1 s deliver identically (+35% withdrawn)
-- `figures/fig23_ksm.png` — Figure 23 KSM fleet dedup: 21.9 GB shared (33.4%), ksmd ~0.16 core
+- `figures/fig23_ksm.png` — Figure 23 KSM fleet dedup: 21.4 GiB shared (33.4%), ksmd ~0.16 core
 - `figures/fig24_fpr.png` — Figure 24 Free-page reporting: 300 MB allocated, 303 MB reclaimed, guest memory unchanged
 - `figures/fig25_zram.png` — Figure 25 Swap arms: zram absorbs 176.8 GB (P99 flat) vs the disk swapfile exhausting
 - `figures/fig26_ioctl.png` — Figure 26 Tenant 4K random storm: ~66k IOPS, service untouched (P99 0.74-0.76 ms)
