@@ -16,6 +16,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import itertools
 import datetime as dt
 import json
 import os
@@ -427,7 +428,7 @@ def main():
     ap.add_argument("--round", required=True)
     ap.add_argument("--mode", required=True, choices=["rand", "sync"])
     ap.add_argument("--policy", required=True,
-                    choices=["worstcase", "fixed", "util80", "quantile", "audible", "ours", "ours_p", "ours_full"])
+                    choices=["worstcase", "fixed", "util80", "quantile", "audible", "ours", "ours_p", "ours_full", "ours_sel"])
     ap.add_argument("--pool", default="8-15")
     ap.add_argument("--step", type=int, default=2)
     ap.add_argument("--max", type=int, default=40)
@@ -443,6 +444,10 @@ def main():
                     help="ablation: disable phase buckets, marginal-only gate (ours_full)")
     ap.add_argument("--quota-pct", type=float, default=None,
                     help="apply cpu.max = pct%% of one core to admitted tenants (censoring arm)")
+    ap.add_argument("--sel-window", type=int, default=6,
+                    help="ours_sel: candidate window observed under probation")
+    ap.add_argument("--probation-s", type=float, default=40.0,
+                    help="ours_sel: probation observation length (5%% quota)")
     ap.add_argument("--guard-metric", choices=["max", "med", "min"], default="max",
                     help="which per-customer aggregation the ours_full pause guard reads "
                          "(max = paper convention; med/min = stricter time-domain)")
@@ -557,7 +562,82 @@ def main():
                 len(active_max), slow, svc_viol, rec["p5_max"], rec["p5_med"], rec["p5_min"],
                 rec["thr_mean"]))
 
+        pending = []           # ours_sel: candidates under probation (running at 5%)
+        prob_ready_at = 0.0
         while n + args.step <= min(args.max, len(vmids_sorted)):
+            if args.policy == "ours_sel":
+                cap = min(args.max, len(vmids_sorted))
+                # top up the probation set (candidates become observable at 5% quota)
+                while len(pending) < args.sel_window and n + len(pending) < cap:
+                    c = vmids_sorted[n + len(pending)]
+                    start_burners([c], args.mode)
+                    set_quota(c, 5.0)
+                    pending.append(c)
+                    sampler.admitted = list(admitted + pending)
+                if pending and prob_ready_at == 0.0:
+                    prob_ready_at = time.time() + args.probation_s
+                    continue
+                if pending and time.time() < prob_ready_at:
+                    time.sleep(min(5.0, max(0.5, prob_ready_at - time.time())))
+                    continue
+                # pause guards (same semantics as ours_full)
+                guard_val = _LASTP5.get(args.guard_metric)
+                breach = (guard_val is not None and guard_val < 70.0) or \
+                         (last_svc is not None and last_svc > SLO)
+                cb, cseen = canary_check()
+                if breach or (cseen and cb):
+                    pause_clean = 0
+                    measure_and_record(n, "pause sel %s=%.1f svc=%.2f canary=%s"
+                                       % (args.guard_metric, guard_val or 0.0,
+                                          last_svc or 0.0, cb),
+                                       extra={"pause_monitor": True,
+                                              "admitted_n": n, "candidate_n": n + args.step})
+                    continue
+                # score candidates and pick the least-clashing step-subset
+                snap_now = sampler.snapshot()
+
+                def prof_of(vmid):
+                    vals = [(t, u) for (t, u) in snap_now.get(vmid, [])
+                            if t >= time.time() - 120.0]
+                    tv = [x for (t, x) in sampler.thist.get(vmid, [])
+                          if t >= time.time() - 120.0]
+                    tf = statistics.mean(tv) if tv else 0.0
+                    factor = 1.0 if _NO_CENSOR else (
+                        min(2.5, 1.0 / max(0.05, 1.0 - tf)) if tf > 0.02 else 1.0)
+                    prof = [0.0] * 60
+                    for (t, u) in vals:
+                        b = int(t) % 60
+                        uu = min(1.0, u * factor)
+                        if uu > prof[b]:
+                            prof[b] = uu
+                    return prof
+
+                admitted_profs = [prof_of(v) for v in admitted]
+                cand = [(c, prof_of(c)) for c in pending]
+                best = None
+                for combo in itertools.combinations(range(len(cand)), args.step):
+                    profs = admitted_profs + [cand[i][1] for i in combo]
+                    pk = max(sum(p[ph] for p in profs) for ph in range(60))
+                    if best is None or pk < best[0]:
+                        best = (pk, combo)
+                if best is None or best[0] > 0.9 * len(pool):
+                    log("n=%d -> defer (ours_sel best peak=%.2f > %.2f)"
+                        % (n + args.step, best[0] if best else 9e9, 0.9 * len(pool)))
+                    break
+                chosen = [cand[i][0] for i in best[1]]
+                for c in chosen:
+                    set_quota(c, None)
+                    pending.remove(c)
+                n += args.step
+                sampler.admitted = list(admitted + chosen)
+                admitted.extend(chosen)
+                log("n=%d -> allow (ours_sel peak=%.2f, chose %s from %d pending)"
+                    % (n, best[0], chosen, len(cand)))
+                measure_and_record(n, "ours_sel peak=%.2f" % best[0],
+                                   extra={"admitted_n": n, "candidate_n": n,
+                                          "sel_pending": len(pending)})
+                prob_ready_at = 0.0
+                continue
             base_policy = "ours" if args.policy == "ours_p" else args.policy
             try:
                 if args.policy == "ours_p" and last_p5 is not None and last_p5 < 70.0:
