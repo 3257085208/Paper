@@ -189,16 +189,16 @@ saturated-instance fraction as a lower bound; (iv) **inter-tenant correlation (m
 *weakly positive, not independent*: phase structure is not an artifact of synthetic loads, while the
 random-end assumption of the capacity model is only an approximation; sub-minute synchrony stays
 invisible at this granularity. (v) **Two-window representativeness:** the 3-h dense excerpt is a
-night-time quiet segment (busy 30.1%), while the 39-h light window covers day and night (busy 37.7%,
+night-time quiet segment (busy 30.1%), while the 42-h light window covers day and night (busy 37.3%,
 peak 66.1%) - the "mostly idle" portrait is a per-VM statement; host-level load follows a day/night
 rhythm, and capacity-model anchors taken from the quiet segment are labeled as such (the controlled
 experiments here align with that segment; day/night peak regimes are future work).
 
 **Boundaries and the two-state anchor (Figure 31).** The dense window is only 170 minutes and is a
-**night-time quiet segment** (host busy 30.1%, peak 47.2%); the light stream has accumulated **39
-hours of day/night coverage** (274 points at 5-minute intervals; ~40% of samples missing to relay
-jitter): host busy mean **37.7%**, P95 55.5%, peak **66.1%**; guests consume 14.8%
-of host CPU on average; memory available never drops below **87.8 GB**; CPU PSI avg300 mean 5.3, peak
+**night-time quiet segment** (host busy 30.1%, peak 47.2%); the light stream has accumulated **42
+hours of day/night coverage** (as of 2026-10-14; 305 points at 5-minute intervals, ~39% of samples
+missing to relay jitter): host busy mean **37.3%**, P95 55.3%, peak **66.1%**; guests consume 14.8%
+of host CPU on average; memory available never drops below **63.7 GB**; CPU PSI avg300 mean 5.2, peak
 14.0; no reboot in the window. The two-state anchor holds: the quiet/night dense segment (to which the
 controlled testbed experiments align) and the full day/night light segment together bracket the real
 load range. 1-minute granularity cannot resolve sub-minute synchrony.
