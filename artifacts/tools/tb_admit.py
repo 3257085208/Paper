@@ -127,6 +127,7 @@ class UsageSampler(threading.Thread):
         super().__init__(daemon=True)
         self.stop = threading.Event()
         self.hist = {}
+        self.thist = {}
         self.admitted = []
         self.lock = threading.Lock()
 
@@ -141,8 +142,10 @@ class UsageSampler(threading.Thread):
                 p = prev.get(vmid)
                 if p is not None:
                     u = (cur.get("usage_usec", 0) - p.get("usage_usec", 0)) / (dt_ * 1e6)
+                    thr = (cur.get("throttled_usec", 0) - p.get("throttled_usec", 0)) / (dt_ * 1e6)
                     with self.lock:
                         self.hist.setdefault(vmid, []).append((now, max(0.0, u)))
+                        self.thist.setdefault(vmid, []).append((now, min(1.0, max(0.0, thr))))
                 prev[vmid] = cur
             t_prev = now
 
@@ -169,6 +172,9 @@ def p95(vals):
         return None
     v = sorted(vals)
     return v[int(round(0.95 * (len(v) - 1)))]
+
+
+_RESID = []
 
 
 def decide(policy, sampler, admitted, new_count, pool_cores):
@@ -224,6 +230,49 @@ def decide(policy, sampler, admitted, new_count, pool_cores):
                 peak = s
         pred = peak + new_count * class_prior
         return pred <= 0.9 * pool_cores, "ours peak=%.2f+%.1f<=%.2f" % (peak, new_count * class_prior, 0.9 * pool_cores)
+    if policy == "ours_full":
+        # Algorithm A: throttle-corrected phase profiles + measured background
+        # residual reserve + low-history guard (pause guards live in the main loop).
+        t1 = time.time()
+        profiles = []
+        corr_max = 1.0
+        low_hist = 0
+        for vmid, vals in samples.items():
+            tv = [x for (t, x) in sampler.thist.get(vmid, []) if t >= t1 - 120.0]
+            tf = statistics.mean(tv) if tv else 0.0
+            factor = min(2.5, 1.0 / max(0.05, 1.0 - tf)) if tf > 0.02 else 1.0
+            corr_max = max(corr_max, factor)
+            prof = [0.0] * 60
+            for (t, u) in vals:
+                b = int(t) % 60
+                uu = min(1.0, u * factor)
+                if uu > prof[b]:
+                    prof[b] = uu
+            profiles.append(prof)
+        for vmid in admitted:
+            if len(samples.get(vmid, [])) < 30:
+                low_hist += 1
+        if admitted and low_hist > max(1, len(admitted) // 3):
+            return False, "ours_full low-history %d/%d" % (low_hist, len(admitted))
+        peak = 0.0
+        for phase in range(60):
+            ssum = sum(pf[phase] for pf in profiles)
+            if ssum > peak:
+                peak = ssum
+        busy = recent_busy(sampler, 30.0)
+        tenant = 0.0
+        for vmid, s2 in samples.items():
+            vals30 = [u for (t, u) in s2 if t >= time.time() - 30.0]
+            if vals30:
+                tenant += statistics.mean(vals30)
+        residual = max(0.0, busy - tenant)
+        _RESID.append(residual)
+        del _RESID[:-20]
+        rq95 = p95(_RESID) or 0.0
+        reserve = max(0.0, rq95 - 0.2)
+        pred = peak + new_count * class_prior + reserve
+        return pred <= 0.9 * pool_cores, ("ours_full peak=%.2f(corr x%.2f)+prior+res=%.2f<=%.2f"
+                                          % (peak, corr_max, reserve, 0.9 * pool_cores))
     raise ValueError(policy)
 
 
@@ -317,7 +366,7 @@ def main():
     ap.add_argument("--round", required=True)
     ap.add_argument("--mode", required=True, choices=["rand", "sync"])
     ap.add_argument("--policy", required=True,
-                    choices=["worstcase", "fixed", "util80", "quantile", "audible", "ours", "ours_p"])
+                    choices=["worstcase", "fixed", "util80", "quantile", "audible", "ours", "ours_p", "ours_full"])
     ap.add_argument("--pool", default="8-15")
     ap.add_argument("--step", type=int, default=2)
     ap.add_argument("--max", type=int, default=40)
@@ -352,11 +401,15 @@ def main():
         time.sleep(3)
         n = 0
         last_p5 = None
+        last_svc = None
         while n + args.step <= min(args.max, len(vmids_sorted)):
             base_policy = "ours" if args.policy == "ours_p" else args.policy
             try:
                 if args.policy == "ours_p" and last_p5 is not None and last_p5 < 70.0:
                     allow, reason = False, "pause p5=%.0f%%<70%%" % last_p5
+                elif args.policy == "ours_full" and last_p5 is not None and (
+                        last_p5 < 70.0 or (last_svc is not None and last_svc > SLO)):
+                    allow, reason = False, "pause p5=%.0f%% svc=%.2f" % (last_p5, last_svc or 0.0)
                 else:
                     allow, reason = decide(base_policy, sampler, admitted, args.step, len(pool))
             except Exception:
@@ -392,6 +445,8 @@ def main():
             http, redis = probes.get("http"), probes.get("redis")
             svc_viol = bool(http and http.get("p99_ms") and http["p99_ms"] > SLO) or \
                        bool(redis and redis.get("p99_ms") and redis["p99_ms"] > SLO)
+            if http and http.get("p99_ms") is not None:
+                last_svc = http["p99_ms"]
             rec = {"round": args.round, "mode": args.mode, "policy": args.policy,
                    "n": n, "reason": reason,
                    "busy_samples": bseries,

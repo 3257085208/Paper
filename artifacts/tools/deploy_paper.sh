@@ -9,6 +9,8 @@ python3 manuscript/make_site.py site
 mkdir -p site/artifacts
 rsync -a --delete --exclude ".DS_Store" tools/ site/artifacts/tools/
 rsync -a --delete --exclude ".DS_Store" research_data/ site/artifacts/research_data/
+mkdir -p site/artifacts/figs
+rsync -a --include='*.py' --exclude='*' manuscript/figs/ site/artifacts/figs/
 cp manuscript/REPRODUCE.md site/REPRODUCE.md
 cd site
 git add -A
