@@ -42,7 +42,9 @@ In the cheap-VPS market, sellers survive by packing many low-utilization custome
 
 ## 1.3 Approach Overview
 
-Two self-built testbeds make the problems verifiable: a **nested PVE bed** (4 vCPU / 19.5 GiB, 16 tenants) and a **bare-metal bed** (2x Xeon 8259CL, 96 threads / 991 GiB, 64-VM fleet; isolation claim verified against SMT/NUMA topology), anchored by read-only telemetry from two production hosts. Around the three pillars:
+Figure 1 summarizes the study pipeline and the observation set. Two self-built testbeds make the problems verifiable: a **nested PVE bed** (4 vCPU / 19.5 GiB, 16 tenants) and a **bare-metal bed** (2x Xeon 8259CL, 96 threads / 991 GiB, 64-VM fleet; isolation claim verified against SMT/NUMA topology), anchored by read-only telemetry from two production hosts. Around the three pillars:
+
+![Figure 1 Study pipeline: Identify -> Predict -> Actuate with the minimal observation set](figs/fig1_pipeline.png)
 
 1. **Identify** — the censoring identifiability analysis (Section 3.3.1), a 90-cycle paired validation, and a mixed-occupancy three-estimator ablation (naive / quota-scaled / throttle-corrected).
 2. **Predict** — the density law $N^* = C/(\varphi + (1-\varphi)\rho) = C/(\rho\kappa)$; three-point mixed-phase validation, the anti-phase arrangement experiment, and threshold-qualified capacity curves (primary bar P5 ≥ 70%).
@@ -52,7 +54,7 @@ Two self-built testbeds make the problems verifiable: a **nested PVE bed** (4 vC
 
 - **Identify**: five pegged tenants at 30% quota show 1.50 cores on the usage panel against 5.00 cores of true demand (3.3x, 7/7 rounds); in the v2 repeat (50% quota), throttle-corrected estimates hit the truth in all 90 cycles and naive "release" decisions violate in **90/90**; the v3 rework (30% quota, 90 cycles) replicates the direction (naive 3.6x under-report; corrected median |err| 0.55 cores, 88/90 within ±20%); a mixed-occupancy ablation (3 pegged + 3 idle @30%, truth 3.3) yields aggregate errors — naive -2.31 (unsafe), quota-scaling +0.01 (smallest *in this sample* because bursty peaks saturate the quota), throttle correction -0.20, full-vCPU +2.70, uncapped -0.16 — while per tenant, saturated tenants are exact under both methods and the window-averaged throttle fraction is diluted by idle time for bursty tenants (0.033 vs true 0.10); estimator choice must rest on per-tenant correctness, with multi-resolution throttle sequences (Ch. 9) fixing the dilution.
 - **Predict**: the density law hits three mixed-phase break points on the physical host — $\varphi$=0.50 predicted 13.3 (13 pass, 16 fail), $\varphi$=0.75 predicted 10.0 (10 pass, 13 fail), $\varphi$=0.25 predicted 20.0 (20–24 pass, 28 fail); random-vs-aligned safe capacity ratio 3.5× at the primary bar (3.5×–4× across bars); the utilization-impossibility counterexample (35% vs 98%).
-- **Actuate**: isolation is the only lever surviving every storm (physical-core verified); the fixed phase-aware admission stops **inside the fine-scanned synchronized bracket (8 seats; 10 = first fail)**; KSM reclaims **21.9 GB (33.4% of fleet RAM)** with service P99 0.73→0.76 ms, and idle "1 GB" VMs hold only 156–315 MB of host memory (free-page reporting already returning free pages) — the key enabler of memory density.
+- **Actuate**: isolation is the only lever surviving every storm (physical-core verified); the fixed phase-aware admission stops **inside the fine-scanned synchronized bracket (8 seats; 10 = first fail)**; KSM reclaims **21.4 GiB (33.4% of fleet RAM)** with service P99 0.73→0.76 ms, and idle "1 GB" VMs hold only 156–315 MB of host memory (free-page reporting already returning free pages) — the key enabler of memory density.
 - **Evidence strength**: 100-round knee (two batches), 180-cycle censoring (two batches), 30-round combined-stress campaign, 4-round fine scan, 3-round sync; explicit statistics (round-clustered, binomial bounds, P99 primary), anomalies (OOM-offline VMs, degraded rounds, batch drift) archived and merged via the v3 rework.
 
 ## 1.5 Contributions
@@ -84,7 +86,7 @@ Oversubscription is central to cloud resource efficiency. AUDIBLE [1] (ASPLOS 20
 
 Our setting exposes two blind spots of that line for small providers. First, **synchronization**: temporal complementarity works precisely because loads are out of phase; when tenant loads synchronize (hourly jobs, batch deployments, attacks), aggregation aligns the spikes — our one-minute periodic spike timeline is direct evidence. Second, the **observability gap**: hyperscalers aggregate over billing windows, whereas small providers protect themselves with hard quotas; once a quota binds, "usage" becomes a censored observation, and Section 5 shows that decisions based on it systematically overestimate headroom (3.3× underestimate of true demand).
 
-On the admission side, Kerveros [4] (OSDI 2023) reports production capacity bookkeeping and buffering in a large public cloud; Risk-aware Adaptive vCPU Oversubscription [5] (2024) and the [5] (ProtoHAIL; peer-reviewed as ProtoRAIL at MLSys 2025) learns risk-aware adaptive ratios via prototypical imitation learning with human-in-the-loop; conformal demand envelopes for GPU clusters [7] (2024) turn oversubscription into calibrated risk envelopes; SCROOGEVM [6] adjusts oversubscription ratios based on detected host quiescence; RSR [8] (2026) uses calibrated interval prediction to size individual VMs. These works are strong on prediction and calibration, but their evaluation targets are platform-side capacity violations or single-VM sizing, not **which control mechanism actually protects business tail latency on a small host**. Our controlled comparisons of CPU quotas, CPU weights, core isolation, memory double-gates, and IO caps/weights answer exactly that, yielding the "isolation first, hard caps second, no soft priorities" conclusion.
+On the admission side, Kerveros [4] (OSDI 2023) reports production capacity bookkeeping and buffering in a large public cloud; ProtoHAIL/ProtoRAIL [5] learns risk-aware adaptive vCPU oversubscription ratios via prototypical imitation learning with human-in-the-loop; conformal demand envelopes for GPU clusters [7] (2024) turn oversubscription into calibrated risk envelopes; SCROOGEVM [6] adjusts oversubscription ratios based on detected host quiescence; RSR [8] (2026) uses calibrated interval prediction to size individual VMs. These works are strong on prediction and calibration, but their evaluation targets are platform-side capacity violations or single-VM sizing, not **which control mechanism actually protects business tail latency on a small host**. Our controlled comparisons of CPU quotas, CPU weights, core isolation, memory double-gates, and IO caps/weights answer exactly that, yielding the "isolation first, hard caps second, no soft priorities" conclusion.
 
 ## 2.2 Resource-Control Primitives and Scheduling
 
@@ -102,16 +104,11 @@ On methodology, Metior [9] (ASE 2021) warns that adjacent time-series samples ar
 
 ## 2.5 Positioning
 
-**Mechanistic distinction from temporal-pattern work (explicit boundary).** Coach [2] and Hestia [3] also exploit temporal structure, but their mechanisms presuppose **mobility/arrangability**: Coach relies on long-term prediction and VM types with guaranteed/oversubscribed partitions; Hestia aggregates complementary workloads into groups and schedules them (with control-plane budget). Our regime (one or few small hosts, no migration freedom, no long history, quota-censored demand) forbids these mechanisms; PPC is therefore a **read-only, measurement-driven** estimator whose new mechanism is (i) a **joint block bootstrap** over per-tenant 1-s phase profiles (convolution on the measured joint structure, not on marginals), and (ii) a decision rule pairing the Section 3.3.1 identifiability boundary with "point estimate + tail bar + zero-over-admission". In one line: prior work answers *how to schedule to smooth volatility*; we answer *how to predict safe capacity and hold it online when scheduling is not available*.
+**Mechanistic distinction from temporal-pattern work (explicit boundary).** Coach [2] and Hestia [3] also exploit temporal structure, but their mechanisms presuppose **mobility/arrangability**: Coach relies on long-term prediction and VM types with guaranteed/oversubscribed partitions; Hestia aggregates complementary workloads into groups and schedules them (with control-plane budget). Our regime (one or few small hosts, no migration freedom, no long history, quota-censored demand) forbids these mechanisms; PPC is therefore a **read-only, measurement-driven** estimator whose new mechanism is (i) a **joint block bootstrap** over per-tenant 1-s phase profiles (convolution on the measured joint structure, not on marginals), and (ii) a decision rule pairing the Section 3.3.1 identifiability boundary with "point estimate + tail bar + zero-over-admission". The two settings therefore ask different questions: prior work schedules workloads to smooth volatility, whereas this paper predicts safe capacity and enforces it online when scheduling is unavailable.
 
 We claim neither a new learning algorithm nor new prediction theory. This is a **measurement-driven systems study** for small providers: it decomposes "multi-resource oversubscription with multiple control levers" into separately comparable experimental units, quantifies which folk practices hold and which do not under short history, censored demand, and mixed bursty loads, and delivers a combined-stress-validated admission and shaping configuration. The relationship to hyperscale work is complementary: our hosts are smaller, observability is worse, and the decision population is cheaper — exactly the operating conditions of a large share of the global low-cost VPS market.
 
 ---
-
-### Reference check
-
-- References verified 2026-10-13 against official sources (see `references.md`); five minor fields (ORAIL source, GPU-conformal source, OpenShift direct page, SlackVM authors, LKML link) are completed at packaging time.
-- Hestia's venue verified (SIGCOMM '26, pp. 491–504; full title "Rethinking Cloud Optimization: Volatility-Driven for Better Outcomes").
 
 
 ---
@@ -196,7 +193,7 @@ The objective is to maximize admitted volume (count, VM-hours, or configuration-
 
 ## 3.6 Observation Necessity: Three Constructive Counterexamples and the Minimal Observation Set
 
-The organizing thesis of this paper: **the bottleneck of safe-capacity decisions is observational capability, not the capacity algorithm.** Three constructive results (formal proofs and executable counterexamples in Appendix A), each with measured counterparts here:
+For the decision problems studied in this paper, **the binding constraint is observational capability rather than the capacity algorithm.** Three constructive results (formal proofs and executable counterexamples in Appendix A), each with measured counterparts here:
 
 **Proposition A (censoring impossibility).** Given only aggregate counters (usage, throttle fraction, quota), no estimator that sees only these counters can be correct for all workloads — two processes can produce **identical observations** with different demand (construction in Section 3.3.1, Prop. 3). This is an **identifiability** impossibility (it holds for any deterministic function of the observations) and is stronger than statistical unbiasedness. *Corollary:* dashboard-driven release/oversell decisions are unfixably dangerous — 90/90 independent-round judgments violate (Section 4.3b).
 
@@ -230,6 +227,8 @@ the random fleet's capacity is bounded above by C/rho (mean-concurrency necessar
 
 ## 4.1 Knee and Instantaneous Overlap (Figure 2)
 
+![Figure 2 Knee curve: service latency vs pegged co-tenants (nested bed)](figs/fig2_knee.png)
+
 **Setup.** Services (one HTTP, one Redis, 1 vCPU each) are held constant; pegged neighbors (1 vCPU busy loops) are added from 0 to 5; each level is probed for 20 s per service at 100 req/s after a 10 s settle; five rounds run in randomized order.
 
 **Results.** Cross-round means (ms):
@@ -250,6 +249,10 @@ the random fleet's capacity is bounded above by C/rho (mean-concurrency necessar
 **Boundaries.** One host, 4 logical cores; neighbors are continuously pegged (worst case); no quotas or isolation; absolute numbers do not extrapolate to other core counts, but the mechanism does not depend on the count.
 
 ### 4.1b Repeat: 50-Round Amplification (Figure 17)
+
+![Figure 17 50-round knee repeat (v2 reconstruction); v3 rework in Figure 29](figs/fig17_knee_repeat.png)
+
+![Figure 29 Knee v3 rework (all neighbors online): L2 clean, L3 45/50, L4 100% collapse](figs/fig29_knee_v3.png)
 
 **Setup.** The automated engine reran the Section 4.1 procedure **50 times** (v2 campaign; randomized order, settle between levels, two 20 s probes per round). During the campaign the fourth pegged neighbor was OOM-killed by the host in round 2 and stayed down; from then on the nominal 4-neighbor level in fact ran 3 neighbors and the nominal 5-neighbor level ran 4. We therefore merge by **neighbors actually running**: 3 neighbors = all of L3 + L4-from-round-3 (n = 98); 4 neighbors = L5-from-round-3 (n = 48).
 
@@ -287,6 +290,8 @@ Redis mirrors this (6.8 ms → 21.4 ms). The round-1 L4 sample (when the fourth 
 
 **Results.** (i) The synchronized scenario has a strict periodic timeline (Figure 3):
 
+![Figure 3 Synchronized burst timeline](figs/fig3_sync_timeline.png)
+
 ```
 quiet:    P99 ≈ 2–3 ms
 burst:    P50 rises to 4–8 ms, P99 14–22 ms (max 33 ms)
@@ -295,11 +300,15 @@ after:    back to 2–3 ms; repeats every 60 s
 
 Four replicates (p3, p3b, p3c, p3d): aggregate P99 13.1–22.6 ms, all violating. (ii) Phase control (Figure 4): ten idle tenants cluster-phased → P99 10.2–17.3 ms (violating); fully randomized → 2.7–3.8 ms (two clean rounds). (iii) Randomized phases plus one pegged tenant: P99 14.0–20.8 ms (four rounds p6/p6b/p6c/p6d, all violating).
 
+![Figure 4 Phase-clustering experiment](figs/fig4_packing.png)
+
 **Interpretation.** "Mostly idle" and "clean tail" are different properties: an idle population still has a nonzero probability of several members being awake simultaneously; synchronization (intentional alignment or incidental co-start) turns that probability into a regular event. The realistic production mix is closer to "randomized phases + a few persistent heavy tenants", and the mix of Section 4.1's knee with this result shows that **one persistently pegged tenant plus random overlaps already breaks a strict SLO**. This motivates the cold-start problem: at arrival time one cannot know whether a newcomer is idle or that pegged tenant.
 
 **Boundaries.** Aligned bursts are synthetic; clustered phases arise from simultaneous first-boot (production tenants boot at dispersed times, so the fully randomized case is the optimistic, realistic one); loads are synthetic duty-cycle loops rather than real applications.
 
-## 4.3 Demand Censoring: Usage Lies (Figure 5)
+## 4.3 Demand Censoring under CPU Quotas (Figure 5)
+
+![Figure 5 Censoring: usage panel vs true demand (both panels n=7 cycles)](figs/fig5_censoring.png)
 
 **Setup.** Five tenants are all pegged (true demand 1.0 core each) and capped at `cpu.max = 30000/100000` (30% on average). Two phases are measured: **quota** (caps in effect) and **released** (caps lifted, simulating the operator trusting the usage dashboard). Seven cycles (three in c3, two each in c4 and c5); each phase probes both services for 30 s at 100 req/s and reads per-VM `cpu.stat` deltas.
 
@@ -320,9 +329,13 @@ After release, customer rates fall to about 27–32 M it/s (about half of full s
 
 ### 4.3b Repeat: 90 Cycles (Figure 18)
 
+![Figure 18 Censoring 90-cycle repeat: 2x under-report, 90/90 release violations](figs/fig18_censor_repeat.png)
+
 **Setup.** The v2 campaign reran the Section 4.3 procedure **30 rounds × 3 cycles = 90 cycles** (50% quota; 4 tenants actually running — the fourth was offline early in the batch; tenants remain pegged, true demand 1.0 core each). Each cycle probes both phases for 30 s.
 
 **Results (Figure 18).** (i) **Estimation**: in 90/90 cycles the usage panel reports 2.00 cores (4 × 0.50) while throttle evidence recovers 4.00 cores — exactly the truth. A half-size quota halves the reported demand, every cycle. (ii) **Service**: quota-phase HTTP P99 averages 11.4 ms (range 9.1–14.6; 98% of cycles already across the 10 ms line); released-phase averages 24.7 ms (range 20.6–28.9) with **90/90 (100%) violations** — the lowest released-phase cycle is still above the quota phase's 95th percentile.
+
+**Causal clarification.** Two statements must be distinguished: the quota-kept phase already fluctuates around the SLO line (mean 11.4 ms; ~98% of cycles violate), so a release decision **significantly worsens an existing overload condition** rather than transitioning from compliant to first violation; the causal claim here is estimation error -> wrong release -> worse latency.
 
 **Interpretation.** Same direction as the 7-cycle pilot (5 tenants @30%: naive 1.50 vs aware 5.00), but far harder evidence: the underestimate factor equals the quota fraction exactly, throttle evidence restores the truth, and the naive release decision fails in 30 independent rounds (90 time-correlated cycles, clustered by round). The failure is independent of the quota level (30% and 50% variants agree).
 
@@ -334,9 +347,13 @@ Five candidate levers are each asked to protect the service tail: CPU quotas, CP
 
 ### 4.4.1 CPU quotas: bound averages, not boost safe packing (Figure 6)
 
+![Figure 6 CPU quota vs the safe knee (isolated arm tested to 5 neighbors, others 4 - a different-load-intensity comparison)](figs/fig6_shaping.png)
+
 Re-running the neighbor sweep with newcomers capped at 0.75 and 0.50 cores: **neither improves the safe knee** (the fourth tenant violates regardless — P99 14.0/11.2 and 15.2/11.3 ms; see Section 4.1 for the eps=0 bar and batch drift), while customers really do slow down (~72–78% and ~48–53% of full speed). Quota-pulse comparison (qp1): extending the period from 100 ms to 1 s changes nothing (P99 12.0 ms); staggered periods (100–300 ms) help marginally (10.7 ms) but stay non-compliant. **Quotas buy no additional safe seats; they only slow customers and sharpen peaks.**
 
 ### 4.4.2 CPU weights: 100× priority still fails (Figure 9)
+
+![Figure 9 Quota pulse: service P99](figs/fig9_quotapulse.png)
 
 Raising the service VMs' `cpu.weight` to 1000 (10×) and 10000 (100×, a verification run) against default-100 tenants under five pegged tenants yields service P99 25.4/22.8 and 24.0/22.7 ms — **worse than no weights at all** (historic five-pegged P99 21.6/19.5 ms) and opposite to the intuition that weights favor the service. IO weights (`io.weight` 50 vs 500) are equally inert. **Soft priorities are not tail-latency protections; isolation is.**
 
@@ -346,9 +363,13 @@ Pinning services and probe to cores 0–1 and tenants to cores 2–3 yields zero
 
 ### 4.4.4 Memory: the double gate (Figure 7)
 
+![Figure 7 Memory double gate](figs/fig7_memory.png)
+
 Unbounded growth (10 tenants, progressive ballast): at about 13.8 GB of combined tenant residency the host's 1 GB swap is exhausted and **two customer VMs are OOM-killed**, with several tenants' SSH unresponsive; services, being small, survive. Adding `memory.high` (1000/800 MB) eliminates deaths and stabilizes the host, but the reclaim triggered by capped tenants lands almost entirely on anonymous-page swap-out — the small swap drains within seconds and becomes a global bottleneck, with tenants experiencing brief unresponsiveness. Setting `memory.swap.max = 0` alongside (the double gate) stops swap pollution: oversubscription is throttled in place. Note also: with ballooning disabled, memory a tenant "has touched" returns to the host only on VM restart — dynamic return and the "no compression" stance are an explicit tradeoff.
 
 ### 4.4.5 Block IO: hard caps work, the offender pays (Figure 8)
+
+![Figure 8 Block-IO cap (io.max)](figs/fig8_disk.png)
 
 Ten tenants running 4K 70/30 random read/write (O_DIRECT) push the host to about 16.5k IOPS and **drag service P99 to 12.1 ms (violating) although services perform almost no disk IO** (a storm hitting "over the mountain"). Applying `io.max = 300 riops / 150 wiops` per tenant caps exactly as configured, drops the host to 2.6k IOPS, and returns service P99 to 2.7 ms; the cost is that **capped tenants' read completion P99 rises to ~96 ms** (queueing at the throttle). Two operational details: cgroup IO accounting keys to the whole-disk device (8:0), not the partition; `io.weight` is a no-op because the host's IO scheduler is `none` (no BFQ).
 
@@ -426,7 +447,7 @@ present as an "empirical safety envelope", never as a 1% guarantee.
 | Uncorrected historical quantile | Censoring; synchronization | Throttled tenants read as "idle" (Section 4.3) |
 | This design | — (manages both explicitly; pauses on uncertainty) | See Section 6 |
 
-## 5.5 Honest Statements
+## 5.5 Assumptions and Limitations
 
 - No distribution-free risk guarantees; under arbitrary drift or adversarial load we promise monitoring and conservative behavior only.
 - The demand estimator is **empirical**: a cross-pattern characterization (5 workload patterns × 3 quotas × 3 quota periods × multi-vCPU, 10 rounds each) is a v2 study; this paper commits only to empirical boundaries on the primary (saturated-heavy) workload family.
@@ -464,7 +485,11 @@ Load topology: 2 service VMs (HTTP/nginx, Redis; 1 vCPU / 1 GiB each), 1 probe V
 
 All control-plane operations use cgroup v2 primitives (`cpu.max`/`cpu.weight`, `memory.high`/`memory.swap.max`, `io.max`/`io.weight` on `qemu.slice/<vmid>.scope`); pinning applies `taskset -apc` to all threads of the qemu process. Host busy/memory come from `/proc/stat` and `/proc/meminfo`; per-VM service volume and throttle evidence come from each scope's `cpu.stat` (`usage_usec`, `nr_throttled`, `throttled_usec`).
 
-## 6.3 Read-Only Production Telemetry
+## 6.3 Use of AI-Assisted Tools
+
+AI assistants were used for language editing, code review and manuscript organization during preparation. All experiment design and execution, data verification and scientific claims are the author's own; every reported number was checked against the archived raw logs (see Statements and Declarations).
+
+## 6.4 Read-Only Production Telemetry
 
 The two production hosts are monitored read-only and anonymously: PVE read-only interfaces (`pvesh get /nodes`, `/nodes/{node}/status`, `/cluster/resources`) plus `/proc` provide CPU service volume, throttle counters, pressure signals, memory, and lifecycle events at 60-second granularity for a 7-day target. The remote collector HMAC-pseudonymizes VM/node IDs in memory; it never collects VM names, IPs, business content, or disk data; it installs nothing, changes no customer quota, and applies no stress. Credentials are used once for key exchange and discarded; keys live only on the researcher's workstation.
 
@@ -509,6 +534,8 @@ The scenario of Section 4.3 becomes a decision comparison (7 cycles): the same s
 
 ## 7.3b Method Ablation and Cold Start (Preliminary, Figure 11)
 
+![Figure 11 Method evaluation: policy ablation and cold start](figs/fig11_method.png)
+
 **Ablation (censoring scenario).** Six candidates arrive one at a time, each shaped with a 50% cap on admission; four estimators/decisions run the same sequence:
 
 | Policy | Admitted (of 6) | Violation windows | Notes |
@@ -529,6 +556,8 @@ The scenario of Section 4.3 becomes a decision comparison (7 cycles): the same s
 Reading: the optimistic prior is unsafe under heavy arrivals; a static conservative prior is safe but halves the seats; "probe first, relax on evidence" wins both sides. Together the two panels support the design principle of Section 5: priors are evidence-driven and must be cost-aware.
 
 ## 7.3c Empirical Validation of the Censoring-Corrected Estimator (b2, Figure 12)
+
+![Figure 12 Demand-recovery validation (b2)](figs/fig12_bounds.png)
 
 Five pegged tenants are measured at quotas 20/40/60%: the estimate $\hat d = \min(1, u/(1-t))$ uses only observable counters (quota + throttled time fraction t); the ground truth is then measured by lifting one tenant's quota at a time (the rest stay capped) so five-way contention cannot pollute the reference:
 
@@ -554,6 +583,8 @@ Under the same knee protocol and service-SLO criterion:
 **Reading.** Only isolation raises the safe limit (to ≥5); quotas change tenant speed, not the limit (Section 4.4.1). The cost relocation is visible: isolation moves the cost from "service SLO" to "economy-tier customers", while quotas satisfy neither side. The remaining defenses — memory double gate and IO caps — do not raise the CPU knee but stop their own storms from dragging the service under (they are necessary parts of the synthesis configuration).
 
 ## 7.4b Online Admission Comparison (Figure 20)
+
+![Figure 20 Online admission comparison: policy stops vs measured capacity brackets (14 rounds)](figs/fig20_showdown.png)
 
 **Protocol.** On the 8-core tenant pool, seven policies (`worstcase` quota-conservative / `fixed` 2x /
 `util80` busy-80% / `quantile` history-quantile / `audible`-style MC convolution / `ours` phase-profile /
@@ -612,6 +643,8 @@ fixed etc. lack the p5 column); the corrected seven-round rerun (show5) was comp
 
 ## 7.5 Triple-Storm Synthesis (Figure 10)
 
+![Figure 10 Combined-stress validation (4 runs)](figs/fig10_synthesis.png)
+
 **Configuration.** Services + probe pinned to cores 0–1; 16 tenants pinned to 2–3; per tenant `memory.high = 800 MiB`, `memory.swap.max = 0`, `io.max = 200/100` IOPS; admission per censoring-aware rules (this validation focuses on the protection envelope; admission does not intervene). **Storm composition.** CPU mix (8 idle + 6 idle/bursty + 2 pegged), memory ballast, and 4K random-write fio, all simultaneously; service probes at 100 req/s for 60 s each.
 
 | Pass | HTTP P50/P99/P999 | Redis P50/P99/P999 | Timeouts/errors | Host state |
@@ -627,7 +660,11 @@ fixed etc. lack the p5 column); the corrected seven-round rerun (show5) was comp
 
 **Rework repeat (Figure 19).** The rework reran the same storm end-to-end (20 s probes, fresh state per round): **25 of 26 rounds pass** — HTTP P99 mean **4.82 ms** (median 4.02, range 2.95–25.26), Redis mean **3.34 ms** (2.53–4.13, always compliant); **one round (r24) violates at 25.3 ms** — in that round 8 tenants returned no rate samples (degraded state). The envelope has held across **29 of 30 passes (4 pilot + 26 rework)**. **Statistical note:** the optimistic independent-binomial one-sided 95% bound for 29/30 is ~**14.9%** (the earlier 11.7% for 24/24 was an optimistic pre-rework estimate; rounds share host state and are time-correlated, so the bound is indicative — "near-zero violations" is not a long-term guarantee).
 
+![Figure 19 Combined-stress rework, 26 rounds: 25/26 pass, one degraded round at 25.3 ms](figs/fig19_syn_repeat.png)
+
 ## 7.5b Joint Admission + Shaping Validation (j1, Figure 13)
+
+![Figure 13 Joint admission + shaping validation (j1)](figs/fig13_joint.png)
 
 The protection envelope is fully active (services/probe pinned to cores 0–1; customers to 2–3; per-customer memory double gate at 800 MB with swap.max=0; IO caps), with a background load of four tenants (3 idle + 1 bursty); six candidates arrive one at a time, each capped at 50% on admission. Two admission policies decide within the same envelope:
 
@@ -639,6 +676,8 @@ The protection envelope is fully active (services/probe pinned to cores 0–1; c
 **Reading.** (i) Pinning and caps keep the service safe: zero violations under both policies — in joint operation the admission policy decides *how many seats are committed*, not service safety. (ii) The dominant customer-side pain comes from the tight memory gate: the canary's multi-second stalls are nearly identical at 1 and 3 seats, showing that `memory.high = 800 MB` is too tight for a 3 GB guest (cf. the soft-threshold semantics of Section 4.4.4); the economy tier's experience ceiling is a product parameter, not a policy defect. (iii) Throttle-corrected estimation carries a phase bias: with bursty background, instant sampling at decision time underestimates demand (estimates oscillated between 0.01 and 1.90 cores), making the aware policy over-conservative (1 seat vs naive's 3) — the design-to-implementation gap versus the time-aligned aggregate upper quantile of Section 5.3, tracked as an improvement item. The revision implements the time-aligned aggregation; it is re-measured as a four-policy comparison on the second testbed, with results merged as supplementary material.
 
 ## 7.6 Production Telemetry: Workload Portrait (Figure 27)
+
+![Figure 27 Production portrait: 72% near-idle, 4268 short bursts, 5.76x oversubscription anchor](figs/fig27_production.png)
 
 Both production hosts are **infrastructure we operate ourselves, offered as free VPS to external users**;
 telemetry runs on our own facility, read-only, with anonymized user VMs (no names/IPs/business content).
@@ -681,6 +720,8 @@ controlled testbed experiments align) and the full day/night light segment toget
 load range. 1-minute granularity cannot resolve sub-minute synchrony.
 
 
+![Figure 31 Production two-state anchor: 42-h light window vs the 3-h night excerpt](figs/fig31_light_window.png)
+
 ---
 
 # 8 Physical-Host Validation and the Density Law
@@ -714,6 +755,8 @@ logical numbering.
 
 ## 8.2 Multi-Scale Knee Replication (Figure 14)
 
+![Figure 14 Physical host multi-scale knee: isolation vs shared (4 rounds)](figs/fig14_phys_knee.png)
+
 The Section 4.1 knee experiment scaled to five pool sizes (2/4/8/16/32 physical cores), with services
 either **isolated** (dedicated cores) or **shared** (inside the pool); pegged neighbors (1 core each) are
 added step by step; service P99 is recorded (Figure 14; x-axis = pegged tenants / pool cores).
@@ -734,6 +777,8 @@ directly: on a 96-thread machine the phenomenon, its magnitude (0.7 ms → 10–
 all replicate item by item.
 
 ## 8.3 Phase Structure: Synchronized vs Randomized (Figure 15)
+
+![Figure 15 64-tenant fleet: synchronized vs random (timeline + 3-round repeat)](figs/fig15_phys_sync.png)
 
 The Section 4.2 synchronized-burst experiment scaled to 64 tenants (20% duty / 60 s), half randomized,
 half aligned, all inside one 16-core pool (no isolation).
@@ -757,6 +802,8 @@ time-aligned admission: periodic structure can be measured, exploited (avoid pea
 (anti-phase arrangement), while random structure can only be absorbed by headroom.
 
 ## 8.4 Safe Sell Capacity (Figure 16, core result)
+
+![Figure 16 Sell capacity on the physical host: customer experience and service side](figs/fig16_phys_sell.png)
 
 **Safety definition (unified, pre-declared, applies to all chapters).** Every capacity statement is a triple of resource, quality constraint and risk budget epsilon. (i) Service side: with window W in [30,120] s, a violation is window P99 > 10 ms **or** any timeout/error; failures are not excluded, and statements read "violation-window rate <= epsilon" with independent-round counts and Clopper-Pearson bounds (Section 5.3.2). (ii) Customer side: the primary bar is customer work-rate P5 >= 70% of the solo baseline, a lower-tail quantile, not a "worst decile". (iii) Capacity oracle: the largest step satisfying both at a given epsilon. Knee (mean cliff), zero-violation capacity (epsilon = 0) and risk-budgeted capacity (epsilon > 0) are three distinct notions, and every mention says which. Timeouts and errors always count as violations, never excluded to polish the successful-request P99.
 
@@ -792,9 +839,11 @@ the record)**.
 
 Random per-step P5 declines gradually from 99.7% at L16 to 42.8% at L64: L24 93.8%, L28 90.6%, L32 69.1%, L40 64.5%, L48 50.6%, L56 50.0%. The aligned group is a cliff: L8 98.8%, L10 62.2%, L12 53.5%, L14 54.2%, L16 48.6%. Four-round pools agree with Figure 16, and the fine-scan boundary scans completed, giving sync [8,10) and rand [28,32).
 
-Round-level ranges of the per-round P5: sync N=8 98.6–101.8% (4 rounds), N=10 61.0–70.8% (3), N=16 47.0–49.6% (4); rand N=28 88.7–99.4% (2), N=32 62.2–90.8% (4, wide spread; the boundary statement takes the conservative round, 28). Formal intervals use a customer-level bootstrap on the pooled samples (B=10,000, 95% CI): sync N=8 [98.6, 99.0], N=10 [61.0, 68.6], N=16 [47.1, 48.9]; rand N=28 [82.5, 99.3], N=32 [62.2, 75.5]; mix50 N=13 [90.5, 99.6], mix75 N=10 [98.7, 100.5]. Artifacts: `tools/bootstrap_ci.py` and `BOOTSTRAP_CI.md`.
+Round-level ranges of the per-round P5: sync N=8 98.6–101.8% (4 rounds), N=10 61.0–70.8% (3), N=16 47.0–49.6% (4); rand N=28 88.7–99.4% (2), N=32 62.2–90.8% (4, wide spread; the boundary statement takes the conservative round, 28). Formal intervals use a customer-level bootstrap on the pooled samples (B=10,000, 95% CI): sync N=8 [98.6, 99.0], N=10 [61.0, 68.6], N=16 [47.1, 48.9]; rand N=28 [82.5, 99.3], N=32 [62.2, 75.5]; mix50 N=13 [90.5, 99.6], mix75 N=10 [98.7, 100.5]. Artifacts: `tools/bootstrap_ci.py` and `BOOTSTRAP_CI.md`. **Independence caveat:** the customer-level bootstrap **understates** uncertainty when samples share host state (VMs within a round are correlated; consecutive samples of a tenant are autocorrelated); the round-level ranges reported alongside are the primary uncertainty statement, and for configurations with only 2-4 rounds the per-round values stand on their own; a stricter hierarchical/clustered bootstrap is future work.
 
 **Convention robustness.** The customer bar "P5 >= 70%" depends on the per-customer aggregation. Recomputing with the full 18-sample-per-VM series under four conventions — per-customer max, median, time-P5 or min, then cross-customer P5 — structurally identical to the paper's per-round pooling: the sync boundary is identical under all four conventions at 8 seats; rand is 28/28/26/26; mix25 24/20/20/20; mix50 and mix75 unchanged at 13 and 10. The aligned-end conclusion is convention-invariant (all conventions give 98.8% at N=8), while the random end tightens by one fine-scan step under the strictest time-domain convention. Artifacts: `tools/p5_convention_check.py` and `P5_CONVENTION_CHECK.md`. **Capacity-risk curves (Figure 30):** with the round-level violation frequency as the risk measure (a round counts when its customer P5 < 70%), safe capacity rises monotonically with the budget — at eps=0: rand 28 / sync 8 / mix25 20 / mix50 13 / mix75 10; at eps=0.5: rand 40; at eps=1: rand 64 / sync 32. All safe policy stops sit on the eps=0 edge (ours/ours_p: sync 8, rand 16-20), while the util80/audible sync stop (40) exceeds the curve's ceiling at any budget (only 32 even at eps=1) — no risk budget legitimizes it. **Scope note:** this curve is the workload-side empirical capacity-risk frontier; complete per-policy frontiers at matched risk budgets (each policy x many N x multiple seeds) are future work; the eps=1 endpoint is merely the curve's terminal point and carries no safe-admission meaning.)
+
+![Figure 30 Capacity-risk curves (workload side; empirical risk: per-round violation frequency, n = rounds per level)](figs/fig30_capacity_risk.png)
 
 **Four conclusions.**
 
@@ -811,6 +860,8 @@ Round-level ranges of the per-round P5: sync N=8 98.6–101.8% (4 rounds), N=10 
    literally sells this degradation budget.
 
 ## 8.5 A Safe-Capacity Approximation: Mixed-Phase Validation (Figure 21)
+
+![Figure 21 Safe-capacity approximation: mixed-phase validation (3 rounds)](figs/fig21_density_law.png)
 
 **The model (an approximation under explicit assumptions, not a universal law).** Assumptions: (A1) tenant
 phases are stable within the decision span; (A2) the aligned group's bursts coincide, and overlap with
@@ -847,6 +898,8 @@ explicit assumptions** — used for extrapolation and admission priors under str
 values taken from measured bars; no universal law is claimed.
 
 ## 8.6 Phase-Profile Convolution and the Marginal Illusion (Figure 28)
+
+![Figure 28 Phase-Profile Convolution: iid blind vs PPC varying with phase structure](figs/fig28_ppc.png)
 
 **Proposition (marginal illusion).** The two experiments of Section 8.4 are a *constructive proof*: two
 fleets with **identical per-tenant demand marginals** (same burner, same 20%/60 s duty and window shape)
@@ -914,6 +967,8 @@ policy *is* the PPC actuator and stops on the synchronized oracle).
 
 ## 9.1 CPU: Micro-Period Quotas — a Self-Audit Correction (Figure 22)
 
+![Figure 22 Micro-period self-audit: 2 ms and 1 s deliver identically (+35% withdrawn)](figs/fig22_microperiod.png)
+
 **Background.** An early batch (qp2c: five pegged tenants at 50% quota, periods 2/4/10/100 ms/1 s)
 reported that shrinking the period raised the tenant rate from 59% to 80% (+35%), and this number
 entered the summary table.
@@ -941,7 +996,7 @@ untested (future work).
 
 ## 9.2 Memory: Balloon-Free Reclaim Trio (Figures 23–25) — partial
 
-**Done so far.** (i) **KSM fleet dedup (ksm1; see the kernel documentation [21])**: 64 same-image VMs share **21.9 GB = 33.4% of fleet RAM**;
+**Done so far.** (i) **KSM fleet dedup (ksm1; see the kernel documentation [21])**: 64 same-image VMs share **21.4 GiB = 33.4% of fleet RAM**;
 ksmd ≈ 0.16 core; service P99 0.73→0.76 ms (zero regression). Cost boundaries: write-CoW latency untested;
 cross-tenant dedup carries known side-channel concerns — enable per trust domain in production.
 (ii) **Free-page reporting (manual verification, 300 MB)**: host `memory.current` 315→629 MB with the guest
@@ -960,6 +1015,8 @@ under either density or phase arrangement.
 
 ## 9.3 IO: Tenant Storms vs Service (Figure 26)
 
+![Figure 26 Tenant 4K random storm: ~66k IOPS, service untouched (P99 0.74-0.76 ms)](figs/fig26_ioctl.png)
+
 **Completed (ioc2, after fixing deployment).** Eight storm tenants running 4K random 70/30 O_DIRECT for
 60 s per arm: host **~98k IOPS**, aggregate tenant **~66k IOPS** (n=8), tenant per-op P99max **8.3 ms**;
 across the three arms (none / static / adaptive) the service HTTP P99 stays at **0.743–0.756 ms** — the
@@ -973,11 +1030,17 @@ are zero-visible-regression** (customer rate distribution and visible configurat
 cost is host-side compression work** (service unaffected; the compression ratio is reported for
 compressible cold pages); **quotas and IO caps are explicitly priced on the throttled tenants**
 (rate, queueing) — closing the loop with Chapter 5's "economy tier = a priced degradation budget".
-Data sources: ksm1 (21.9 GB = 33.4% dedup, ksmd ~0.16 core, service P99 0.73→0.76 ms); fpr1/fpr5 (idle
+Data sources: ksm1 (21.4 GiB = 33.4% dedup, ksmd ~0.16 core, service P99 0.73→0.76 ms); fpr1/fpr5 (idle
 "1 GB" VMs hold 156–315 MB; a 300 MB allocation reclaims 303 MB with the guest-visible memory unchanged);
 zram3b (three arms: none aborts ~940 GB without swap / zram reaches 1120 GB with 176.8 GB absorbed and a
 flat P99 / disk swapfile exhausts at 96 GB and aborts).
 
+
+![Figure 23 KSM fleet dedup: 21.4 GiB shared (33.4%), ksmd ~0.16 core](figs/fig23_ksm.png)
+
+![Figure 24 Free-page reporting: 300 MB allocated, 303 MB reclaimed, guest memory unchanged](figs/fig24_fpr.png)
+
+![Figure 25 Swap arms: zram absorbs 176.8 GB (P99 flat) vs the disk swapfile exhausting](figs/fig25_zram.png)
 
 ---
 
@@ -1007,7 +1070,7 @@ For platform builders: several "intuitive" cgroup v2 semantics need empirical ca
 
 ## 10.5 Boundary to Hyperscale Approaches
 
-This work does not replace AUDIBLE/Coach-class methods at hyperscale, which solve capacity optimization given long histories and scheduling freedom; it addresses how a history-less, migration-less small host avoids incidents — and whose dashboard lies to it. The two are composable: censoring correction can produce clean demand evidence at the small-host edge before a platform-scale predictor performs global planning.
+This work does not replace AUDIBLE/Coach-class methods at hyperscale, which solve capacity optimization given long histories and scheduling freedom; it addresses how a history-less, migration-less small host avoids incidents when its measurement interface is structurally biased. The two are composable: censoring correction can produce clean demand evidence at the small-host edge before a platform-scale predictor performs global planning.
 
 
 ---
@@ -1056,7 +1119,7 @@ IO storms and the QoE canary each carry a gain / hidden-cost / visible-regressio
 production-schedule replay (30-minute real schedule plus five-window forward validation) as a scenario
 anchor; real mixed application workloads and more arrival-order repeats remain future work; round-level
 ranges are reported throughout, and the formal bootstrap intervals will be refreshed on the frozen data
-set. "Jointly sufficient" remains an empirical statement for our target workload family. We hope this provides small VPS providers with a
+set. "Jointly sufficient" remains an empirical statement for our target workload family. The study provides small VPS providers with a
 reproducible "observation design + capacity model + controller" starting point, and adds "identifiability
 boundaries and phase structure" to the oversubscription research agenda.
 
@@ -1131,6 +1194,27 @@ family (the 14-round comparison plus the C5 intervention), not a theorem; its di
 customer evidence, anti-aliasing sampling comparison) are reported where available, with the
 anti-aliasing experiment listed as future work.
 
+
+---
+
+## Statements and Declarations
+
+**Funding.** Not applicable.
+
+**Competing interests.** The author declares no competing interests.
+
+**Data availability.** All code, raw traces and analysis scripts are released in the paper repository
+(github.com/3257085208/Paper) under `artifacts/` (experiment drivers and analysis scripts,
+raw JSONL and probe files, figure scripts, and REPRODUCTION.md). Production telemetry was collected
+read-only on infrastructure we operate, anonymized (HMAC'd identifiers), and released only in
+aggregate form.
+
+**Author contributions.** Single-author work: conceptualization, methodology, software, experiments,
+analysis, writing - Kaixiang Nie.
+
+**Use of AI-assisted tools.** AI assistants were used for language editing, code review and manuscript
+organization during preparation. All experiment design and execution, data verification and scientific
+claims are the author's own; every reported number was checked against the archived raw logs.
 
 ---
 

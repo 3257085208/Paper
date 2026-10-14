@@ -1,63 +1,52 @@
-# JNSM 投稿全流程（新手版）
+# JNSM 投稿全流程（2026-10 版）
 
 ## 0. 准备（都已就绪）
-- 正文：`JNSM_manuscript.docx`（或 html 打印成 PDF）
-- 图件：`figures/`（30 张 PNG，按 `FIGURES.md` 顺序）
-- 投稿信：`Cover_Letter.md`（先补建议审稿人，见下）
-- 声明：`Declarations.md`
-- 你需要准备：**常用邮箱**（收审稿通知）、**ORCID**（没有可现场注册，推荐）、作者单位英文名、
-  3–5 位建议审稿人的**姓名+邮箱+单位**
+- 正文：`JNSM_manuscript.docx`（**可编辑源文件，31 图内嵌 + 22 张真 Word 表格**；JNSM 强制要求可编辑源）
+- 排版副本：`JNSM_manuscript.pdf`（61 页，与 docx 同源；审读用）
+- 图件：`figures/`（31 张 PNG，图内已按 JNSM 要求去掉嵌入标题）
+- 投稿信：`Cover_Letter.md`（3 位建议审稿人均为机构邮箱，符合 JNSM 要求）
+- 声明：`Declarations.md`（正文末尾已有 "Statements and Declarations" 节；界面还要再填一次，见下）
+- 你需要准备：**ORCID**（没有可现场注册，推荐）
 
 ## 1. 找投稿入口
-1. 搜索 "Journal of Network and Systems Management Springer"（期刊主页 springer.com/journal/10922）。
-2. 点主页上的 **"Submit your manuscript"** 按钮 → 跳到 **Editorial Manager**（editorialmanager.com）。
-3. 第一次使用：点 **Register**（Now）创建账号——填姓名、邮箱、单位、设置用户名密码；
-   收确认邮件点激活链接。
+1. 期刊主页 springer.com/journal/10922 → 点 **"Submit your manuscript"**。
+2. **注意：JNSM 已迁移到 Springer Nature 投稿平台**，不再是 Editorial Manager。
+   直达链接：**https://submission.nature.com/new-submission/10922/3**
+3. 第一次使用：用邮箱注册/登录（可用现有 Springer Nature 账号）。
 
 ## 2. 开始新投稿
-1. 登录 → Author Main Menu → **Submit New Manuscript**。
-2. **Article Type**：选 Research Paper（或 Original Research）。
-3. **Title**：粘贴标题；**Abstract**：从稿件摘要复制（≤250 词）；**Keywords**：粘贴
-   `oversubscription; admission control; censored demand; phase structure; tail latency;
-   observation design; cloud resource management`。
-4. **Add/Edit/Remove Authors**：填作者（Kaixiang Nie，Fujian Chuanzheng Communications College），
-   勾选 **Corresponding Author**，填邮箱；ORCID 可填。
-5. **Suggested Reviewers**（可选但建议填 3–5 位，候选见文末；**不要选有私人关系的**）。
-6. **Opposed Reviewers**：可留空。
+1. 选 **Research Paper**。
+2. **Title / Abstract / Keywords**：从稿件复制（摘要 227 词 ≤250 ✓；关键词 6 个 ✓）。
+3. **Authors**：Kaixiang Nie，Fujian Chuanzheng Communications College, Fuzhou, China；
+   勾选 Corresponding Author，邮箱 me@niekaixiang.com。
+4. **Suggested Reviewers**（3 位，机构邮箱已核实）：
+   - Thomas Ledoux — Thomas.Ledoux@imt-atlantique.fr（IMT Atlantique，云资源管理）
+   - Pierre Jacquet — pierre.jacquet@inria.fr（Inria，VM 超售 SlackVM）
+   - Romain Rouvoy — romain.rouvoy@univ-lille.fr（Univ. Lille，云资源管理）
 
-## 3. 上传文件（Attach Files）
-按 Item Type 分别上传：
-- `JNSM_manuscript.docx` → **Manuscript**（若系统提示 PDF 优先：用浏览器打开
-  `JNSM_manuscript.html` → 打印 → 存为 PDF 上传，同时保留 docx 为 "Manuscript" 或 "Other"）
-- `figures/fig02…fig31.png` → 每张选 **Figure**（顺序照 FIGURES.md；文件不大，30 张全传）
-- `Cover_Letter.md` 内容 → 粘贴进 **Comments** 框，或转存 txt/docx 后作为
-  **Cover Letter** 类型上传
-- `Declarations.md` → **Other / Supplementary**（或粘贴到声明字段）
+## 3. 上传文件
+- `JNSM_manuscript.docx` → **Manuscript**（主文件；可编辑源，含全部图表）
+- `JNSM_manuscript.pdf` → **Other**（排版副本，便于审读）
+- `figures/fig*.png` → **Figure**（如需单独图件；顺序照 FIGURES.md）
+- Cover letter 内容 → 粘贴进 Comments / Cover Letter 字段
+- `Declarations.md` → 粘贴进对应声明字段
 
-## 4. 生成 PDF 并批准
-1. 文件传完后点 **Build PDF for my Approval**。
-2. 等几分钟 → 收到邮件或直接进 **Approval** 步骤 → **View Submission** 检查
-   （重点：标题页、作者、摘要、图是否都在）。
-3. 没问题点 **Approve**；有错回上一步改。
+## 4. 界面声明（必须，只在界面填的才用于出版）
+- **Author Contribution**：Single-author work: conceptualization, methodology, software,
+  experiments, analysis, writing — Kaixiang Nie.
+- **Competing Interests**：The author declares no competing interests.
+- AI 使用：正文 §6.3 与 Statements and Declarations 节均已写明（语言润色/代码审查/文稿组织，
+  人工核验全部数据），界面如有 AI 声明字段照此填写。
 
 ## 5. 提交
-- 点 **Submit** → 收到确认邮件（含稿件编号，如 JNSM-D-26-XXXXX）。
-- 以后在 Author Main Menu 里可看状态：With Editor → Under Review → Decision。
+- 检查系统生成的 PDF → Approve → Submit → 收到确认邮件（稿件编号）。
+- 之后状态：With Editor → Under Review → Decision。
 
 ## 6. 之后
-- **大修/小修**：在 EM 里选 "Submit Revision"，上传修改稿+逐条回复（我会帮你做）。
-- **被拒**：按计划转投 CCPE 或补实验后再投（后台实验今晚落袋）。
-
-## 建议审稿人候选（从参考文献里挑的相关专家，邮箱以 EM 搜索或 Google 核实为准）
-1. Pierre Jacquet（Inria/IMT Atlantique，法国）— VM 超售（SweetSpotVM/SlackVM）
-2. Thomas Ledoux（IMT Atlantique）— 云资源管理/超售
-3. Íñigo Goiri（Microsoft Research）— 云超售系统（Coach）
-4. Seyyed Ahmad Jandaghi（AUDIBLE 一作，多伦多大学）— 可突发 VM 超售
-5. S. M. Sajal（Kerveros 一作）— 云准入控制
-（建议选 3 位；确认与您无共同项目/近三年无合作即可）
+- **大修/小修**：上传修改稿 + 逐条回复（模板我来做；公式届时如需可转 Word 公式编辑器格式）。
+- **被拒**：转投 CCPE 或补实验后再投。
 
 ## 常见坑
-- **邮箱**必须是能收外部邮件的常用邮箱（审稿通知/激活链接）。
-- 图件不要超过单文件 10–20MB（我们的都在 200KB 内）。
-- 摘要里不要放公式图片；我们的摘要纯文本 ✓。
-- 提交后**不能改**，所以 Approve 前把 PDF 从头翻一遍。
+- 图件单文件 <10–20MB（我们的 <400KB）✓；图内不得有标题（已处理）✓
+- 摘要不得含未定义缩写 ✓；引用数字制 [n] 与 JNSM 要求一致 ✓
+- 提交后不可改，Approve 前把 PDF 翻一遍。

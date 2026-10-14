@@ -73,7 +73,7 @@ Four replicates (p3, p3b, p3c, p3d): aggregate P99 13.1–22.6 ms, all violating
 
 **Boundaries.** Aligned bursts are synthetic; clustered phases arise from simultaneous first-boot (production tenants boot at dispersed times, so the fully randomized case is the optimistic, realistic one); loads are synthetic duty-cycle loops rather than real applications.
 
-## 4.3 Demand Censoring: Usage Lies (Figure 5)
+## 4.3 Demand Censoring under CPU Quotas (Figure 5)
 
 **Setup.** Five tenants are all pegged (true demand 1.0 core each) and capped at `cpu.max = 30000/100000` (30% on average). Two phases are measured: **quota** (caps in effect) and **released** (caps lifted, simulating the operator trusting the usage dashboard). Seven cycles (three in c3, two each in c4 and c5); each phase probes both services for 30 s at 100 req/s and reads per-VM `cpu.stat` deltas.
 
@@ -97,6 +97,8 @@ After release, customer rates fall to about 27–32 M it/s (about half of full s
 **Setup.** The v2 campaign reran the Section 4.3 procedure **30 rounds × 3 cycles = 90 cycles** (50% quota; 4 tenants actually running — the fourth was offline early in the batch; tenants remain pegged, true demand 1.0 core each). Each cycle probes both phases for 30 s.
 
 **Results (Figure 18).** (i) **Estimation**: in 90/90 cycles the usage panel reports 2.00 cores (4 × 0.50) while throttle evidence recovers 4.00 cores — exactly the truth. A half-size quota halves the reported demand, every cycle. (ii) **Service**: quota-phase HTTP P99 averages 11.4 ms (range 9.1–14.6; 98% of cycles already across the 10 ms line); released-phase averages 24.7 ms (range 20.6–28.9) with **90/90 (100%) violations** — the lowest released-phase cycle is still above the quota phase's 95th percentile.
+
+**Causal clarification.** Two statements must be distinguished: the quota-kept phase already fluctuates around the SLO line (mean 11.4 ms; ~98% of cycles violate), so a release decision **significantly worsens an existing overload condition** rather than transitioning from compliant to first violation; the causal claim here is estimation error -> wrong release -> worse latency.
 
 **Interpretation.** Same direction as the 7-cycle pilot (5 tenants @30%: naive 1.50 vs aware 5.00), but far harder evidence: the underestimate factor equals the quota fraction exactly, throttle evidence restores the truth, and the naive release decision fails in 30 independent rounds (90 time-correlated cycles, clustered by round). The failure is independent of the quota level (30% and 50% variants agree).
 

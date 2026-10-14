@@ -26,7 +26,11 @@ Load topology: 2 service VMs (HTTP/nginx, Redis; 1 vCPU / 1 GiB each), 1 probe V
 
 All control-plane operations use cgroup v2 primitives (`cpu.max`/`cpu.weight`, `memory.high`/`memory.swap.max`, `io.max`/`io.weight` on `qemu.slice/<vmid>.scope`); pinning applies `taskset -apc` to all threads of the qemu process. Host busy/memory come from `/proc/stat` and `/proc/meminfo`; per-VM service volume and throttle evidence come from each scope's `cpu.stat` (`usage_usec`, `nr_throttled`, `throttled_usec`).
 
-## 6.3 Read-Only Production Telemetry
+## 6.3 Use of AI-Assisted Tools
+
+AI assistants were used for language editing, code review and manuscript organization during preparation. All experiment design and execution, data verification and scientific claims are the author's own; every reported number was checked against the archived raw logs (see Statements and Declarations).
+
+## 6.4 Read-Only Production Telemetry
 
 The two production hosts are monitored read-only and anonymously: PVE read-only interfaces (`pvesh get /nodes`, `/nodes/{node}/status`, `/cluster/resources`) plus `/proc` provide CPU service volume, throttle counters, pressure signals, memory, and lifecycle events at 60-second granularity for a 7-day target. The remote collector HMAC-pseudonymizes VM/node IDs in memory; it never collects VM names, IPs, business content, or disk data; it installs nothing, changes no customer quota, and applies no stress. Credentials are used once for key exchange and discarded; keys live only on the researcher's workstation.
 

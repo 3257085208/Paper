@@ -65,7 +65,7 @@ present as an "empirical safety envelope", never as a 1% guarantee.
 | Uncorrected historical quantile | Censoring; synchronization | Throttled tenants read as "idle" (Section 4.3) |
 | This design | — (manages both explicitly; pauses on uncertainty) | See Section 6 |
 
-## 5.5 Honest Statements
+## 5.5 Assumptions and Limitations
 
 - No distribution-free risk guarantees; under arbitrary drift or adversarial load we promise monitoring and conservative behavior only.
 - The demand estimator is **empirical**: a cross-pattern characterization (5 workload patterns × 3 quotas × 3 quota periods × multi-vCPU, 10 rounds each) is a v2 study; this paper commits only to empirical boundaries on the primary (saturated-heavy) workload family.

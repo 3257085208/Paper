@@ -2,6 +2,22 @@
 
 > 面向"审稿意见 → 处置"的可追溯记录。版本号随重大修改递增；每版标注对应评审轮次。
 
+## v1.0-review-fix — 2026-10-14（第二轮终审修复批）
+
+**语言与主张收紧**：§2.5 "In one line" 叙事句中性化；§3.6 瓶颈主张限定到本文决策场景（"For the decision problems studied..."）；§4.3 标题改 "Demand Censoring under CPU Quotas"（zh 同步）；§5.5 改 "Assumptions and Limitations"（zh "假设与局限"）；§10.5 "dashboard lies" 中性化；§11 "We hope" 结尾改客观陈述（zh 同步）。
+
+**因果与统计澄清**：§4.3b 增"因果澄清"段——限速态本身已在 SLO 线附近（11.4 ms、98% cycle 越线），松绑的后果是**恶化既有过载**而非"首次越线"（zh+en）；§8.4 增统计独立性警示——客户级 bootstrap 在共享宿主状态下低估不确定性，轮级范围为主口径，分层/聚类 bootstrap 列入未来工作（zh+en）。
+
+**明确错误修复**：① KSM 单位统一——全稿 "21.9 GB" → "21.4 GiB"（原始峰值 21893.3 MB = 21.4 GiB = 21.9 GB 十进制；33.4% 按 GiB 分母自洽），涉及摘要/§1/§9/图注（zh+en+captions）；② §2.1 [5] 拼接残句修复为单条 ProtoHAIL/ProtoRAIL 引用；③ en/02 "Reference check" 内部段删除。
+
+**Figure 1 补号**：新建 fig1_pipeline（识别→预测→行动 + 最小观测集示意图），入 §1，图号序列 1–31 连续。
+
+**JNSM 合规批**：① **DOCX 重做为可编辑源文件**（python-docx：31 图内嵌、22 张真 Word 表格、Unicode 化公式；`make_docx.py` 与 HTML 共用 `assemble()` 单一组装源）；② 标题页补 Fuzhou, China；③ 正文新增 "Statements and Declarations" 节（资助/利益冲突/数据可用/作者贡献/AI 使用）；④ §6.3 新增 "Use of AI-Assisted Tools"（Springer LLM 政策要求写入方法节）；⑤ **全部 31 图去除图内标题**（27 处 suptitle/超长 set_title 注释 + 重生成；短面板标签保留）；⑥ 投稿入口更新为 Springer Nature 平台 `submission.nature.com/new-submission/10922/3`（JNSM 已迁离 Editorial Manager）；⑦ 审稿人机构邮箱核实（Ledoux/Jacquet/Rouvoy）。
+
+**投稿包**：PDF 61 页/4.56MB（31 图内嵌）重建、DOCX 31 图/22 表、RTF 重建、README_SUBMISSION v3、SUBMISSION_STEPS 重写。
+
+---
+
 ## v1.0 — 2026-10-14（完整初稿冻结）
 
 **v1.0 = 全部核心数据入库 + 口径自洽 + 图表齐全 + 中英双语同步的完整初稿。** 数据冻结点：物理机全链 06:39 完成、BeroHost v3 返工并入、show5/细扫/回放/Phase C 全部回填。
@@ -161,7 +177,7 @@
 ## v0.7.2 — 2026-10-13（首批完成数据回填）
 
 - §9.1 微周期配额：**qp2c 实测**——同样 50% 配额，周期 1 s→2 ms 客户速率 59%→80%（+35%），服务侧全程 0.73–0.75 ms；内核配额下界 1 ms 如实标注。
-- §9.2 内存：KSM 21.9 GB/33.4%；FPR 手动验证 300 MB（宿主 315→629→回落、guest 不变）+ fpr4 自动化排队；zram 在链尾。
+- §9.2 内存：KSM 21.4 GiB/33.4%；FPR 手动验证 300 MB（宿主 315→629→回落、guest 不变）+ fpr4 自动化排队；zram 在链尾。
 - §7.4b：对决 v2 rand 相位 5/7 中期结果（worstcase/quantile 8、fixed/audible 16、util80 **28/p5=78%**、ours 进行中）；util80 提前止损 = 采样敏感证据；28 落在 [24,32) = rand 断点或高于 24 的首证。
 - 英文镜像同步（en/07、en/09）。
 

@@ -24,4 +24,4 @@ For platform builders: several "intuitive" cgroup v2 semantics need empirical ca
 
 ## 10.5 Boundary to Hyperscale Approaches
 
-This work does not replace AUDIBLE/Coach-class methods at hyperscale, which solve capacity optimization given long histories and scheduling freedom; it addresses how a history-less, migration-less small host avoids incidents — and whose dashboard lies to it. The two are composable: censoring correction can produce clean demand evidence at the small-host edge before a platform-scale predictor performs global planning.
+This work does not replace AUDIBLE/Coach-class methods at hyperscale, which solve capacity optimization given long histories and scheduling freedom; it addresses how a history-less, migration-less small host avoids incidents when its measurement interface is structurally biased. The two are composable: censoring correction can produce clean demand evidence at the small-host edge before a platform-scale predictor performs global planning.

@@ -17,5 +17,6 @@ aggregate-only).
 **Author contributions.** Single-author work: conceptualization, methodology, software, experiments,
 analysis, writing — Kaixiang Nie.
 
-**Use of AI tools.** AI assistants were used for language editing and code review during preparation;
-all research design, experiments and scientific claims are the author's own.
+**Use of AI tools.** AI assistants were used for language editing, code review and manuscript
+organization during preparation. All experiment design and execution, data verification and scientific
+claims are the author's own; every reported number was checked against the archived raw logs.

@@ -1,31 +1,35 @@
-# JNSM submission package — checklist (v2)
+# JNSM submission package — checklist (v3, 2026-10-14)
 
 ## Files
-- **`JNSM_manuscript.pdf`** — full manuscript with figures embedded (61 pages; recommended as the
-  main document for initial submission). Print-ready A4, Times 11.5pt.
-- `JNSM_manuscript.docx` / `.rtf` — text-only alternates (figures uploaded separately; use if the
-  journal insists on Word at initial submission).
-- `JNSM_manuscript.html` / `.md` — sources.
-- `Cover_Letter.md` — cover letter (title now matches the manuscript; add suggested reviewers).
-- `Declarations.md` — data availability / competing interests / ethics / AI-use.
-- `FIGURES.md` + `figures/` — 30 PNG files with captions (upload as Figure items if using the docx).
+- **`JNSM_manuscript.docx`** — primary editable source (required by JNSM): 31 figures embedded,
+  22 real Word tables, title page with affiliation (Fuzhou, China) and corresponding email,
+  "Statements and Declarations" section (funding / competing interests / data availability /
+  author contributions / AI-assisted tools) and references. Equations are rendered as readable
+  Unicode text (the PDF carries typeset math; Word equation-editor conversion can follow at revision).
+- `JNSM_manuscript.pdf` — typeset A4 copy (61 pages, figures embedded) for review convenience.
+- `JNSM_manuscript.rtf` / `.html` / `.md` — alternate/source copies.
+- `Cover_Letter.md` — cover letter; three suggested reviewers with institutional emails (JNSM requirement).
+- `Declarations.md` — same statements as the manuscript section, for the submission interface.
+- `FIGURES.md` + `figures/` — 31 PNG files (fig1–fig31); **no titles embedded in the images** per
+  JNSM artwork guidelines; captions live in the manuscript text.
 
-## Before you submit (3 fill-ins)
-1. Corresponding author **email** (replace the placeholder on the manuscript title page: edit the HTML
-   and re-print to PDF via Edge headless, or type it into the PDF/docx).
-2. Suggested reviewers (3) in the cover letter.
-3. Your ORCID (optional).
+## Submit at (JNSM has moved off Editorial Manager)
+**https://submission.nature.com/new-submission/10922/3** (Springer Nature submission platform)
 
-## Editorial Manager steps (short form)
-1. Register/log in at the JNSM Editorial Manager site (from the Springer journal page,
-   "Submit your manuscript").
-2. Submit New Manuscript -> Research Paper -> paste title/abstract/keywords (abstract is 227 words,
-   within the 150-250 limit; keywords: 6).
-3. Authors: Kaixiang Nie (Fujian Chuanzheng Communications College), corresponding.
-4. Attach files: `JNSM_manuscript.pdf` as Manuscript; figures (only if using docx); paste the cover
-   letter into Comments; Declarations as Other.
-5. Build PDF for approval -> inspect -> Approve -> Submit.
+## Steps (short form)
+1. Log in / register on the Springer Nature submission platform.
+2. Research Paper -> paste title/abstract/keywords (abstract 227 words; 6 keywords).
+3. Authors: Kaixiang Nie (Fujian Chuanzheng Communications College, Fuzhou, China), corresponding,
+   email me@niekaixiang.com.
+4. Attach `JNSM_manuscript.docx` as Manuscript (editable source), `JNSM_manuscript.pdf` as Other;
+   paste cover letter into Comments; paste Declarations into the declaration fields.
+5. Fill Author Contribution + Competing Interests **in the interface** (interface entries are what
+   gets published); AI-tool use is documented in the manuscript (Section 6.3 + Statements and
+   Declarations) per Springer's LLM policy.
+6. Inspect the generated PDF -> Approve -> Submit.
 
 ## Known pending (honest, non-blocking)
-- Ongoing experiments (full-chain ablation, dense sampling, arrival-order repeats) will be reported in
-  a revision; the manuscript marks them as future work.
+- Ongoing experiments (full-chain ablation, dense sampling, arrival-order repeats, phase-selective
+  admission) will be reported in a revision; the manuscript marks them as future work.
+- Word equation-editor formatting of the ~20 display equations can be added at revision if the
+  editors request it (PDF shows them typeset correctly).

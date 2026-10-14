@@ -53,9 +53,9 @@ def fig22():
     ax.set_xlabel("50% quota: period 2 ms vs 1 s (clean re-measurement, qp2v1)")
     ax.set_ylabel("tenant rate (% of uncapped)")
     ax.set_ylim(0, 118)
-    ax.set_title("Self-audit correction: 2 ms and 1 s deliver identically (~52%)\n"
-                 "the earlier \"+35%\" claim was a windowing artifact and is withdrawn",
-                 fontsize=9.5)
+#     ax.set_title("Self-audit correction: 2 ms and 1 s deliver identically (~52%)\n"
+#                  "the earlier \"+35%\" claim was a windowing artifact and is withdrawn",
+#                  fontsize=9.5)
     ax.grid(alpha=0.25, axis="y")
     fig.tight_layout()
     fig.savefig(os.path.join(OUT, "fig22_microperiod.png"), dpi=200)
@@ -92,8 +92,8 @@ def fig23():
     ax2.set_ylabel("ksmd CPU (cores)", color="tab:orange")
     ax2.tick_params(axis="y", labelcolor="tab:orange")
     ax2.set_ylim(0, 1.0)
-    ax.set_title("KSM fleet dedup: 64 same-image VMs share %.1f GB (33.4%%) at ~0.16 core;\n"
-                 "service P99 0.73 -> 0.76 ms" % peak, fontsize=9.5)
+#     ax.set_title("KSM fleet dedup: 64 same-image VMs share %.1f GB (33.4%%) at ~0.16 core;\n"
+#                  "service P99 0.73 -> 0.76 ms" % peak, fontsize=9.5)
     ax.grid(alpha=0.25)
     fig.tight_layout()
     fig.savefig(os.path.join(OUT, "fig23_ksm.png"), dpi=200)
@@ -115,8 +115,8 @@ def fig24():
     ax.text(1, rows[0]["guest_memtotal_mb"] + 6, "guest MemTotal (unchanged)", fontsize=8)
     ax.set_xlabel("time (s)")
     ax.set_ylabel("host memory.current (MB)")
-    ax.set_title("Free-page reporting: 300 MB guest allocation fully reclaimed\n"
-                 "(289-305 MB back; guest-visible memory constant)", fontsize=9.5)
+#     ax.set_title("Free-page reporting: 300 MB guest allocation fully reclaimed\n"
+#                  "(289-305 MB back; guest-visible memory constant)", fontsize=9.5)
     ax.grid(alpha=0.25)
     ax.legend(fontsize=7.5, loc="center right")
     fig.tight_layout()
@@ -156,8 +156,8 @@ def fig25():
                 color="tab:green")
     ax.annotate("disk: 96 GB swapfile\nexhausts -> abort", xy=(12, 60), fontsize=8,
                 color="tab:red")
-    fig.suptitle("Swap arms: zram absorbs the overflow (P99 flat 0.745 ms); "
-                 "disk swapfile insufficient (abort at 1044 GB)", fontsize=10)
+#     fig.suptitle("Swap arms: zram absorbs the overflow (P99 flat 0.745 ms); "
+#                  "disk swapfile insufficient (abort at 1044 GB)", fontsize=10)
     fig.tight_layout()
     fig.savefig(os.path.join(OUT, "fig25_zram.png"), dpi=200)
     plt.close(fig)
@@ -185,8 +185,8 @@ def fig26():
     ax2.set_ylabel("service HTTP P99 (ms)", color="tab:red")
     ax2.tick_params(axis="y", labelcolor="tab:red")
     ax2.set_ylim(0, 2.0)
-    ax.set_title("4K random O_DIRECT storm (8 tenants): ~66k tenant IOPS,\n"
-                 "tenant P99max 8.3 ms — service untouched (0.74-0.76 ms)", fontsize=9.5)
+#     ax.set_title("4K random O_DIRECT storm (8 tenants): ~66k tenant IOPS,\n"
+#                  "tenant P99max 8.3 ms — service untouched (0.74-0.76 ms)", fontsize=9.5)
     ax.grid(alpha=0.25, axis="y")
     ax.legend(fontsize=8, loc="upper right")
     fig.tight_layout()
@@ -219,9 +219,9 @@ def fig30_capacity_risk():
     ax.axvline(0.0, color="gray", linewidth=0.8, linestyle=":")
     ax.set_xlabel("risk budget eps  (allowed fraction of rounds with customer P5 < 70%)")
     ax.set_ylabel("safe capacity N*(eps)  (largest tested step)")
-    ax.set_title("Capacity-risk curves from the sell ladders (empirical round-level violation frequency; n = rounds per level);\n"
-                 "online policy stops (ours/ours_p: sync 8, rand 16-20) sit on the eps=0 edge",
-                 fontsize=9.5)
+#     ax.set_title("Capacity-risk curves from the sell ladders (empirical round-level violation frequency; n = rounds per level);\n"
+#                  "online policy stops (ours/ours_p: sync 8, rand 16-20) sit on the eps=0 edge",
+#                  fontsize=9.5)
     ax.grid(alpha=0.3)
     ax.legend(fontsize=8.5)
     ax.set_xticks([0, 0.2, 0.4, 0.6, 0.8, 1.0])

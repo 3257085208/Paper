@@ -38,7 +38,7 @@ untested (future work).
 
 ## 9.2 Memory: Balloon-Free Reclaim Trio (Figures 23–25) — partial
 
-**Done so far.** (i) **KSM fleet dedup (ksm1; see the kernel documentation [21])**: 64 same-image VMs share **21.9 GB = 33.4% of fleet RAM**;
+**Done so far.** (i) **KSM fleet dedup (ksm1; see the kernel documentation [21])**: 64 same-image VMs share **21.4 GiB = 33.4% of fleet RAM**;
 ksmd ≈ 0.16 core; service P99 0.73→0.76 ms (zero regression). Cost boundaries: write-CoW latency untested;
 cross-tenant dedup carries known side-channel concerns — enable per trust domain in production.
 (ii) **Free-page reporting (manual verification, 300 MB)**: host `memory.current` 315→629 MB with the guest
@@ -70,7 +70,7 @@ are zero-visible-regression** (customer rate distribution and visible configurat
 cost is host-side compression work** (service unaffected; the compression ratio is reported for
 compressible cold pages); **quotas and IO caps are explicitly priced on the throttled tenants**
 (rate, queueing) — closing the loop with Chapter 5's "economy tier = a priced degradation budget".
-Data sources: ksm1 (21.9 GB = 33.4% dedup, ksmd ~0.16 core, service P99 0.73→0.76 ms); fpr1/fpr5 (idle
+Data sources: ksm1 (21.4 GiB = 33.4% dedup, ksmd ~0.16 core, service P99 0.73→0.76 ms); fpr1/fpr5 (idle
 "1 GB" VMs hold 156–315 MB; a 300 MB allocation reclaims 303 MB with the guest-visible memory unchanged);
 zram3b (three arms: none aborts ~940 GB without swap / zram reaches 1120 GB with 176.8 GB absorbed and a
 flat P99 / disk swapfile exhausts at 96 GB and aborts).

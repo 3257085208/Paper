@@ -78,7 +78,7 @@ The objective is to maximize admitted volume (count, VM-hours, or configuration-
 
 ## 3.6 Observation Necessity: Three Constructive Counterexamples and the Minimal Observation Set
 
-The organizing thesis of this paper: **the bottleneck of safe-capacity decisions is observational capability, not the capacity algorithm.** Three constructive results (formal proofs and executable counterexamples in Appendix A), each with measured counterparts here:
+For the decision problems studied in this paper, **the binding constraint is observational capability rather than the capacity algorithm.** Three constructive results (formal proofs and executable counterexamples in Appendix A), each with measured counterparts here:
 
 **Proposition A (censoring impossibility).** Given only aggregate counters (usage, throttle fraction, quota), no estimator that sees only these counters can be correct for all workloads — two processes can produce **identical observations** with different demand (construction in Section 3.3.1, Prop. 3). This is an **identifiability** impossibility (it holds for any deterministic function of the observations) and is stronger than statistical unbiasedness. *Corollary:* dashboard-driven release/oversell decisions are unfixably dangerous — 90/90 independent-round judgments violate (Section 4.3b).
 

@@ -77,8 +77,8 @@ def fig17_knee_repeat():
     n4 = len(series(5, rid_min=3))
     axes[0].text(0.02, 0.93, "n per point: 50 / 50 / 50 / %d / %d rounds" % (n3, n4),
                  transform=axes[0].transAxes, fontsize=8)
-    fig.suptitle("BeroHost v2: 50-round knee repeat — every 4-neighbor round violates "
-                 "(P99 > 20 ms), 3-neighbor stays at ~7 ms", fontsize=10)
+#     fig.suptitle("BeroHost v2: 50-round knee repeat — every 4-neighbor round violates "
+#                  "(P99 > 20 ms), 3-neighbor stays at ~7 ms", fontsize=10)
     fig.tight_layout()
     fig.savefig(os.path.join(OUT, "fig17_knee_repeat.png"), dpi=200)
     plt.close(fig)
@@ -120,15 +120,15 @@ def fig18_censor_repeat():
     ax.set_xticks([0, 1, 2])
     ax.set_xticklabels(["naive sum\n(usage panel)", "censoring-aware\nestimate", "truth"])
     ax.set_ylabel("aggregate demand estimate (cores)")
-    ax.set_title("Usage panel under-reports by 2x; throttle evidence recovers truth",
-                 fontsize=10)
+#     ax.set_title("Usage panel under-reports by 2x; throttle evidence recovers truth",
+#                  fontsize=10)
     ax.set_ylim(0, 5)
     ax.grid(alpha=0.3, axis="y")
     for x, v in zip([0, 1, 2], [2.0, 4.0, 4.0]):
         ax.text(x, v + 0.08, "%.2f" % v, ha="center", fontsize=9)
 
-    fig.suptitle("BeroHost v2: censoring repeat, 30 rounds x 3 cycles = 90 (identical "
-                 "verdict every cycle)", fontsize=10)
+#     fig.suptitle("BeroHost v2: censoring repeat, 30 rounds x 3 cycles = 90 (identical "
+#                  "verdict every cycle)", fontsize=10)
     fig.tight_layout()
     fig.savefig(os.path.join(OUT, "fig18_censor_repeat.png"), dpi=200)
     plt.close(fig)
@@ -168,10 +168,10 @@ def fig19_syn_repeat():
                linestyle="--")
     ax.set_xlabel("repeat round (16 tenants, three storms at once)")
     ax.set_ylabel("service P99 (ms)")
-    ax.set_title("BeroHost rework: %d-round combined-stress repeat — HTTP mean %.2f ms "
-                 "[%.2f-%.2f], %d/%d below SLO, zero timeouts" % (
-                     len(http), statistics.mean(http), min(http), max(http),
-                     sum(1 for x in http if x <= SLO), len(http)), fontsize=10)
+#     ax.set_title("BeroHost rework: %d-round combined-stress repeat — HTTP mean %.2f ms "
+#                  "[%.2f-%.2f], %d/%d below SLO, zero timeouts" % (
+#                      len(http), statistics.mean(http), min(http), max(http),
+#                      sum(1 for x in http if x <= SLO), len(http)), fontsize=10)
     ax.grid(alpha=0.3)
     ax.legend(fontsize=8)
     fig.tight_layout()
@@ -213,8 +213,8 @@ def fig29_knee_v3():
         ax.grid(alpha=0.3, axis="y")
     axes[0].set_ylabel("service P99 per round (ms)")
     axes[0].text(0.02, 0.93, "n = 50 rounds per level", transform=axes[0].transAxes, fontsize=8)
-    fig.suptitle("BeroHost v3 knee rework (all neighbors online): L2 clean (<=8.0 ms), "
-                 "L3 already violates in 45/50 rounds", fontsize=10)
+#     fig.suptitle("BeroHost v3 knee rework (all neighbors online): L2 clean (<=8.0 ms), "
+#                  "L3 already violates in 45/50 rounds", fontsize=10)
     fig.tight_layout()
     fig.savefig(os.path.join(OUT, "fig29_knee_v3.png"), dpi=200)
     plt.close(fig)

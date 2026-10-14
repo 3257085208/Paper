@@ -81,8 +81,8 @@ def fig14_knee():
         ax.legend(fontsize=7.5, loc="upper left")
     axes[0].set_ylabel("HTTP P99 (ms, log)")
     axes[0].text(0.03, SLO * 1.15, "SLO 10 ms", fontsize=7.5)
-    fig.suptitle("Physical host (2x 8259CL, 64-VM fleet): service P99 vs peak-neighbor "
-                 "oversubscription, isolated vs shared", fontsize=10)
+#     fig.suptitle("Physical host (2x 8259CL, 64-VM fleet): service P99 vs peak-neighbor "
+#                  "oversubscription, isolated vs shared", fontsize=10)
     fig.tight_layout()
     fig.savefig(os.path.join(OUT, "fig14_phys_knee.png"), dpi=200)
     plt.close(fig)
@@ -155,8 +155,8 @@ def fig15_sync():
     ax.set_title("cluster gap per repeat", fontsize=10)
     ax.grid(alpha=0.3)
     ax.legend(fontsize=8)
-    fig.suptitle("Physical host: synchronized vs randomized bursts, all 64 tenants "
-                 "sharing one 16-core pool (busy-loop duty 20% / 60 s)", fontsize=10)
+#     fig.suptitle("Physical host: synchronized vs randomized bursts, all 64 tenants "
+#                  "sharing one 16-core pool (busy-loop duty 20% / 60 s)", fontsize=10)
     fig.tight_layout()
     fig.savefig(os.path.join(OUT, "fig15_phys_sync.png"), dpi=200)
     plt.close(fig)
@@ -235,8 +235,8 @@ def fig16_sell():
     ax.set_title("Service latency stays flat (services isolated)", fontsize=10)
     ax.grid(alpha=0.3)
     ax.legend(fontsize=8)
-    fig.suptitle("Sell capacity on the physical host: same average load, capacity "
-                 "determined by burst phase structure", fontsize=10)
+#     fig.suptitle("Sell capacity on the physical host: same average load, capacity "
+#                  "determined by burst phase structure", fontsize=10)
     fig.tight_layout()
     fig.savefig(os.path.join(OUT, "fig16_phys_sell.png"), dpi=200)
     plt.close(fig)

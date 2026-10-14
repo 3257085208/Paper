@@ -132,8 +132,8 @@ def main():
     ax.grid(alpha=0.3)
     ax.legend(fontsize=8, loc="lower left")
 
-    fig.suptitle("Density law on the physical host: same duty, arrangement sets capacity "
-                 "(mixed-phase ladders + anchors)", fontsize=10)
+#     fig.suptitle("Density law on the physical host: same duty, arrangement sets capacity "
+#                  "(mixed-phase ladders + anchors)", fontsize=10)
     fig.tight_layout()
     fig.savefig(os.path.join(OUT, "fig21_density_law.png"), dpi=200)
     plt.close(fig)

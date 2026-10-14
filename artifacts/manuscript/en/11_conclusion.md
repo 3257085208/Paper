@@ -42,6 +42,6 @@ IO storms and the QoE canary each carry a gain / hidden-cost / visible-regressio
 production-schedule replay (30-minute real schedule plus five-window forward validation) as a scenario
 anchor; real mixed application workloads and more arrival-order repeats remain future work; round-level
 ranges are reported throughout, and the formal bootstrap intervals will be refreshed on the frozen data
-set. "Jointly sufficient" remains an empirical statement for our target workload family. We hope this provides small VPS providers with a
+set. "Jointly sufficient" remains an empirical statement for our target workload family. The study provides small VPS providers with a
 reproducible "observation design + capacity model + controller" starting point, and adds "identifiability
 boundaries and phase structure" to the oversubscription research agenda.

@@ -60,8 +60,8 @@ def main():
 
     axes[0].set_ylabel("seats admitted at stop")
     axes[0].legend(fontsize=7.5, loc="upper left")
-    fig.suptitle("Online admission comparison: seats sold vs measured safe-capacity bracket "
-                 "(green = clean run; gray = zram-contaminated, archived)", fontsize=10)
+#     fig.suptitle("Online admission comparison: seats sold vs measured safe-capacity bracket "
+#                  "(green = clean run; gray = zram-contaminated, archived)", fontsize=10)
     fig.tight_layout()
     fig.savefig(os.path.join(OUT, "fig20_showdown.png"), dpi=200)
     plt.close(fig)
