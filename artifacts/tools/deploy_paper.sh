@@ -12,6 +12,7 @@ rsync -a --delete --exclude ".DS_Store" research_data/ site/artifacts/research_d
 mkdir -p site/artifacts/figs
 rsync -a --include='*.py' --exclude='*' manuscript/figs/ site/artifacts/figs/
 cp manuscript/REPRODUCE.md site/REPRODUCE.md
+cp manuscript/README.md site/README.md
 cd site
 git add -A
 if git diff --cached --quiet; then
