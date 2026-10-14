@@ -36,7 +36,8 @@ SSH = ["-n", "-i", KEY, "-o", "IdentitiesOnly=yes", "-o", "BatchMode=yes",
        "-o", "StrictHostKeyChecking=accept-new", "-o", "ConnectTimeout=8",
        "-o", "LogLevel=ERROR"]
 BASE_RATE = 25.9e6
-VIOL_FRAC = 0.50
+VIOL_FRAC = 0.50          # floor bar (legacy field cust_slow/cust_viol)
+MAIN_FRAC = 0.70          # primary bar (paper): customer P5 >= 70%
 SLO = 10.0
 
 LOGF = None
@@ -175,6 +176,41 @@ def p95(vals):
 
 
 _RESID = []
+_BUSY_PREV = None
+_POOL_CPUS = set()
+_NO_CENSOR = False
+_NO_PHASE = False
+
+
+def _busy_delta_cores(prev, cur):
+    """Pool busy cores over the interval between two /proc/stat snapshots."""
+    busy = idle = 0
+    n = 0
+    for c in prev:
+        if c in cur:
+            busy += cur[c][0] - prev[c][0]
+            idle += cur[c][1] - prev[c][1]
+            n += 1
+    if not busy or not n:
+        return 0.0
+    return n * (1.0 - idle / busy)
+
+
+def canary_check():
+    """Read canary wakeup-stall files (VMs 373/374): returns (breach, seen)."""
+    seen = False
+    breach = False
+    for vmid in (373, 374):
+        out = vm_cmd(CUSTOMERS[vmid], "cat /tmp/stall.txt 2>/dev/null", timeout=8)
+        parts = out.split()
+        if len(parts) >= 2:
+            seen = True
+            try:
+                if float(parts[1]) > 250.0:
+                    breach = True
+            except ValueError:
+                pass
+    return breach, seen
 
 
 def decide(policy, sampler, admitted, new_count, pool_cores):
@@ -240,14 +276,19 @@ def decide(policy, sampler, admitted, new_count, pool_cores):
         for vmid, vals in samples.items():
             tv = [x for (t, x) in sampler.thist.get(vmid, []) if t >= t1 - 120.0]
             tf = statistics.mean(tv) if tv else 0.0
-            factor = min(2.5, 1.0 / max(0.05, 1.0 - tf)) if tf > 0.02 else 1.0
+            factor = 1.0 if _NO_CENSOR else (
+                min(2.5, 1.0 / max(0.05, 1.0 - tf)) if tf > 0.02 else 1.0)
             corr_max = max(corr_max, factor)
-            prof = [0.0] * 60
-            for (t, u) in vals:
-                b = int(t) % 60
-                uu = min(1.0, u * factor)
-                if uu > prof[b]:
-                    prof[b] = uu
+            if _NO_PHASE:
+                mu = statistics.mean(u for _, u in vals) * factor
+                prof = [mu] * 60
+            else:
+                prof = [0.0] * 60
+                for (t, u) in vals:
+                    b = int(t) % 60
+                    uu = min(1.0, u * factor)
+                    if uu > prof[b]:
+                        prof[b] = uu
             profiles.append(prof)
         for vmid in admitted:
             if len(samples.get(vmid, [])) < 30:
@@ -259,20 +300,26 @@ def decide(policy, sampler, admitted, new_count, pool_cores):
             ssum = sum(pf[phase] for pf in profiles)
             if ssum > peak:
                 peak = ssum
-        busy = recent_busy(sampler, 30.0)
+        # independent host counter: pool busy cores since the last decision,
+        # minus attributed tenant usage -> true background residual
+        global _BUSY_PREV
+        cur_busy = pool_busy_snapshot(_POOL_CPUS) if _POOL_CPUS else {}
+        busy_cores = _busy_delta_cores(_BUSY_PREV, cur_busy) if _BUSY_PREV else None
+        _BUSY_PREV = cur_busy
         tenant = 0.0
         for vmid, s2 in samples.items():
             vals30 = [u for (t, u) in s2 if t >= time.time() - 30.0]
             if vals30:
                 tenant += statistics.mean(vals30)
-        residual = max(0.0, busy - tenant)
+        residual = max(0.0, busy_cores - tenant) if busy_cores is not None else 0.0
         _RESID.append(residual)
         del _RESID[:-20]
         rq95 = p95(_RESID) or 0.0
         reserve = max(0.0, rq95 - 0.2)
         pred = peak + new_count * class_prior + reserve
-        return pred <= 0.9 * pool_cores, ("ours_full peak=%.2f(corr x%.2f)+prior+res=%.2f<=%.2f"
-                                          % (peak, corr_max, reserve, 0.9 * pool_cores))
+        return pred <= 0.9 * pool_cores, ("ours_full peak=%.2f(corr x%.2f,noC=%d,noP=%d)+prior+res=%.2f(now %.2f,q95 %.2f)+low=%d/%d<=%.2f"
+                                          % (peak, corr_max, _NO_CENSOR, _NO_PHASE, reserve,
+                                             residual, rq95, low_hist, len(admitted), 0.9 * pool_cores))
     raise ValueError(policy)
 
 
@@ -376,12 +423,20 @@ def main():
     ap.add_argument("--series-gap", type=float, default=3.0)
     ap.add_argument("--order-seed", type=int, default=None,
                     help="shuffle the candidate arrival order deterministically (repeat runs)")
+    ap.add_argument("--no-censor", action="store_true",
+                    help="ablation: disable the throttle-correction factor (ours_full)")
+    ap.add_argument("--no-phase", action="store_true",
+                    help="ablation: disable phase buckets, marginal-only gate (ours_full)")
     args = ap.parse_args()
 
     LOGF = open("/root/tb/admit_%s.log" % args.round, "a", encoding="utf-8")
     log("start round=%s mode=%s policy=%s" % (args.round, args.mode, args.policy))
 
     pool = parse_cpus(args.pool)
+    global _POOL_CPUS, _NO_CENSOR, _NO_PHASE
+    _POOL_CPUS = set(pool)
+    _NO_CENSOR = bool(args.no_censor)
+    _NO_PHASE = bool(args.no_phase)
     pool_spec = ",".join(str(c) for c in pool)
     for name, (vmid, cpus) in SERVICE_PIN.items():
         pin(vmid, cpus)
@@ -402,14 +457,25 @@ def main():
         n = 0
         last_p5 = None
         last_svc = None
+        pause_clean = 3
         while n + args.step <= min(args.max, len(vmids_sorted)):
             base_policy = "ours" if args.policy == "ours_p" else args.policy
             try:
                 if args.policy == "ours_p" and last_p5 is not None and last_p5 < 70.0:
                     allow, reason = False, "pause p5=%.0f%%<70%%" % last_p5
-                elif args.policy == "ours_full" and last_p5 is not None and (
-                        last_p5 < 70.0 or (last_svc is not None and last_svc > SLO)):
-                    allow, reason = False, "pause p5=%.0f%% svc=%.2f" % (last_p5, last_svc or 0.0)
+                elif args.policy == "ours_full":
+                    breach = (last_p5 is not None and last_p5 < 70.0) or \
+                             (last_svc is not None and last_svc > SLO)
+                    cb, cseen = canary_check()
+                    if breach or (cseen and cb):
+                        pause_clean = 0
+                        allow, reason = False, ("pause p5=%.0f%% svc=%.2f canary=%s"
+                                                % (last_p5 or 0.0, last_svc or 0.0, cb))
+                    elif pause_clean < 3:
+                        pause_clean += 1
+                        allow, reason = False, "pause recovering %d/3" % pause_clean
+                    else:
+                        allow, reason = decide(base_policy, sampler, admitted, args.step, len(pool))
                 else:
                     allow, reason = decide(base_policy, sampler, admitted, args.step, len(pool))
             except Exception:
@@ -442,11 +508,14 @@ def main():
             last_p5 = ((active_max[int(0.05 * (len(active_max) - 1))] / BASE_RATE * 100.0)
                        if active_max else last_p5)
             slow = sum(1 for r in active_max if r < VIOL_FRAC * BASE_RATE)
+            slow_main = sum(1 for r in active_max if r < MAIN_FRAC * BASE_RATE)
             http, redis = probes.get("http"), probes.get("redis")
             svc_viol = bool(http and http.get("p99_ms") and http["p99_ms"] > SLO) or \
                        bool(redis and redis.get("p99_ms") and redis["p99_ms"] > SLO)
-            if http and http.get("p99_ms") is not None:
-                last_svc = http["p99_ms"]
+            svc_vals = [x.get("p99_ms") for x in (http, redis)
+                        if x and x.get("p99_ms") is not None]
+            if svc_vals:
+                last_svc = max(svc_vals)
             rec = {"round": args.round, "mode": args.mode, "policy": args.policy,
                    "n": n, "reason": reason,
                    "busy_samples": bseries,
@@ -460,6 +529,7 @@ def main():
                    "rate_series_phase": int(time.time()) % 60,
                    "cust_active": len(active_max), "cust_slow": slow,
                    "svc_viol": svc_viol, "cust_viol": slow > 0,
+                   "cust_slow_main": slow_main, "cust_viol_main": slow_main > 0,
                    "timestamp_utc": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")}
             sink.write(json.dumps(rec) + "\n")
             sink.flush()

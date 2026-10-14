@@ -27,16 +27,16 @@ python3 artifacts/tools/ppc_multiwindow.py       # 5-window forward prediction (
 
 ## Regenerating the figures
 
-The figure scripts live in the paper source (`manuscript/figs/`, included in the deployment source,
-not duplicated here). They read only files under `artifacts/research_data/` and write PNGs:
+The figure scripts are published under `artifacts/figs/`. They read only files under
+`artifacts/research_data/` and write PNGs:
 
 ```bash
-python3 manuscript/figs/make_figs.py        # Figures 2-9
-python3 manuscript/figs/make_v2_figs.py     # Figures 17-19, 29
-python3 manuscript/figs/make_phys_figs.py   # Figures 14-16
-python3 manuscript/figs/make_law_figs.py    # Figure 21
-python3 manuscript/figs/make_showdown_fig.py# Figure 20
-python3 manuscript/figs/make_phasec_figs.py # Figures 22-26, 30
+python3 artifacts/figs/make_figs.py         # Figures 2-9
+python3 artifacts/figs/make_v2_figs.py      # Figures 17-19, 29
+python3 artifacts/figs/make_phys_figs.py    # Figures 14-16
+python3 artifacts/figs/make_law_figs.py     # Figure 21
+python3 artifacts/figs/make_showdown_fig.py # Figure 20
+python3 artifacts/figs/make_phasec_figs.py  # Figures 22-26, 30
 ```
 
 ## Data notes
