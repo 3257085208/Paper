@@ -1,0 +1,7 @@
+===== qp1 / p1000 =====
+  busy=56.0 rates=['17M', '17M', '20M', '18M', '20M'] | http p99=11.998 redis p99=7.869 | viol=True
+===== qp1 / mixed =====
+  busy=56.6 rates=['17M', '17M', '17M', '20M', '19M'] | http p99=10.728 redis p99=10.001 | viol=True
+===== qp1 / weight =====
+  busy=99.9 rates=['44M', '43M', '43M', '45M', '46M'] | http p99=25.401 redis p99=22.752 | viol=True
+QUOTA_PULSE qp1 DONE

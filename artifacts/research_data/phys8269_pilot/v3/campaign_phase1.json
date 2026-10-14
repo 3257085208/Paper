@@ -1,0 +1,2130 @@
+[
+ {
+  "round": "v2knee_r01",
+  "kind": "knee",
+  "timeout": 1800,
+  "cmd": "python3 /root/sweep_host.py --round v2knee_r01 --levels '1 2 5 4 0 3'",
+  "out": "/root/knee_v2knee_r01.jsonl"
+ },
+ {
+  "round": "v2knee_r02",
+  "kind": "knee",
+  "timeout": 1800,
+  "cmd": "python3 /root/sweep_host.py --round v2knee_r02 --levels '2 1 3 0 5 4'",
+  "out": "/root/knee_v2knee_r02.jsonl"
+ },
+ {
+  "round": "v2knee_r03",
+  "kind": "knee",
+  "timeout": 1800,
+  "cmd": "python3 /root/sweep_host.py --round v2knee_r03 --levels '3 5 2 4 1 0'",
+  "out": "/root/knee_v2knee_r03.jsonl"
+ },
+ {
+  "round": "v2knee_r04",
+  "kind": "knee",
+  "timeout": 1800,
+  "cmd": "python3 /root/sweep_host.py --round v2knee_r04 --levels '3 5 1 2 4 0'",
+  "out": "/root/knee_v2knee_r04.jsonl"
+ },
+ {
+  "round": "v2knee_r05",
+  "kind": "knee",
+  "timeout": 1800,
+  "cmd": "python3 /root/sweep_host.py --round v2knee_r05 --levels '2 3 0 1 4 5'",
+  "out": "/root/knee_v2knee_r05.jsonl"
+ },
+ {
+  "round": "v2knee_r06",
+  "kind": "knee",
+  "timeout": 1800,
+  "cmd": "python3 /root/sweep_host.py --round v2knee_r06 --levels '1 0 5 3 4 2'",
+  "out": "/root/knee_v2knee_r06.jsonl"
+ },
+ {
+  "round": "v2knee_r07",
+  "kind": "knee",
+  "timeout": 1800,
+  "cmd": "python3 /root/sweep_host.py --round v2knee_r07 --levels '3 5 1 4 0 2'",
+  "out": "/root/knee_v2knee_r07.jsonl"
+ },
+ {
+  "round": "v2knee_r08",
+  "kind": "knee",
+  "timeout": 1800,
+  "cmd": "python3 /root/sweep_host.py --round v2knee_r08 --levels '5 3 1 0 2 4'",
+  "out": "/root/knee_v2knee_r08.jsonl"
+ },
+ {
+  "round": "v2knee_r09",
+  "kind": "knee",
+  "timeout": 1800,
+  "cmd": "python3 /root/sweep_host.py --round v2knee_r09 --levels '5 4 3 1 2 0'",
+  "out": "/root/knee_v2knee_r09.jsonl"
+ },
+ {
+  "round": "v2knee_r10",
+  "kind": "knee",
+  "timeout": 1800,
+  "cmd": "python3 /root/sweep_host.py --round v2knee_r10 --levels '0 2 3 1 5 4'",
+  "out": "/root/knee_v2knee_r10.jsonl"
+ },
+ {
+  "round": "v2knee_r11",
+  "kind": "knee",
+  "timeout": 1800,
+  "cmd": "python3 /root/sweep_host.py --round v2knee_r11 --levels '1 4 3 2 0 5'",
+  "out": "/root/knee_v2knee_r11.jsonl"
+ },
+ {
+  "round": "v2knee_r12",
+  "kind": "knee",
+  "timeout": 1800,
+  "cmd": "python3 /root/sweep_host.py --round v2knee_r12 --levels '1 0 5 2 4 3'",
+  "out": "/root/knee_v2knee_r12.jsonl"
+ },
+ {
+  "round": "v2knee_r13",
+  "kind": "knee",
+  "timeout": 1800,
+  "cmd": "python3 /root/sweep_host.py --round v2knee_r13 --levels '3 4 0 5 2 1'",
+  "out": "/root/knee_v2knee_r13.jsonl"
+ },
+ {
+  "round": "v2knee_r14",
+  "kind": "knee",
+  "timeout": 1800,
+  "cmd": "python3 /root/sweep_host.py --round v2knee_r14 --levels '4 1 5 0 3 2'",
+  "out": "/root/knee_v2knee_r14.jsonl"
+ },
+ {
+  "round": "v2knee_r15",
+  "kind": "knee",
+  "timeout": 1800,
+  "cmd": "python3 /root/sweep_host.py --round v2knee_r15 --levels '4 5 0 3 2 1'",
+  "out": "/root/knee_v2knee_r15.jsonl"
+ },
+ {
+  "round": "v2knee_r16",
+  "kind": "knee",
+  "timeout": 1800,
+  "cmd": "python3 /root/sweep_host.py --round v2knee_r16 --levels '2 5 4 0 1 3'",
+  "out": "/root/knee_v2knee_r16.jsonl"
+ },
+ {
+  "round": "v2knee_r17",
+  "kind": "knee",
+  "timeout": 1800,
+  "cmd": "python3 /root/sweep_host.py --round v2knee_r17 --levels '2 1 3 0 5 4'",
+  "out": "/root/knee_v2knee_r17.jsonl"
+ },
+ {
+  "round": "v2knee_r18",
+  "kind": "knee",
+  "timeout": 1800,
+  "cmd": "python3 /root/sweep_host.py --round v2knee_r18 --levels '0 2 3 4 5 1'",
+  "out": "/root/knee_v2knee_r18.jsonl"
+ },
+ {
+  "round": "v2knee_r19",
+  "kind": "knee",
+  "timeout": 1800,
+  "cmd": "python3 /root/sweep_host.py --round v2knee_r19 --levels '1 5 4 0 2 3'",
+  "out": "/root/knee_v2knee_r19.jsonl"
+ },
+ {
+  "round": "v2knee_r20",
+  "kind": "knee",
+  "timeout": 1800,
+  "cmd": "python3 /root/sweep_host.py --round v2knee_r20 --levels '2 4 5 0 3 1'",
+  "out": "/root/knee_v2knee_r20.jsonl"
+ },
+ {
+  "round": "v2knee_r21",
+  "kind": "knee",
+  "timeout": 1800,
+  "cmd": "python3 /root/sweep_host.py --round v2knee_r21 --levels '5 2 3 4 0 1'",
+  "out": "/root/knee_v2knee_r21.jsonl"
+ },
+ {
+  "round": "v2knee_r22",
+  "kind": "knee",
+  "timeout": 1800,
+  "cmd": "python3 /root/sweep_host.py --round v2knee_r22 --levels '2 4 0 3 5 1'",
+  "out": "/root/knee_v2knee_r22.jsonl"
+ },
+ {
+  "round": "v2knee_r23",
+  "kind": "knee",
+  "timeout": 1800,
+  "cmd": "python3 /root/sweep_host.py --round v2knee_r23 --levels '4 3 5 2 1 0'",
+  "out": "/root/knee_v2knee_r23.jsonl"
+ },
+ {
+  "round": "v2knee_r24",
+  "kind": "knee",
+  "timeout": 1800,
+  "cmd": "python3 /root/sweep_host.py --round v2knee_r24 --levels '0 2 1 3 5 4'",
+  "out": "/root/knee_v2knee_r24.jsonl"
+ },
+ {
+  "round": "v2knee_r25",
+  "kind": "knee",
+  "timeout": 1800,
+  "cmd": "python3 /root/sweep_host.py --round v2knee_r25 --levels '4 5 0 2 1 3'",
+  "out": "/root/knee_v2knee_r25.jsonl"
+ },
+ {
+  "round": "v2knee_r26",
+  "kind": "knee",
+  "timeout": 1800,
+  "cmd": "python3 /root/sweep_host.py --round v2knee_r26 --levels '4 2 3 5 0 1'",
+  "out": "/root/knee_v2knee_r26.jsonl"
+ },
+ {
+  "round": "v2knee_r27",
+  "kind": "knee",
+  "timeout": 1800,
+  "cmd": "python3 /root/sweep_host.py --round v2knee_r27 --levels '0 4 5 3 2 1'",
+  "out": "/root/knee_v2knee_r27.jsonl"
+ },
+ {
+  "round": "v2knee_r28",
+  "kind": "knee",
+  "timeout": 1800,
+  "cmd": "python3 /root/sweep_host.py --round v2knee_r28 --levels '3 0 1 2 4 5'",
+  "out": "/root/knee_v2knee_r28.jsonl"
+ },
+ {
+  "round": "v2knee_r29",
+  "kind": "knee",
+  "timeout": 1800,
+  "cmd": "python3 /root/sweep_host.py --round v2knee_r29 --levels '5 3 4 0 1 2'",
+  "out": "/root/knee_v2knee_r29.jsonl"
+ },
+ {
+  "round": "v2knee_r30",
+  "kind": "knee",
+  "timeout": 1800,
+  "cmd": "python3 /root/sweep_host.py --round v2knee_r30 --levels '5 4 2 0 3 1'",
+  "out": "/root/knee_v2knee_r30.jsonl"
+ },
+ {
+  "round": "v2knee_r31",
+  "kind": "knee",
+  "timeout": 1800,
+  "cmd": "python3 /root/sweep_host.py --round v2knee_r31 --levels '2 5 1 0 3 4'",
+  "out": "/root/knee_v2knee_r31.jsonl"
+ },
+ {
+  "round": "v2knee_r32",
+  "kind": "knee",
+  "timeout": 1800,
+  "cmd": "python3 /root/sweep_host.py --round v2knee_r32 --levels '3 4 2 1 5 0'",
+  "out": "/root/knee_v2knee_r32.jsonl"
+ },
+ {
+  "round": "v2knee_r33",
+  "kind": "knee",
+  "timeout": 1800,
+  "cmd": "python3 /root/sweep_host.py --round v2knee_r33 --levels '4 3 2 5 0 1'",
+  "out": "/root/knee_v2knee_r33.jsonl"
+ },
+ {
+  "round": "v2knee_r34",
+  "kind": "knee",
+  "timeout": 1800,
+  "cmd": "python3 /root/sweep_host.py --round v2knee_r34 --levels '5 1 0 3 4 2'",
+  "out": "/root/knee_v2knee_r34.jsonl"
+ },
+ {
+  "round": "v2knee_r35",
+  "kind": "knee",
+  "timeout": 1800,
+  "cmd": "python3 /root/sweep_host.py --round v2knee_r35 --levels '3 2 4 0 1 5'",
+  "out": "/root/knee_v2knee_r35.jsonl"
+ },
+ {
+  "round": "v2knee_r36",
+  "kind": "knee",
+  "timeout": 1800,
+  "cmd": "python3 /root/sweep_host.py --round v2knee_r36 --levels '5 1 3 2 0 4'",
+  "out": "/root/knee_v2knee_r36.jsonl"
+ },
+ {
+  "round": "v2knee_r37",
+  "kind": "knee",
+  "timeout": 1800,
+  "cmd": "python3 /root/sweep_host.py --round v2knee_r37 --levels '1 4 3 2 0 5'",
+  "out": "/root/knee_v2knee_r37.jsonl"
+ },
+ {
+  "round": "v2knee_r38",
+  "kind": "knee",
+  "timeout": 1800,
+  "cmd": "python3 /root/sweep_host.py --round v2knee_r38 --levels '3 0 5 1 4 2'",
+  "out": "/root/knee_v2knee_r38.jsonl"
+ },
+ {
+  "round": "v2knee_r39",
+  "kind": "knee",
+  "timeout": 1800,
+  "cmd": "python3 /root/sweep_host.py --round v2knee_r39 --levels '3 5 4 2 0 1'",
+  "out": "/root/knee_v2knee_r39.jsonl"
+ },
+ {
+  "round": "v2knee_r40",
+  "kind": "knee",
+  "timeout": 1800,
+  "cmd": "python3 /root/sweep_host.py --round v2knee_r40 --levels '2 5 0 4 1 3'",
+  "out": "/root/knee_v2knee_r40.jsonl"
+ },
+ {
+  "round": "v2knee_r41",
+  "kind": "knee",
+  "timeout": 1800,
+  "cmd": "python3 /root/sweep_host.py --round v2knee_r41 --levels '3 1 0 4 2 5'",
+  "out": "/root/knee_v2knee_r41.jsonl"
+ },
+ {
+  "round": "v2knee_r42",
+  "kind": "knee",
+  "timeout": 1800,
+  "cmd": "python3 /root/sweep_host.py --round v2knee_r42 --levels '3 5 4 1 0 2'",
+  "out": "/root/knee_v2knee_r42.jsonl"
+ },
+ {
+  "round": "v2knee_r43",
+  "kind": "knee",
+  "timeout": 1800,
+  "cmd": "python3 /root/sweep_host.py --round v2knee_r43 --levels '5 2 4 1 3 0'",
+  "out": "/root/knee_v2knee_r43.jsonl"
+ },
+ {
+  "round": "v2knee_r44",
+  "kind": "knee",
+  "timeout": 1800,
+  "cmd": "python3 /root/sweep_host.py --round v2knee_r44 --levels '0 1 3 2 5 4'",
+  "out": "/root/knee_v2knee_r44.jsonl"
+ },
+ {
+  "round": "v2knee_r45",
+  "kind": "knee",
+  "timeout": 1800,
+  "cmd": "python3 /root/sweep_host.py --round v2knee_r45 --levels '5 2 1 3 4 0'",
+  "out": "/root/knee_v2knee_r45.jsonl"
+ },
+ {
+  "round": "v2knee_r46",
+  "kind": "knee",
+  "timeout": 1800,
+  "cmd": "python3 /root/sweep_host.py --round v2knee_r46 --levels '0 2 4 1 5 3'",
+  "out": "/root/knee_v2knee_r46.jsonl"
+ },
+ {
+  "round": "v2knee_r47",
+  "kind": "knee",
+  "timeout": 1800,
+  "cmd": "python3 /root/sweep_host.py --round v2knee_r47 --levels '1 5 0 4 3 2'",
+  "out": "/root/knee_v2knee_r47.jsonl"
+ },
+ {
+  "round": "v2knee_r48",
+  "kind": "knee",
+  "timeout": 1800,
+  "cmd": "python3 /root/sweep_host.py --round v2knee_r48 --levels '0 2 1 4 3 5'",
+  "out": "/root/knee_v2knee_r48.jsonl"
+ },
+ {
+  "round": "v2knee_r49",
+  "kind": "knee",
+  "timeout": 1800,
+  "cmd": "python3 /root/sweep_host.py --round v2knee_r49 --levels '3 0 5 1 2 4'",
+  "out": "/root/knee_v2knee_r49.jsonl"
+ },
+ {
+  "round": "v2knee_r50",
+  "kind": "knee",
+  "timeout": 1800,
+  "cmd": "python3 /root/sweep_host.py --round v2knee_r50 --levels '2 4 5 0 1 3'",
+  "out": "/root/knee_v2knee_r50.jsonl"
+ },
+ {
+  "round": "v2cen_r01",
+  "kind": "censor",
+  "timeout": 2400,
+  "cmd": "python3 /root/censor_phase_host.py --round v2cen_r01 --cycles 3",
+  "out": "/root/censor_v2cen_r01.jsonl"
+ },
+ {
+  "round": "v2cen_r02",
+  "kind": "censor",
+  "timeout": 2400,
+  "cmd": "python3 /root/censor_phase_host.py --round v2cen_r02 --cycles 3",
+  "out": "/root/censor_v2cen_r02.jsonl"
+ },
+ {
+  "round": "v2cen_r03",
+  "kind": "censor",
+  "timeout": 2400,
+  "cmd": "python3 /root/censor_phase_host.py --round v2cen_r03 --cycles 3",
+  "out": "/root/censor_v2cen_r03.jsonl"
+ },
+ {
+  "round": "v2cen_r04",
+  "kind": "censor",
+  "timeout": 2400,
+  "cmd": "python3 /root/censor_phase_host.py --round v2cen_r04 --cycles 3",
+  "out": "/root/censor_v2cen_r04.jsonl"
+ },
+ {
+  "round": "v2cen_r05",
+  "kind": "censor",
+  "timeout": 2400,
+  "cmd": "python3 /root/censor_phase_host.py --round v2cen_r05 --cycles 3",
+  "out": "/root/censor_v2cen_r05.jsonl"
+ },
+ {
+  "round": "v2cen_r06",
+  "kind": "censor",
+  "timeout": 2400,
+  "cmd": "python3 /root/censor_phase_host.py --round v2cen_r06 --cycles 3",
+  "out": "/root/censor_v2cen_r06.jsonl"
+ },
+ {
+  "round": "v2cen_r07",
+  "kind": "censor",
+  "timeout": 2400,
+  "cmd": "python3 /root/censor_phase_host.py --round v2cen_r07 --cycles 3",
+  "out": "/root/censor_v2cen_r07.jsonl"
+ },
+ {
+  "round": "v2cen_r08",
+  "kind": "censor",
+  "timeout": 2400,
+  "cmd": "python3 /root/censor_phase_host.py --round v2cen_r08 --cycles 3",
+  "out": "/root/censor_v2cen_r08.jsonl"
+ },
+ {
+  "round": "v2cen_r09",
+  "kind": "censor",
+  "timeout": 2400,
+  "cmd": "python3 /root/censor_phase_host.py --round v2cen_r09 --cycles 3",
+  "out": "/root/censor_v2cen_r09.jsonl"
+ },
+ {
+  "round": "v2cen_r10",
+  "kind": "censor",
+  "timeout": 2400,
+  "cmd": "python3 /root/censor_phase_host.py --round v2cen_r10 --cycles 3",
+  "out": "/root/censor_v2cen_r10.jsonl"
+ },
+ {
+  "round": "v2cen_r11",
+  "kind": "censor",
+  "timeout": 2400,
+  "cmd": "python3 /root/censor_phase_host.py --round v2cen_r11 --cycles 3",
+  "out": "/root/censor_v2cen_r11.jsonl"
+ },
+ {
+  "round": "v2cen_r12",
+  "kind": "censor",
+  "timeout": 2400,
+  "cmd": "python3 /root/censor_phase_host.py --round v2cen_r12 --cycles 3",
+  "out": "/root/censor_v2cen_r12.jsonl"
+ },
+ {
+  "round": "v2cen_r13",
+  "kind": "censor",
+  "timeout": 2400,
+  "cmd": "python3 /root/censor_phase_host.py --round v2cen_r13 --cycles 3",
+  "out": "/root/censor_v2cen_r13.jsonl"
+ },
+ {
+  "round": "v2cen_r14",
+  "kind": "censor",
+  "timeout": 2400,
+  "cmd": "python3 /root/censor_phase_host.py --round v2cen_r14 --cycles 3",
+  "out": "/root/censor_v2cen_r14.jsonl"
+ },
+ {
+  "round": "v2cen_r15",
+  "kind": "censor",
+  "timeout": 2400,
+  "cmd": "python3 /root/censor_phase_host.py --round v2cen_r15 --cycles 3",
+  "out": "/root/censor_v2cen_r15.jsonl"
+ },
+ {
+  "round": "v2cen_r16",
+  "kind": "censor",
+  "timeout": 2400,
+  "cmd": "python3 /root/censor_phase_host.py --round v2cen_r16 --cycles 3",
+  "out": "/root/censor_v2cen_r16.jsonl"
+ },
+ {
+  "round": "v2cen_r17",
+  "kind": "censor",
+  "timeout": 2400,
+  "cmd": "python3 /root/censor_phase_host.py --round v2cen_r17 --cycles 3",
+  "out": "/root/censor_v2cen_r17.jsonl"
+ },
+ {
+  "round": "v2cen_r18",
+  "kind": "censor",
+  "timeout": 2400,
+  "cmd": "python3 /root/censor_phase_host.py --round v2cen_r18 --cycles 3",
+  "out": "/root/censor_v2cen_r18.jsonl"
+ },
+ {
+  "round": "v2cen_r19",
+  "kind": "censor",
+  "timeout": 2400,
+  "cmd": "python3 /root/censor_phase_host.py --round v2cen_r19 --cycles 3",
+  "out": "/root/censor_v2cen_r19.jsonl"
+ },
+ {
+  "round": "v2cen_r20",
+  "kind": "censor",
+  "timeout": 2400,
+  "cmd": "python3 /root/censor_phase_host.py --round v2cen_r20 --cycles 3",
+  "out": "/root/censor_v2cen_r20.jsonl"
+ },
+ {
+  "round": "v2cen_r21",
+  "kind": "censor",
+  "timeout": 2400,
+  "cmd": "python3 /root/censor_phase_host.py --round v2cen_r21 --cycles 3",
+  "out": "/root/censor_v2cen_r21.jsonl"
+ },
+ {
+  "round": "v2cen_r22",
+  "kind": "censor",
+  "timeout": 2400,
+  "cmd": "python3 /root/censor_phase_host.py --round v2cen_r22 --cycles 3",
+  "out": "/root/censor_v2cen_r22.jsonl"
+ },
+ {
+  "round": "v2cen_r23",
+  "kind": "censor",
+  "timeout": 2400,
+  "cmd": "python3 /root/censor_phase_host.py --round v2cen_r23 --cycles 3",
+  "out": "/root/censor_v2cen_r23.jsonl"
+ },
+ {
+  "round": "v2cen_r24",
+  "kind": "censor",
+  "timeout": 2400,
+  "cmd": "python3 /root/censor_phase_host.py --round v2cen_r24 --cycles 3",
+  "out": "/root/censor_v2cen_r24.jsonl"
+ },
+ {
+  "round": "v2cen_r25",
+  "kind": "censor",
+  "timeout": 2400,
+  "cmd": "python3 /root/censor_phase_host.py --round v2cen_r25 --cycles 3",
+  "out": "/root/censor_v2cen_r25.jsonl"
+ },
+ {
+  "round": "v2cen_r26",
+  "kind": "censor",
+  "timeout": 2400,
+  "cmd": "python3 /root/censor_phase_host.py --round v2cen_r26 --cycles 3",
+  "out": "/root/censor_v2cen_r26.jsonl"
+ },
+ {
+  "round": "v2cen_r27",
+  "kind": "censor",
+  "timeout": 2400,
+  "cmd": "python3 /root/censor_phase_host.py --round v2cen_r27 --cycles 3",
+  "out": "/root/censor_v2cen_r27.jsonl"
+ },
+ {
+  "round": "v2cen_r28",
+  "kind": "censor",
+  "timeout": 2400,
+  "cmd": "python3 /root/censor_phase_host.py --round v2cen_r28 --cycles 3",
+  "out": "/root/censor_v2cen_r28.jsonl"
+ },
+ {
+  "round": "v2cen_r29",
+  "kind": "censor",
+  "timeout": 2400,
+  "cmd": "python3 /root/censor_phase_host.py --round v2cen_r29 --cycles 3",
+  "out": "/root/censor_v2cen_r29.jsonl"
+ },
+ {
+  "round": "v2cen_r30",
+  "kind": "censor",
+  "timeout": 2400,
+  "cmd": "python3 /root/censor_phase_host.py --round v2cen_r30 --cycles 3",
+  "out": "/root/censor_v2cen_r30.jsonl"
+ },
+ {
+  "round": "v2syn_r01",
+  "kind": "syn",
+  "timeout": 3600,
+  "cmd": "python3 /root/synthesis_host.py --round v2syn_r01",
+  "out": "/root/synthesis_v2syn_r01.jsonl"
+ },
+ {
+  "round": "v2syn_r02",
+  "kind": "syn",
+  "timeout": 3600,
+  "cmd": "python3 /root/synthesis_host.py --round v2syn_r02",
+  "out": "/root/synthesis_v2syn_r02.jsonl"
+ },
+ {
+  "round": "v2syn_r03",
+  "kind": "syn",
+  "timeout": 3600,
+  "cmd": "python3 /root/synthesis_host.py --round v2syn_r03",
+  "out": "/root/synthesis_v2syn_r03.jsonl"
+ },
+ {
+  "round": "v2syn_r04",
+  "kind": "syn",
+  "timeout": 3600,
+  "cmd": "python3 /root/synthesis_host.py --round v2syn_r04",
+  "out": "/root/synthesis_v2syn_r04.jsonl"
+ },
+ {
+  "round": "v2syn_r05",
+  "kind": "syn",
+  "timeout": 3600,
+  "cmd": "python3 /root/synthesis_host.py --round v2syn_r05",
+  "out": "/root/synthesis_v2syn_r05.jsonl"
+ },
+ {
+  "round": "v2syn_r06",
+  "kind": "syn",
+  "timeout": 3600,
+  "cmd": "python3 /root/synthesis_host.py --round v2syn_r06",
+  "out": "/root/synthesis_v2syn_r06.jsonl"
+ },
+ {
+  "round": "v2syn_r07",
+  "kind": "syn",
+  "timeout": 3600,
+  "cmd": "python3 /root/synthesis_host.py --round v2syn_r07",
+  "out": "/root/synthesis_v2syn_r07.jsonl"
+ },
+ {
+  "round": "v2syn_r08",
+  "kind": "syn",
+  "timeout": 3600,
+  "cmd": "python3 /root/synthesis_host.py --round v2syn_r08",
+  "out": "/root/synthesis_v2syn_r08.jsonl"
+ },
+ {
+  "round": "v2syn_r09",
+  "kind": "syn",
+  "timeout": 3600,
+  "cmd": "python3 /root/synthesis_host.py --round v2syn_r09",
+  "out": "/root/synthesis_v2syn_r09.jsonl"
+ },
+ {
+  "round": "v2syn_r10",
+  "kind": "syn",
+  "timeout": 3600,
+  "cmd": "python3 /root/synthesis_host.py --round v2syn_r10",
+  "out": "/root/synthesis_v2syn_r10.jsonl"
+ },
+ {
+  "round": "v2syn_r11",
+  "kind": "syn",
+  "timeout": 3600,
+  "cmd": "python3 /root/synthesis_host.py --round v2syn_r11",
+  "out": "/root/synthesis_v2syn_r11.jsonl"
+ },
+ {
+  "round": "v2syn_r12",
+  "kind": "syn",
+  "timeout": 3600,
+  "cmd": "python3 /root/synthesis_host.py --round v2syn_r12",
+  "out": "/root/synthesis_v2syn_r12.jsonl"
+ },
+ {
+  "round": "v2syn_r13",
+  "kind": "syn",
+  "timeout": 3600,
+  "cmd": "python3 /root/synthesis_host.py --round v2syn_r13",
+  "out": "/root/synthesis_v2syn_r13.jsonl"
+ },
+ {
+  "round": "v2syn_r14",
+  "kind": "syn",
+  "timeout": 3600,
+  "cmd": "python3 /root/synthesis_host.py --round v2syn_r14",
+  "out": "/root/synthesis_v2syn_r14.jsonl"
+ },
+ {
+  "round": "v2syn_r15",
+  "kind": "syn",
+  "timeout": 3600,
+  "cmd": "python3 /root/synthesis_host.py --round v2syn_r15",
+  "out": "/root/synthesis_v2syn_r15.jsonl"
+ },
+ {
+  "round": "v2syn_r16",
+  "kind": "syn",
+  "timeout": 3600,
+  "cmd": "python3 /root/synthesis_host.py --round v2syn_r16",
+  "out": "/root/synthesis_v2syn_r16.jsonl"
+ },
+ {
+  "round": "v2syn_r17",
+  "kind": "syn",
+  "timeout": 3600,
+  "cmd": "python3 /root/synthesis_host.py --round v2syn_r17",
+  "out": "/root/synthesis_v2syn_r17.jsonl"
+ },
+ {
+  "round": "v2syn_r18",
+  "kind": "syn",
+  "timeout": 3600,
+  "cmd": "python3 /root/synthesis_host.py --round v2syn_r18",
+  "out": "/root/synthesis_v2syn_r18.jsonl"
+ },
+ {
+  "round": "v2syn_r19",
+  "kind": "syn",
+  "timeout": 3600,
+  "cmd": "python3 /root/synthesis_host.py --round v2syn_r19",
+  "out": "/root/synthesis_v2syn_r19.jsonl"
+ },
+ {
+  "round": "v2syn_r20",
+  "kind": "syn",
+  "timeout": 3600,
+  "cmd": "python3 /root/synthesis_host.py --round v2syn_r20",
+  "out": "/root/synthesis_v2syn_r20.jsonl"
+ },
+ {
+  "round": "v2syn_r21",
+  "kind": "syn",
+  "timeout": 3600,
+  "cmd": "python3 /root/synthesis_host.py --round v2syn_r21",
+  "out": "/root/synthesis_v2syn_r21.jsonl"
+ },
+ {
+  "round": "v2syn_r22",
+  "kind": "syn",
+  "timeout": 3600,
+  "cmd": "python3 /root/synthesis_host.py --round v2syn_r22",
+  "out": "/root/synthesis_v2syn_r22.jsonl"
+ },
+ {
+  "round": "v2syn_r23",
+  "kind": "syn",
+  "timeout": 3600,
+  "cmd": "python3 /root/synthesis_host.py --round v2syn_r23",
+  "out": "/root/synthesis_v2syn_r23.jsonl"
+ },
+ {
+  "round": "v2syn_r24",
+  "kind": "syn",
+  "timeout": 3600,
+  "cmd": "python3 /root/synthesis_host.py --round v2syn_r24",
+  "out": "/root/synthesis_v2syn_r24.jsonl"
+ },
+ {
+  "round": "v2syn_r25",
+  "kind": "syn",
+  "timeout": 3600,
+  "cmd": "python3 /root/synthesis_host.py --round v2syn_r25",
+  "out": "/root/synthesis_v2syn_r25.jsonl"
+ },
+ {
+  "round": "v2syn_r26",
+  "kind": "syn",
+  "timeout": 3600,
+  "cmd": "python3 /root/synthesis_host.py --round v2syn_r26",
+  "out": "/root/synthesis_v2syn_r26.jsonl"
+ },
+ {
+  "round": "v2syn_r27",
+  "kind": "syn",
+  "timeout": 3600,
+  "cmd": "python3 /root/synthesis_host.py --round v2syn_r27",
+  "out": "/root/synthesis_v2syn_r27.jsonl"
+ },
+ {
+  "round": "v2syn_r28",
+  "kind": "syn",
+  "timeout": 3600,
+  "cmd": "python3 /root/synthesis_host.py --round v2syn_r28",
+  "out": "/root/synthesis_v2syn_r28.jsonl"
+ },
+ {
+  "round": "v2syn_r29",
+  "kind": "syn",
+  "timeout": 3600,
+  "cmd": "python3 /root/synthesis_host.py --round v2syn_r29",
+  "out": "/root/synthesis_v2syn_r29.jsonl"
+ },
+ {
+  "round": "v2syn_r30",
+  "kind": "syn",
+  "timeout": 3600,
+  "cmd": "python3 /root/synthesis_host.py --round v2syn_r30",
+  "out": "/root/synthesis_v2syn_r30.jsonl"
+ },
+ {
+  "round": "v2syn_r31",
+  "kind": "syn",
+  "timeout": 3600,
+  "cmd": "python3 /root/synthesis_host.py --round v2syn_r31",
+  "out": "/root/synthesis_v2syn_r31.jsonl"
+ },
+ {
+  "round": "v2syn_r32",
+  "kind": "syn",
+  "timeout": 3600,
+  "cmd": "python3 /root/synthesis_host.py --round v2syn_r32",
+  "out": "/root/synthesis_v2syn_r32.jsonl"
+ },
+ {
+  "round": "v2syn_r33",
+  "kind": "syn",
+  "timeout": 3600,
+  "cmd": "python3 /root/synthesis_host.py --round v2syn_r33",
+  "out": "/root/synthesis_v2syn_r33.jsonl"
+ },
+ {
+  "round": "v2syn_r34",
+  "kind": "syn",
+  "timeout": 3600,
+  "cmd": "python3 /root/synthesis_host.py --round v2syn_r34",
+  "out": "/root/synthesis_v2syn_r34.jsonl"
+ },
+ {
+  "round": "v2syn_r35",
+  "kind": "syn",
+  "timeout": 3600,
+  "cmd": "python3 /root/synthesis_host.py --round v2syn_r35",
+  "out": "/root/synthesis_v2syn_r35.jsonl"
+ },
+ {
+  "round": "v2syn_r36",
+  "kind": "syn",
+  "timeout": 3600,
+  "cmd": "python3 /root/synthesis_host.py --round v2syn_r36",
+  "out": "/root/synthesis_v2syn_r36.jsonl"
+ },
+ {
+  "round": "v2syn_r37",
+  "kind": "syn",
+  "timeout": 3600,
+  "cmd": "python3 /root/synthesis_host.py --round v2syn_r37",
+  "out": "/root/synthesis_v2syn_r37.jsonl"
+ },
+ {
+  "round": "v2syn_r38",
+  "kind": "syn",
+  "timeout": 3600,
+  "cmd": "python3 /root/synthesis_host.py --round v2syn_r38",
+  "out": "/root/synthesis_v2syn_r38.jsonl"
+ },
+ {
+  "round": "v2syn_r39",
+  "kind": "syn",
+  "timeout": 3600,
+  "cmd": "python3 /root/synthesis_host.py --round v2syn_r39",
+  "out": "/root/synthesis_v2syn_r39.jsonl"
+ },
+ {
+  "round": "v2syn_r40",
+  "kind": "syn",
+  "timeout": 3600,
+  "cmd": "python3 /root/synthesis_host.py --round v2syn_r40",
+  "out": "/root/synthesis_v2syn_r40.jsonl"
+ },
+ {
+  "round": "v2pack_r01",
+  "kind": "packing",
+  "timeout": 1800,
+  "cmd": "python3 /root/packing_host.py --round v2pack_r01 --profile \"bursty:3,pegged:2,idle:5\"",
+  "out": "/root/packing_v2pack_r01.jsonl"
+ },
+ {
+  "round": "v2pack_r02",
+  "kind": "packing",
+  "timeout": 1800,
+  "cmd": "python3 /root/packing_host.py --round v2pack_r02 --profile \"pegged:2,syncidle:3,idle:5\"",
+  "out": "/root/packing_v2pack_r02.jsonl"
+ },
+ {
+  "round": "v2pack_r03",
+  "kind": "packing",
+  "timeout": 1800,
+  "cmd": "python3 /root/packing_host.py --round v2pack_r03 --profile \"sync20:2,syncidle:2,bursty:2,idle:4\"",
+  "out": "/root/packing_v2pack_r03.jsonl"
+ },
+ {
+  "round": "v2pack_r04",
+  "kind": "packing",
+  "timeout": 1800,
+  "cmd": "python3 /root/packing_host.py --round v2pack_r04 --profile \"pegged:1,bursty:2,idle:7\"",
+  "out": "/root/packing_v2pack_r04.jsonl"
+ },
+ {
+  "round": "v2pack_r05",
+  "kind": "packing",
+  "timeout": 1800,
+  "cmd": "python3 /root/packing_host.py --round v2pack_r05 --profile \"sync20:3,idle:7\"",
+  "out": "/root/packing_v2pack_r05.jsonl"
+ },
+ {
+  "round": "v2pack_r06",
+  "kind": "packing",
+  "timeout": 1800,
+  "cmd": "python3 /root/packing_host.py --round v2pack_r06 --profile \"idle:8,bursty:2\"",
+  "out": "/root/packing_v2pack_r06.jsonl"
+ },
+ {
+  "round": "v2pack_r07",
+  "kind": "packing",
+  "timeout": 1800,
+  "cmd": "python3 /root/packing_host.py --round v2pack_r07 --profile \"syncidle:4,bursty:2,idle:4\"",
+  "out": "/root/packing_v2pack_r07.jsonl"
+ },
+ {
+  "round": "v2pack_r08",
+  "kind": "packing",
+  "timeout": 1800,
+  "cmd": "python3 /root/packing_host.py --round v2pack_r08 --profile \"idle:6,bursty:2,syncidle:2\"",
+  "out": "/root/packing_v2pack_r08.jsonl"
+ },
+ {
+  "round": "v2pack_r09",
+  "kind": "packing",
+  "timeout": 1800,
+  "cmd": "python3 /root/packing_host.py --round v2pack_r09 --profile \"bursty:4,idle:6\"",
+  "out": "/root/packing_v2pack_r09.jsonl"
+ },
+ {
+  "round": "v2pack_r10",
+  "kind": "packing",
+  "timeout": 1800,
+  "cmd": "python3 /root/packing_host.py --round v2pack_r10 --profile \"pegged:2,bursty:2,idle:6\"",
+  "out": "/root/packing_v2pack_r10.jsonl"
+ },
+ {
+  "round": "v2pack_r11",
+  "kind": "packing",
+  "timeout": 1800,
+  "cmd": "python3 /root/packing_host.py --round v2pack_r11 --profile \"pegged:2,syncidle:3,idle:5\"",
+  "out": "/root/packing_v2pack_r11.jsonl"
+ },
+ {
+  "round": "v2pack_r12",
+  "kind": "packing",
+  "timeout": 1800,
+  "cmd": "python3 /root/packing_host.py --round v2pack_r12 --profile \"bursty:4,idle:6\"",
+  "out": "/root/packing_v2pack_r12.jsonl"
+ },
+ {
+  "round": "v2pack_r13",
+  "kind": "packing",
+  "timeout": 1800,
+  "cmd": "python3 /root/packing_host.py --round v2pack_r13 --profile \"sync20:3,idle:7\"",
+  "out": "/root/packing_v2pack_r13.jsonl"
+ },
+ {
+  "round": "v2pack_r14",
+  "kind": "packing",
+  "timeout": 1800,
+  "cmd": "python3 /root/packing_host.py --round v2pack_r14 --profile \"pegged:2,bursty:2,idle:6\"",
+  "out": "/root/packing_v2pack_r14.jsonl"
+ },
+ {
+  "round": "v2pack_r15",
+  "kind": "packing",
+  "timeout": 1800,
+  "cmd": "python3 /root/packing_host.py --round v2pack_r15 --profile \"sync20:2,syncidle:2,bursty:2,idle:4\"",
+  "out": "/root/packing_v2pack_r15.jsonl"
+ },
+ {
+  "round": "v2pack_r16",
+  "kind": "packing",
+  "timeout": 1800,
+  "cmd": "python3 /root/packing_host.py --round v2pack_r16 --profile \"bursty:3,pegged:2,idle:5\"",
+  "out": "/root/packing_v2pack_r16.jsonl"
+ },
+ {
+  "round": "v2pack_r17",
+  "kind": "packing",
+  "timeout": 1800,
+  "cmd": "python3 /root/packing_host.py --round v2pack_r17 --profile \"idle:8,bursty:2\"",
+  "out": "/root/packing_v2pack_r17.jsonl"
+ },
+ {
+  "round": "v2pack_r18",
+  "kind": "packing",
+  "timeout": 1800,
+  "cmd": "python3 /root/packing_host.py --round v2pack_r18 --profile \"pegged:1,bursty:2,idle:7\"",
+  "out": "/root/packing_v2pack_r18.jsonl"
+ },
+ {
+  "round": "v2pack_r19",
+  "kind": "packing",
+  "timeout": 1800,
+  "cmd": "python3 /root/packing_host.py --round v2pack_r19 --profile \"idle:6,bursty:2,syncidle:2\"",
+  "out": "/root/packing_v2pack_r19.jsonl"
+ },
+ {
+  "round": "v2pack_r20",
+  "kind": "packing",
+  "timeout": 1800,
+  "cmd": "python3 /root/packing_host.py --round v2pack_r20 --profile \"syncidle:4,bursty:2,idle:4\"",
+  "out": "/root/packing_v2pack_r20.jsonl"
+ },
+ {
+  "round": "v2pack_r21",
+  "kind": "packing",
+  "timeout": 1800,
+  "cmd": "python3 /root/packing_host.py --round v2pack_r21 --profile \"pegged:2,syncidle:3,idle:5\"",
+  "out": "/root/packing_v2pack_r21.jsonl"
+ },
+ {
+  "round": "v2pack_r22",
+  "kind": "packing",
+  "timeout": 1800,
+  "cmd": "python3 /root/packing_host.py --round v2pack_r22 --profile \"idle:8,bursty:2\"",
+  "out": "/root/packing_v2pack_r22.jsonl"
+ },
+ {
+  "round": "v2pack_r23",
+  "kind": "packing",
+  "timeout": 1800,
+  "cmd": "python3 /root/packing_host.py --round v2pack_r23 --profile \"pegged:1,bursty:2,idle:7\"",
+  "out": "/root/packing_v2pack_r23.jsonl"
+ },
+ {
+  "round": "v2pack_r24",
+  "kind": "packing",
+  "timeout": 1800,
+  "cmd": "python3 /root/packing_host.py --round v2pack_r24 --profile \"pegged:2,bursty:2,idle:6\"",
+  "out": "/root/packing_v2pack_r24.jsonl"
+ },
+ {
+  "round": "v2pack_r25",
+  "kind": "packing",
+  "timeout": 1800,
+  "cmd": "python3 /root/packing_host.py --round v2pack_r25 --profile \"syncidle:4,bursty:2,idle:4\"",
+  "out": "/root/packing_v2pack_r25.jsonl"
+ },
+ {
+  "round": "v2pack_r26",
+  "kind": "packing",
+  "timeout": 1800,
+  "cmd": "python3 /root/packing_host.py --round v2pack_r26 --profile \"bursty:4,idle:6\"",
+  "out": "/root/packing_v2pack_r26.jsonl"
+ },
+ {
+  "round": "v2pack_r27",
+  "kind": "packing",
+  "timeout": 1800,
+  "cmd": "python3 /root/packing_host.py --round v2pack_r27 --profile \"sync20:2,syncidle:2,bursty:2,idle:4\"",
+  "out": "/root/packing_v2pack_r27.jsonl"
+ },
+ {
+  "round": "v2pack_r28",
+  "kind": "packing",
+  "timeout": 1800,
+  "cmd": "python3 /root/packing_host.py --round v2pack_r28 --profile \"sync20:3,idle:7\"",
+  "out": "/root/packing_v2pack_r28.jsonl"
+ },
+ {
+  "round": "v2pack_r29",
+  "kind": "packing",
+  "timeout": 1800,
+  "cmd": "python3 /root/packing_host.py --round v2pack_r29 --profile \"idle:6,bursty:2,syncidle:2\"",
+  "out": "/root/packing_v2pack_r29.jsonl"
+ },
+ {
+  "round": "v2pack_r30",
+  "kind": "packing",
+  "timeout": 1800,
+  "cmd": "python3 /root/packing_host.py --round v2pack_r30 --profile \"bursty:3,pegged:2,idle:5\"",
+  "out": "/root/packing_v2pack_r30.jsonl"
+ },
+ {
+  "round": "v2pack_r31",
+  "kind": "packing",
+  "timeout": 1800,
+  "cmd": "python3 /root/packing_host.py --round v2pack_r31 --profile \"bursty:4,idle:6\"",
+  "out": "/root/packing_v2pack_r31.jsonl"
+ },
+ {
+  "round": "v2pack_r32",
+  "kind": "packing",
+  "timeout": 1800,
+  "cmd": "python3 /root/packing_host.py --round v2pack_r32 --profile \"idle:6,bursty:2,syncidle:2\"",
+  "out": "/root/packing_v2pack_r32.jsonl"
+ },
+ {
+  "round": "v2pack_r33",
+  "kind": "packing",
+  "timeout": 1800,
+  "cmd": "python3 /root/packing_host.py --round v2pack_r33 --profile \"sync20:2,syncidle:2,bursty:2,idle:4\"",
+  "out": "/root/packing_v2pack_r33.jsonl"
+ },
+ {
+  "round": "v2pack_r34",
+  "kind": "packing",
+  "timeout": 1800,
+  "cmd": "python3 /root/packing_host.py --round v2pack_r34 --profile \"pegged:2,bursty:2,idle:6\"",
+  "out": "/root/packing_v2pack_r34.jsonl"
+ },
+ {
+  "round": "v2pack_r35",
+  "kind": "packing",
+  "timeout": 1800,
+  "cmd": "python3 /root/packing_host.py --round v2pack_r35 --profile \"pegged:2,syncidle:3,idle:5\"",
+  "out": "/root/packing_v2pack_r35.jsonl"
+ },
+ {
+  "round": "v2pack_r36",
+  "kind": "packing",
+  "timeout": 1800,
+  "cmd": "python3 /root/packing_host.py --round v2pack_r36 --profile \"sync20:3,idle:7\"",
+  "out": "/root/packing_v2pack_r36.jsonl"
+ },
+ {
+  "round": "v2pack_r37",
+  "kind": "packing",
+  "timeout": 1800,
+  "cmd": "python3 /root/packing_host.py --round v2pack_r37 --profile \"idle:8,bursty:2\"",
+  "out": "/root/packing_v2pack_r37.jsonl"
+ },
+ {
+  "round": "v2pack_r38",
+  "kind": "packing",
+  "timeout": 1800,
+  "cmd": "python3 /root/packing_host.py --round v2pack_r38 --profile \"bursty:3,pegged:2,idle:5\"",
+  "out": "/root/packing_v2pack_r38.jsonl"
+ },
+ {
+  "round": "v2pack_r39",
+  "kind": "packing",
+  "timeout": 1800,
+  "cmd": "python3 /root/packing_host.py --round v2pack_r39 --profile \"syncidle:4,bursty:2,idle:4\"",
+  "out": "/root/packing_v2pack_r39.jsonl"
+ },
+ {
+  "round": "v2pack_r40",
+  "kind": "packing",
+  "timeout": 1800,
+  "cmd": "python3 /root/packing_host.py --round v2pack_r40 --profile \"pegged:1,bursty:2,idle:7\"",
+  "out": "/root/packing_v2pack_r40.jsonl"
+ },
+ {
+  "round": "v2pack_r41",
+  "kind": "packing",
+  "timeout": 1800,
+  "cmd": "python3 /root/packing_host.py --round v2pack_r41 --profile \"pegged:2,bursty:2,idle:6\"",
+  "out": "/root/packing_v2pack_r41.jsonl"
+ },
+ {
+  "round": "v2pack_r42",
+  "kind": "packing",
+  "timeout": 1800,
+  "cmd": "python3 /root/packing_host.py --round v2pack_r42 --profile \"sync20:3,idle:7\"",
+  "out": "/root/packing_v2pack_r42.jsonl"
+ },
+ {
+  "round": "v2pack_r43",
+  "kind": "packing",
+  "timeout": 1800,
+  "cmd": "python3 /root/packing_host.py --round v2pack_r43 --profile \"sync20:2,syncidle:2,bursty:2,idle:4\"",
+  "out": "/root/packing_v2pack_r43.jsonl"
+ },
+ {
+  "round": "v2pack_r44",
+  "kind": "packing",
+  "timeout": 1800,
+  "cmd": "python3 /root/packing_host.py --round v2pack_r44 --profile \"bursty:4,idle:6\"",
+  "out": "/root/packing_v2pack_r44.jsonl"
+ },
+ {
+  "round": "v2pack_r45",
+  "kind": "packing",
+  "timeout": 1800,
+  "cmd": "python3 /root/packing_host.py --round v2pack_r45 --profile \"pegged:1,bursty:2,idle:7\"",
+  "out": "/root/packing_v2pack_r45.jsonl"
+ },
+ {
+  "round": "v2pack_r46",
+  "kind": "packing",
+  "timeout": 1800,
+  "cmd": "python3 /root/packing_host.py --round v2pack_r46 --profile \"bursty:3,pegged:2,idle:5\"",
+  "out": "/root/packing_v2pack_r46.jsonl"
+ },
+ {
+  "round": "v2pack_r47",
+  "kind": "packing",
+  "timeout": 1800,
+  "cmd": "python3 /root/packing_host.py --round v2pack_r47 --profile \"syncidle:4,bursty:2,idle:4\"",
+  "out": "/root/packing_v2pack_r47.jsonl"
+ },
+ {
+  "round": "v2pack_r48",
+  "kind": "packing",
+  "timeout": 1800,
+  "cmd": "python3 /root/packing_host.py --round v2pack_r48 --profile \"idle:8,bursty:2\"",
+  "out": "/root/packing_v2pack_r48.jsonl"
+ },
+ {
+  "round": "v2pack_r49",
+  "kind": "packing",
+  "timeout": 1800,
+  "cmd": "python3 /root/packing_host.py --round v2pack_r49 --profile \"pegged:2,syncidle:3,idle:5\"",
+  "out": "/root/packing_v2pack_r49.jsonl"
+ },
+ {
+  "round": "v2pack_r50",
+  "kind": "packing",
+  "timeout": 1800,
+  "cmd": "python3 /root/packing_host.py --round v2pack_r50 --profile \"idle:6,bursty:2,syncidle:2\"",
+  "out": "/root/packing_v2pack_r50.jsonl"
+ },
+ {
+  "round": "v2pack_r51",
+  "kind": "packing",
+  "timeout": 1800,
+  "cmd": "python3 /root/packing_host.py --round v2pack_r51 --profile \"pegged:1,bursty:2,idle:7\"",
+  "out": "/root/packing_v2pack_r51.jsonl"
+ },
+ {
+  "round": "v2pack_r52",
+  "kind": "packing",
+  "timeout": 1800,
+  "cmd": "python3 /root/packing_host.py --round v2pack_r52 --profile \"sync20:2,syncidle:2,bursty:2,idle:4\"",
+  "out": "/root/packing_v2pack_r52.jsonl"
+ },
+ {
+  "round": "v2pack_r53",
+  "kind": "packing",
+  "timeout": 1800,
+  "cmd": "python3 /root/packing_host.py --round v2pack_r53 --profile \"syncidle:4,bursty:2,idle:4\"",
+  "out": "/root/packing_v2pack_r53.jsonl"
+ },
+ {
+  "round": "v2pack_r54",
+  "kind": "packing",
+  "timeout": 1800,
+  "cmd": "python3 /root/packing_host.py --round v2pack_r54 --profile \"bursty:4,idle:6\"",
+  "out": "/root/packing_v2pack_r54.jsonl"
+ },
+ {
+  "round": "v2pack_r55",
+  "kind": "packing",
+  "timeout": 1800,
+  "cmd": "python3 /root/packing_host.py --round v2pack_r55 --profile \"sync20:3,idle:7\"",
+  "out": "/root/packing_v2pack_r55.jsonl"
+ },
+ {
+  "round": "v2pack_r56",
+  "kind": "packing",
+  "timeout": 1800,
+  "cmd": "python3 /root/packing_host.py --round v2pack_r56 --profile \"pegged:2,bursty:2,idle:6\"",
+  "out": "/root/packing_v2pack_r56.jsonl"
+ },
+ {
+  "round": "v2pack_r57",
+  "kind": "packing",
+  "timeout": 1800,
+  "cmd": "python3 /root/packing_host.py --round v2pack_r57 --profile \"idle:6,bursty:2,syncidle:2\"",
+  "out": "/root/packing_v2pack_r57.jsonl"
+ },
+ {
+  "round": "v2pack_r58",
+  "kind": "packing",
+  "timeout": 1800,
+  "cmd": "python3 /root/packing_host.py --round v2pack_r58 --profile \"idle:8,bursty:2\"",
+  "out": "/root/packing_v2pack_r58.jsonl"
+ },
+ {
+  "round": "v2pack_r59",
+  "kind": "packing",
+  "timeout": 1800,
+  "cmd": "python3 /root/packing_host.py --round v2pack_r59 --profile \"bursty:3,pegged:2,idle:5\"",
+  "out": "/root/packing_v2pack_r59.jsonl"
+ },
+ {
+  "round": "v2pack_r60",
+  "kind": "packing",
+  "timeout": 1800,
+  "cmd": "python3 /root/packing_host.py --round v2pack_r60 --profile \"pegged:2,syncidle:3,idle:5\"",
+  "out": "/root/packing_v2pack_r60.jsonl"
+ },
+ {
+  "round": "v2shp_unl_r01",
+  "kind": "shaping",
+  "timeout": 1800,
+  "cmd": "python3 /root/shaping_host.py --round v2shp_unl_r01 --scheme unlimited",
+  "out": "/root/shaping_v2shp_unl_r01.jsonl"
+ },
+ {
+  "round": "v2shp_unl_r02",
+  "kind": "shaping",
+  "timeout": 1800,
+  "cmd": "python3 /root/shaping_host.py --round v2shp_unl_r02 --scheme unlimited",
+  "out": "/root/shaping_v2shp_unl_r02.jsonl"
+ },
+ {
+  "round": "v2shp_unl_r03",
+  "kind": "shaping",
+  "timeout": 1800,
+  "cmd": "python3 /root/shaping_host.py --round v2shp_unl_r03 --scheme unlimited",
+  "out": "/root/shaping_v2shp_unl_r03.jsonl"
+ },
+ {
+  "round": "v2shp_unl_r04",
+  "kind": "shaping",
+  "timeout": 1800,
+  "cmd": "python3 /root/shaping_host.py --round v2shp_unl_r04 --scheme unlimited",
+  "out": "/root/shaping_v2shp_unl_r04.jsonl"
+ },
+ {
+  "round": "v2shp_unl_r05",
+  "kind": "shaping",
+  "timeout": 1800,
+  "cmd": "python3 /root/shaping_host.py --round v2shp_unl_r05 --scheme unlimited",
+  "out": "/root/shaping_v2shp_unl_r05.jsonl"
+ },
+ {
+  "round": "v2shp_unl_r06",
+  "kind": "shaping",
+  "timeout": 1800,
+  "cmd": "python3 /root/shaping_host.py --round v2shp_unl_r06 --scheme unlimited",
+  "out": "/root/shaping_v2shp_unl_r06.jsonl"
+ },
+ {
+  "round": "v2shp_unl_r07",
+  "kind": "shaping",
+  "timeout": 1800,
+  "cmd": "python3 /root/shaping_host.py --round v2shp_unl_r07 --scheme unlimited",
+  "out": "/root/shaping_v2shp_unl_r07.jsonl"
+ },
+ {
+  "round": "v2shp_unl_r08",
+  "kind": "shaping",
+  "timeout": 1800,
+  "cmd": "python3 /root/shaping_host.py --round v2shp_unl_r08 --scheme unlimited",
+  "out": "/root/shaping_v2shp_unl_r08.jsonl"
+ },
+ {
+  "round": "v2shp_q75_r01",
+  "kind": "shaping",
+  "timeout": 1800,
+  "cmd": "python3 /root/shaping_host.py --round v2shp_q75_r01 --scheme q75",
+  "out": "/root/shaping_v2shp_q75_r01.jsonl"
+ },
+ {
+  "round": "v2shp_q75_r02",
+  "kind": "shaping",
+  "timeout": 1800,
+  "cmd": "python3 /root/shaping_host.py --round v2shp_q75_r02 --scheme q75",
+  "out": "/root/shaping_v2shp_q75_r02.jsonl"
+ },
+ {
+  "round": "v2shp_q75_r03",
+  "kind": "shaping",
+  "timeout": 1800,
+  "cmd": "python3 /root/shaping_host.py --round v2shp_q75_r03 --scheme q75",
+  "out": "/root/shaping_v2shp_q75_r03.jsonl"
+ },
+ {
+  "round": "v2shp_q75_r04",
+  "kind": "shaping",
+  "timeout": 1800,
+  "cmd": "python3 /root/shaping_host.py --round v2shp_q75_r04 --scheme q75",
+  "out": "/root/shaping_v2shp_q75_r04.jsonl"
+ },
+ {
+  "round": "v2shp_q75_r05",
+  "kind": "shaping",
+  "timeout": 1800,
+  "cmd": "python3 /root/shaping_host.py --round v2shp_q75_r05 --scheme q75",
+  "out": "/root/shaping_v2shp_q75_r05.jsonl"
+ },
+ {
+  "round": "v2shp_q75_r06",
+  "kind": "shaping",
+  "timeout": 1800,
+  "cmd": "python3 /root/shaping_host.py --round v2shp_q75_r06 --scheme q75",
+  "out": "/root/shaping_v2shp_q75_r06.jsonl"
+ },
+ {
+  "round": "v2shp_q75_r07",
+  "kind": "shaping",
+  "timeout": 1800,
+  "cmd": "python3 /root/shaping_host.py --round v2shp_q75_r07 --scheme q75",
+  "out": "/root/shaping_v2shp_q75_r07.jsonl"
+ },
+ {
+  "round": "v2shp_q75_r08",
+  "kind": "shaping",
+  "timeout": 1800,
+  "cmd": "python3 /root/shaping_host.py --round v2shp_q75_r08 --scheme q75",
+  "out": "/root/shaping_v2shp_q75_r08.jsonl"
+ },
+ {
+  "round": "v2shp_q50_r01",
+  "kind": "shaping",
+  "timeout": 1800,
+  "cmd": "python3 /root/shaping_host.py --round v2shp_q50_r01 --scheme q50",
+  "out": "/root/shaping_v2shp_q50_r01.jsonl"
+ },
+ {
+  "round": "v2shp_q50_r02",
+  "kind": "shaping",
+  "timeout": 1800,
+  "cmd": "python3 /root/shaping_host.py --round v2shp_q50_r02 --scheme q50",
+  "out": "/root/shaping_v2shp_q50_r02.jsonl"
+ },
+ {
+  "round": "v2shp_q50_r03",
+  "kind": "shaping",
+  "timeout": 1800,
+  "cmd": "python3 /root/shaping_host.py --round v2shp_q50_r03 --scheme q50",
+  "out": "/root/shaping_v2shp_q50_r03.jsonl"
+ },
+ {
+  "round": "v2shp_q50_r04",
+  "kind": "shaping",
+  "timeout": 1800,
+  "cmd": "python3 /root/shaping_host.py --round v2shp_q50_r04 --scheme q50",
+  "out": "/root/shaping_v2shp_q50_r04.jsonl"
+ },
+ {
+  "round": "v2shp_q50_r05",
+  "kind": "shaping",
+  "timeout": 1800,
+  "cmd": "python3 /root/shaping_host.py --round v2shp_q50_r05 --scheme q50",
+  "out": "/root/shaping_v2shp_q50_r05.jsonl"
+ },
+ {
+  "round": "v2shp_q50_r06",
+  "kind": "shaping",
+  "timeout": 1800,
+  "cmd": "python3 /root/shaping_host.py --round v2shp_q50_r06 --scheme q50",
+  "out": "/root/shaping_v2shp_q50_r06.jsonl"
+ },
+ {
+  "round": "v2shp_q50_r07",
+  "kind": "shaping",
+  "timeout": 1800,
+  "cmd": "python3 /root/shaping_host.py --round v2shp_q50_r07 --scheme q50",
+  "out": "/root/shaping_v2shp_q50_r07.jsonl"
+ },
+ {
+  "round": "v2shp_q50_r08",
+  "kind": "shaping",
+  "timeout": 1800,
+  "cmd": "python3 /root/shaping_host.py --round v2shp_q50_r08 --scheme q50",
+  "out": "/root/shaping_v2shp_q50_r08.jsonl"
+ },
+ {
+  "round": "v2shp_pin_r01",
+  "kind": "shaping",
+  "timeout": 1800,
+  "cmd": "python3 /root/shaping_host.py --round v2shp_pin_r01 --scheme pin",
+  "out": "/root/shaping_v2shp_pin_r01.jsonl"
+ },
+ {
+  "round": "v2shp_pin_r02",
+  "kind": "shaping",
+  "timeout": 1800,
+  "cmd": "python3 /root/shaping_host.py --round v2shp_pin_r02 --scheme pin",
+  "out": "/root/shaping_v2shp_pin_r02.jsonl"
+ },
+ {
+  "round": "v2shp_pin_r03",
+  "kind": "shaping",
+  "timeout": 1800,
+  "cmd": "python3 /root/shaping_host.py --round v2shp_pin_r03 --scheme pin",
+  "out": "/root/shaping_v2shp_pin_r03.jsonl"
+ },
+ {
+  "round": "v2shp_pin_r04",
+  "kind": "shaping",
+  "timeout": 1800,
+  "cmd": "python3 /root/shaping_host.py --round v2shp_pin_r04 --scheme pin",
+  "out": "/root/shaping_v2shp_pin_r04.jsonl"
+ },
+ {
+  "round": "v2shp_pin_r05",
+  "kind": "shaping",
+  "timeout": 1800,
+  "cmd": "python3 /root/shaping_host.py --round v2shp_pin_r05 --scheme pin",
+  "out": "/root/shaping_v2shp_pin_r05.jsonl"
+ },
+ {
+  "round": "v2shp_pin_r06",
+  "kind": "shaping",
+  "timeout": 1800,
+  "cmd": "python3 /root/shaping_host.py --round v2shp_pin_r06 --scheme pin",
+  "out": "/root/shaping_v2shp_pin_r06.jsonl"
+ },
+ {
+  "round": "v2shp_pin_r07",
+  "kind": "shaping",
+  "timeout": 1800,
+  "cmd": "python3 /root/shaping_host.py --round v2shp_pin_r07 --scheme pin",
+  "out": "/root/shaping_v2shp_pin_r07.jsonl"
+ },
+ {
+  "round": "v2shp_pin_r08",
+  "kind": "shaping",
+  "timeout": 1800,
+  "cmd": "python3 /root/shaping_host.py --round v2shp_pin_r08 --scheme pin",
+  "out": "/root/shaping_v2shp_pin_r08.jsonl"
+ },
+ {
+  "round": "v2mem_g_r01",
+  "kind": "mem",
+  "timeout": 3000,
+  "cmd": "python3 /root/mem_phase_host.py --mode grow --round v2mem_g_r01",
+  "out": "/root/memphase_v2mem_g_r01.jsonl"
+ },
+ {
+  "round": "v2mem_g_r02",
+  "kind": "mem",
+  "timeout": 3000,
+  "cmd": "python3 /root/mem_phase_host.py --mode grow --round v2mem_g_r02",
+  "out": "/root/memphase_v2mem_g_r02.jsonl"
+ },
+ {
+  "round": "v2mem_g_r03",
+  "kind": "mem",
+  "timeout": 3000,
+  "cmd": "python3 /root/mem_phase_host.py --mode grow --round v2mem_g_r03",
+  "out": "/root/memphase_v2mem_g_r03.jsonl"
+ },
+ {
+  "round": "v2mem_g_r04",
+  "kind": "mem",
+  "timeout": 3000,
+  "cmd": "python3 /root/mem_phase_host.py --mode grow --round v2mem_g_r04",
+  "out": "/root/memphase_v2mem_g_r04.jsonl"
+ },
+ {
+  "round": "v2mem_g_r05",
+  "kind": "mem",
+  "timeout": 3000,
+  "cmd": "python3 /root/mem_phase_host.py --mode grow --round v2mem_g_r05",
+  "out": "/root/memphase_v2mem_g_r05.jsonl"
+ },
+ {
+  "round": "v2mem_g_r06",
+  "kind": "mem",
+  "timeout": 3000,
+  "cmd": "python3 /root/mem_phase_host.py --mode grow --round v2mem_g_r06",
+  "out": "/root/memphase_v2mem_g_r06.jsonl"
+ },
+ {
+  "round": "v2mem_g_r07",
+  "kind": "mem",
+  "timeout": 3000,
+  "cmd": "python3 /root/mem_phase_host.py --mode grow --round v2mem_g_r07",
+  "out": "/root/memphase_v2mem_g_r07.jsonl"
+ },
+ {
+  "round": "v2mem_g_r08",
+  "kind": "mem",
+  "timeout": 3000,
+  "cmd": "python3 /root/mem_phase_host.py --mode grow --round v2mem_g_r08",
+  "out": "/root/memphase_v2mem_g_r08.jsonl"
+ },
+ {
+  "round": "v2mem_g_r09",
+  "kind": "mem",
+  "timeout": 3000,
+  "cmd": "python3 /root/mem_phase_host.py --mode grow --round v2mem_g_r09",
+  "out": "/root/memphase_v2mem_g_r09.jsonl"
+ },
+ {
+  "round": "v2mem_g_r10",
+  "kind": "mem",
+  "timeout": 3000,
+  "cmd": "python3 /root/mem_phase_host.py --mode grow --round v2mem_g_r10",
+  "out": "/root/memphase_v2mem_g_r10.jsonl"
+ },
+ {
+  "round": "v2mem_c_r01",
+  "kind": "mem",
+  "timeout": 3000,
+  "cmd": "python3 /root/mem_phase_host.py --mode capped --round v2mem_c_r01",
+  "out": "/root/memphase_v2mem_c_r01.jsonl"
+ },
+ {
+  "round": "v2mem_c_r02",
+  "kind": "mem",
+  "timeout": 3000,
+  "cmd": "python3 /root/mem_phase_host.py --mode capped --round v2mem_c_r02",
+  "out": "/root/memphase_v2mem_c_r02.jsonl"
+ },
+ {
+  "round": "v2mem_c_r03",
+  "kind": "mem",
+  "timeout": 3000,
+  "cmd": "python3 /root/mem_phase_host.py --mode capped --round v2mem_c_r03",
+  "out": "/root/memphase_v2mem_c_r03.jsonl"
+ },
+ {
+  "round": "v2mem_c_r04",
+  "kind": "mem",
+  "timeout": 3000,
+  "cmd": "python3 /root/mem_phase_host.py --mode capped --round v2mem_c_r04",
+  "out": "/root/memphase_v2mem_c_r04.jsonl"
+ },
+ {
+  "round": "v2mem_c_r05",
+  "kind": "mem",
+  "timeout": 3000,
+  "cmd": "python3 /root/mem_phase_host.py --mode capped --round v2mem_c_r05",
+  "out": "/root/memphase_v2mem_c_r05.jsonl"
+ },
+ {
+  "round": "v2mem_c_r06",
+  "kind": "mem",
+  "timeout": 3000,
+  "cmd": "python3 /root/mem_phase_host.py --mode capped --round v2mem_c_r06",
+  "out": "/root/memphase_v2mem_c_r06.jsonl"
+ },
+ {
+  "round": "v2mem_c_r07",
+  "kind": "mem",
+  "timeout": 3000,
+  "cmd": "python3 /root/mem_phase_host.py --mode capped --round v2mem_c_r07",
+  "out": "/root/memphase_v2mem_c_r07.jsonl"
+ },
+ {
+  "round": "v2mem_c_r08",
+  "kind": "mem",
+  "timeout": 3000,
+  "cmd": "python3 /root/mem_phase_host.py --mode capped --round v2mem_c_r08",
+  "out": "/root/memphase_v2mem_c_r08.jsonl"
+ },
+ {
+  "round": "v2mem_c_r09",
+  "kind": "mem",
+  "timeout": 3000,
+  "cmd": "python3 /root/mem_phase_host.py --mode capped --round v2mem_c_r09",
+  "out": "/root/memphase_v2mem_c_r09.jsonl"
+ },
+ {
+  "round": "v2mem_c_r10",
+  "kind": "mem",
+  "timeout": 3000,
+  "cmd": "python3 /root/mem_phase_host.py --mode capped --round v2mem_c_r10",
+  "out": "/root/memphase_v2mem_c_r10.jsonl"
+ },
+ {
+  "round": "v2mem_c_r11",
+  "kind": "mem",
+  "timeout": 3000,
+  "cmd": "python3 /root/mem_phase_host.py --mode capped --round v2mem_c_r11",
+  "out": "/root/memphase_v2mem_c_r11.jsonl"
+ },
+ {
+  "round": "v2mem_c_r12",
+  "kind": "mem",
+  "timeout": 3000,
+  "cmd": "python3 /root/mem_phase_host.py --mode capped --round v2mem_c_r12",
+  "out": "/root/memphase_v2mem_c_r12.jsonl"
+ },
+ {
+  "round": "v2mem_c_r13",
+  "kind": "mem",
+  "timeout": 3000,
+  "cmd": "python3 /root/mem_phase_host.py --mode capped --round v2mem_c_r13",
+  "out": "/root/memphase_v2mem_c_r13.jsonl"
+ },
+ {
+  "round": "v2mem_c_r14",
+  "kind": "mem",
+  "timeout": 3000,
+  "cmd": "python3 /root/mem_phase_host.py --mode capped --round v2mem_c_r14",
+  "out": "/root/memphase_v2mem_c_r14.jsonl"
+ },
+ {
+  "round": "v2mem_c_r15",
+  "kind": "mem",
+  "timeout": 3000,
+  "cmd": "python3 /root/mem_phase_host.py --mode capped --round v2mem_c_r15",
+  "out": "/root/memphase_v2mem_c_r15.jsonl"
+ },
+ {
+  "round": "v2disk_base_r01",
+  "kind": "disk",
+  "timeout": 3000,
+  "cmd": "python3 /root/disk_phase_host.py --mode baseline --round v2disk_base_r01",
+  "out": "/root/disk_v2disk_base_r01.jsonl"
+ },
+ {
+  "round": "v2disk_base_r02",
+  "kind": "disk",
+  "timeout": 3000,
+  "cmd": "python3 /root/disk_phase_host.py --mode baseline --round v2disk_base_r02",
+  "out": "/root/disk_v2disk_base_r02.jsonl"
+ },
+ {
+  "round": "v2disk_base_r03",
+  "kind": "disk",
+  "timeout": 3000,
+  "cmd": "python3 /root/disk_phase_host.py --mode baseline --round v2disk_base_r03",
+  "out": "/root/disk_v2disk_base_r03.jsonl"
+ },
+ {
+  "round": "v2disk_base_r04",
+  "kind": "disk",
+  "timeout": 3000,
+  "cmd": "python3 /root/disk_phase_host.py --mode baseline --round v2disk_base_r04",
+  "out": "/root/disk_v2disk_base_r04.jsonl"
+ },
+ {
+  "round": "v2disk_base_r05",
+  "kind": "disk",
+  "timeout": 3000,
+  "cmd": "python3 /root/disk_phase_host.py --mode baseline --round v2disk_base_r05",
+  "out": "/root/disk_v2disk_base_r05.jsonl"
+ },
+ {
+  "round": "v2disk_base_r06",
+  "kind": "disk",
+  "timeout": 3000,
+  "cmd": "python3 /root/disk_phase_host.py --mode baseline --round v2disk_base_r06",
+  "out": "/root/disk_v2disk_base_r06.jsonl"
+ },
+ {
+  "round": "v2disk_base_r07",
+  "kind": "disk",
+  "timeout": 3000,
+  "cmd": "python3 /root/disk_phase_host.py --mode baseline --round v2disk_base_r07",
+  "out": "/root/disk_v2disk_base_r07.jsonl"
+ },
+ {
+  "round": "v2disk_base_r08",
+  "kind": "disk",
+  "timeout": 3000,
+  "cmd": "python3 /root/disk_phase_host.py --mode baseline --round v2disk_base_r08",
+  "out": "/root/disk_v2disk_base_r08.jsonl"
+ },
+ {
+  "round": "v2disk_base_r09",
+  "kind": "disk",
+  "timeout": 3000,
+  "cmd": "python3 /root/disk_phase_host.py --mode baseline --round v2disk_base_r09",
+  "out": "/root/disk_v2disk_base_r09.jsonl"
+ },
+ {
+  "round": "v2disk_base_r10",
+  "kind": "disk",
+  "timeout": 3000,
+  "cmd": "python3 /root/disk_phase_host.py --mode baseline --round v2disk_base_r10",
+  "out": "/root/disk_v2disk_base_r10.jsonl"
+ },
+ {
+  "round": "v2disk_cap_r01",
+  "kind": "disk",
+  "timeout": 3000,
+  "cmd": "python3 /root/disk_phase_host.py --mode capped --round v2disk_cap_r01",
+  "out": "/root/disk_v2disk_cap_r01.jsonl"
+ },
+ {
+  "round": "v2disk_cap_r02",
+  "kind": "disk",
+  "timeout": 3000,
+  "cmd": "python3 /root/disk_phase_host.py --mode capped --round v2disk_cap_r02",
+  "out": "/root/disk_v2disk_cap_r02.jsonl"
+ },
+ {
+  "round": "v2disk_cap_r03",
+  "kind": "disk",
+  "timeout": 3000,
+  "cmd": "python3 /root/disk_phase_host.py --mode capped --round v2disk_cap_r03",
+  "out": "/root/disk_v2disk_cap_r03.jsonl"
+ },
+ {
+  "round": "v2disk_cap_r04",
+  "kind": "disk",
+  "timeout": 3000,
+  "cmd": "python3 /root/disk_phase_host.py --mode capped --round v2disk_cap_r04",
+  "out": "/root/disk_v2disk_cap_r04.jsonl"
+ },
+ {
+  "round": "v2disk_cap_r05",
+  "kind": "disk",
+  "timeout": 3000,
+  "cmd": "python3 /root/disk_phase_host.py --mode capped --round v2disk_cap_r05",
+  "out": "/root/disk_v2disk_cap_r05.jsonl"
+ },
+ {
+  "round": "v2disk_cap_r06",
+  "kind": "disk",
+  "timeout": 3000,
+  "cmd": "python3 /root/disk_phase_host.py --mode capped --round v2disk_cap_r06",
+  "out": "/root/disk_v2disk_cap_r06.jsonl"
+ },
+ {
+  "round": "v2disk_cap_r07",
+  "kind": "disk",
+  "timeout": 3000,
+  "cmd": "python3 /root/disk_phase_host.py --mode capped --round v2disk_cap_r07",
+  "out": "/root/disk_v2disk_cap_r07.jsonl"
+ },
+ {
+  "round": "v2disk_cap_r08",
+  "kind": "disk",
+  "timeout": 3000,
+  "cmd": "python3 /root/disk_phase_host.py --mode capped --round v2disk_cap_r08",
+  "out": "/root/disk_v2disk_cap_r08.jsonl"
+ },
+ {
+  "round": "v2disk_cap_r09",
+  "kind": "disk",
+  "timeout": 3000,
+  "cmd": "python3 /root/disk_phase_host.py --mode capped --round v2disk_cap_r09",
+  "out": "/root/disk_v2disk_cap_r09.jsonl"
+ },
+ {
+  "round": "v2disk_cap_r10",
+  "kind": "disk",
+  "timeout": 3000,
+  "cmd": "python3 /root/disk_phase_host.py --mode capped --round v2disk_cap_r10",
+  "out": "/root/disk_v2disk_cap_r10.jsonl"
+ },
+ {
+  "round": "v2disk_cap_r11",
+  "kind": "disk",
+  "timeout": 3000,
+  "cmd": "python3 /root/disk_phase_host.py --mode capped --round v2disk_cap_r11",
+  "out": "/root/disk_v2disk_cap_r11.jsonl"
+ },
+ {
+  "round": "v2disk_cap_r12",
+  "kind": "disk",
+  "timeout": 3000,
+  "cmd": "python3 /root/disk_phase_host.py --mode capped --round v2disk_cap_r12",
+  "out": "/root/disk_v2disk_cap_r12.jsonl"
+ },
+ {
+  "round": "v2disk_cap_r13",
+  "kind": "disk",
+  "timeout": 3000,
+  "cmd": "python3 /root/disk_phase_host.py --mode capped --round v2disk_cap_r13",
+  "out": "/root/disk_v2disk_cap_r13.jsonl"
+ },
+ {
+  "round": "v2disk_cap_r14",
+  "kind": "disk",
+  "timeout": 3000,
+  "cmd": "python3 /root/disk_phase_host.py --mode capped --round v2disk_cap_r14",
+  "out": "/root/disk_v2disk_cap_r14.jsonl"
+ },
+ {
+  "round": "v2disk_cap_r15",
+  "kind": "disk",
+  "timeout": 3000,
+  "cmd": "python3 /root/disk_phase_host.py --mode capped --round v2disk_cap_r15",
+  "out": "/root/disk_v2disk_cap_r15.jsonl"
+ },
+ {
+  "round": "v2disk_wt_r01",
+  "kind": "disk",
+  "timeout": 3000,
+  "cmd": "python3 /root/disk_phase_host.py --mode weighted --round v2disk_wt_r01",
+  "out": "/root/disk_v2disk_wt_r01.jsonl"
+ },
+ {
+  "round": "v2disk_wt_r02",
+  "kind": "disk",
+  "timeout": 3000,
+  "cmd": "python3 /root/disk_phase_host.py --mode weighted --round v2disk_wt_r02",
+  "out": "/root/disk_v2disk_wt_r02.jsonl"
+ },
+ {
+  "round": "v2disk_wt_r03",
+  "kind": "disk",
+  "timeout": 3000,
+  "cmd": "python3 /root/disk_phase_host.py --mode weighted --round v2disk_wt_r03",
+  "out": "/root/disk_v2disk_wt_r03.jsonl"
+ },
+ {
+  "round": "v2disk_wt_r04",
+  "kind": "disk",
+  "timeout": 3000,
+  "cmd": "python3 /root/disk_phase_host.py --mode weighted --round v2disk_wt_r04",
+  "out": "/root/disk_v2disk_wt_r04.jsonl"
+ },
+ {
+  "round": "v2disk_wt_r05",
+  "kind": "disk",
+  "timeout": 3000,
+  "cmd": "python3 /root/disk_phase_host.py --mode weighted --round v2disk_wt_r05",
+  "out": "/root/disk_v2disk_wt_r05.jsonl"
+ },
+ {
+  "round": "v2disk_wt_r06",
+  "kind": "disk",
+  "timeout": 3000,
+  "cmd": "python3 /root/disk_phase_host.py --mode weighted --round v2disk_wt_r06",
+  "out": "/root/disk_v2disk_wt_r06.jsonl"
+ },
+ {
+  "round": "v2disk_wt_r07",
+  "kind": "disk",
+  "timeout": 3000,
+  "cmd": "python3 /root/disk_phase_host.py --mode weighted --round v2disk_wt_r07",
+  "out": "/root/disk_v2disk_wt_r07.jsonl"
+ },
+ {
+  "round": "v2disk_wt_r08",
+  "kind": "disk",
+  "timeout": 3000,
+  "cmd": "python3 /root/disk_phase_host.py --mode weighted --round v2disk_wt_r08",
+  "out": "/root/disk_v2disk_wt_r08.jsonl"
+ },
+ {
+  "round": "v2disk_wt_r09",
+  "kind": "disk",
+  "timeout": 3000,
+  "cmd": "python3 /root/disk_phase_host.py --mode weighted --round v2disk_wt_r09",
+  "out": "/root/disk_v2disk_wt_r09.jsonl"
+ },
+ {
+  "round": "v2disk_wt_r10",
+  "kind": "disk",
+  "timeout": 3000,
+  "cmd": "python3 /root/disk_phase_host.py --mode weighted --round v2disk_wt_r10",
+  "out": "/root/disk_v2disk_wt_r10.jsonl"
+ },
+ {
+  "round": "v2disk_wt_r11",
+  "kind": "disk",
+  "timeout": 3000,
+  "cmd": "python3 /root/disk_phase_host.py --mode weighted --round v2disk_wt_r11",
+  "out": "/root/disk_v2disk_wt_r11.jsonl"
+ },
+ {
+  "round": "v2disk_wt_r12",
+  "kind": "disk",
+  "timeout": 3000,
+  "cmd": "python3 /root/disk_phase_host.py --mode weighted --round v2disk_wt_r12",
+  "out": "/root/disk_v2disk_wt_r12.jsonl"
+ },
+ {
+  "round": "v2qp_r01",
+  "kind": "qp",
+  "timeout": 3600,
+  "cmd": "python3 /root/quota_pulse_host.py --round v2qp_r01",
+  "out": "/root/quota_pulse_v2qp_r01.jsonl"
+ },
+ {
+  "round": "v2qp_r02",
+  "kind": "qp",
+  "timeout": 3600,
+  "cmd": "python3 /root/quota_pulse_host.py --round v2qp_r02",
+  "out": "/root/quota_pulse_v2qp_r02.jsonl"
+ },
+ {
+  "round": "v2qp_r03",
+  "kind": "qp",
+  "timeout": 3600,
+  "cmd": "python3 /root/quota_pulse_host.py --round v2qp_r03",
+  "out": "/root/quota_pulse_v2qp_r03.jsonl"
+ },
+ {
+  "round": "v2qp_r04",
+  "kind": "qp",
+  "timeout": 3600,
+  "cmd": "python3 /root/quota_pulse_host.py --round v2qp_r04",
+  "out": "/root/quota_pulse_v2qp_r04.jsonl"
+ },
+ {
+  "round": "v2qp_r05",
+  "kind": "qp",
+  "timeout": 3600,
+  "cmd": "python3 /root/quota_pulse_host.py --round v2qp_r05",
+  "out": "/root/quota_pulse_v2qp_r05.jsonl"
+ },
+ {
+  "round": "v2qp_r06",
+  "kind": "qp",
+  "timeout": 3600,
+  "cmd": "python3 /root/quota_pulse_host.py --round v2qp_r06",
+  "out": "/root/quota_pulse_v2qp_r06.jsonl"
+ },
+ {
+  "round": "v2qp_r07",
+  "kind": "qp",
+  "timeout": 3600,
+  "cmd": "python3 /root/quota_pulse_host.py --round v2qp_r07",
+  "out": "/root/quota_pulse_v2qp_r07.jsonl"
+ },
+ {
+  "round": "v2qp_r08",
+  "kind": "qp",
+  "timeout": 3600,
+  "cmd": "python3 /root/quota_pulse_host.py --round v2qp_r08",
+  "out": "/root/quota_pulse_v2qp_r08.jsonl"
+ },
+ {
+  "round": "v2qp_r09",
+  "kind": "qp",
+  "timeout": 3600,
+  "cmd": "python3 /root/quota_pulse_host.py --round v2qp_r09",
+  "out": "/root/quota_pulse_v2qp_r09.jsonl"
+ },
+ {
+  "round": "v2qp_r10",
+  "kind": "qp",
+  "timeout": 3600,
+  "cmd": "python3 /root/quota_pulse_host.py --round v2qp_r10",
+  "out": "/root/quota_pulse_v2qp_r10.jsonl"
+ },
+ {
+  "round": "v2qp_r11",
+  "kind": "qp",
+  "timeout": 3600,
+  "cmd": "python3 /root/quota_pulse_host.py --round v2qp_r11",
+  "out": "/root/quota_pulse_v2qp_r11.jsonl"
+ },
+ {
+  "round": "v2qp_r12",
+  "kind": "qp",
+  "timeout": 3600,
+  "cmd": "python3 /root/quota_pulse_host.py --round v2qp_r12",
+  "out": "/root/quota_pulse_v2qp_r12.jsonl"
+ },
+ {
+  "round": "v2qp_r13",
+  "kind": "qp",
+  "timeout": 3600,
+  "cmd": "python3 /root/quota_pulse_host.py --round v2qp_r13",
+  "out": "/root/quota_pulse_v2qp_r13.jsonl"
+ },
+ {
+  "round": "v2qp_r14",
+  "kind": "qp",
+  "timeout": 3600,
+  "cmd": "python3 /root/quota_pulse_host.py --round v2qp_r14",
+  "out": "/root/quota_pulse_v2qp_r14.jsonl"
+ },
+ {
+  "round": "v2qp_r15",
+  "kind": "qp",
+  "timeout": 3600,
+  "cmd": "python3 /root/quota_pulse_host.py --round v2qp_r15",
+  "out": "/root/quota_pulse_v2qp_r15.jsonl"
+ },
+ {
+  "round": "v2qp_r16",
+  "kind": "qp",
+  "timeout": 3600,
+  "cmd": "python3 /root/quota_pulse_host.py --round v2qp_r16",
+  "out": "/root/quota_pulse_v2qp_r16.jsonl"
+ },
+ {
+  "round": "v2qp_r17",
+  "kind": "qp",
+  "timeout": 3600,
+  "cmd": "python3 /root/quota_pulse_host.py --round v2qp_r17",
+  "out": "/root/quota_pulse_v2qp_r17.jsonl"
+ },
+ {
+  "round": "v2qp_r18",
+  "kind": "qp",
+  "timeout": 3600,
+  "cmd": "python3 /root/quota_pulse_host.py --round v2qp_r18",
+  "out": "/root/quota_pulse_v2qp_r18.jsonl"
+ },
+ {
+  "round": "v2qp_r19",
+  "kind": "qp",
+  "timeout": 3600,
+  "cmd": "python3 /root/quota_pulse_host.py --round v2qp_r19",
+  "out": "/root/quota_pulse_v2qp_r19.jsonl"
+ },
+ {
+  "round": "v2qp_r20",
+  "kind": "qp",
+  "timeout": 3600,
+  "cmd": "python3 /root/quota_pulse_host.py --round v2qp_r20",
+  "out": "/root/quota_pulse_v2qp_r20.jsonl"
+ },
+ {
+  "round": "v2qp_r21",
+  "kind": "qp",
+  "timeout": 3600,
+  "cmd": "python3 /root/quota_pulse_host.py --round v2qp_r21",
+  "out": "/root/quota_pulse_v2qp_r21.jsonl"
+ },
+ {
+  "round": "v2qp_r22",
+  "kind": "qp",
+  "timeout": 3600,
+  "cmd": "python3 /root/quota_pulse_host.py --round v2qp_r22",
+  "out": "/root/quota_pulse_v2qp_r22.jsonl"
+ },
+ {
+  "round": "v2qp_r23",
+  "kind": "qp",
+  "timeout": 3600,
+  "cmd": "python3 /root/quota_pulse_host.py --round v2qp_r23",
+  "out": "/root/quota_pulse_v2qp_r23.jsonl"
+ },
+ {
+  "round": "v2qp_r24",
+  "kind": "qp",
+  "timeout": 3600,
+  "cmd": "python3 /root/quota_pulse_host.py --round v2qp_r24",
+  "out": "/root/quota_pulse_v2qp_r24.jsonl"
+ },
+ {
+  "round": "v2qp_r25",
+  "kind": "qp",
+  "timeout": 3600,
+  "cmd": "python3 /root/quota_pulse_host.py --round v2qp_r25",
+  "out": "/root/quota_pulse_v2qp_r25.jsonl"
+ },
+ {
+  "round": "v2qp_r26",
+  "kind": "qp",
+  "timeout": 3600,
+  "cmd": "python3 /root/quota_pulse_host.py --round v2qp_r26",
+  "out": "/root/quota_pulse_v2qp_r26.jsonl"
+ },
+ {
+  "round": "v2qp_r27",
+  "kind": "qp",
+  "timeout": 3600,
+  "cmd": "python3 /root/quota_pulse_host.py --round v2qp_r27",
+  "out": "/root/quota_pulse_v2qp_r27.jsonl"
+ },
+ {
+  "round": "v2qp_r28",
+  "kind": "qp",
+  "timeout": 3600,
+  "cmd": "python3 /root/quota_pulse_host.py --round v2qp_r28",
+  "out": "/root/quota_pulse_v2qp_r28.jsonl"
+ },
+ {
+  "round": "v2qp_r29",
+  "kind": "qp",
+  "timeout": 3600,
+  "cmd": "python3 /root/quota_pulse_host.py --round v2qp_r29",
+  "out": "/root/quota_pulse_v2qp_r29.jsonl"
+ },
+ {
+  "round": "v2qp_r30",
+  "kind": "qp",
+  "timeout": 3600,
+  "cmd": "python3 /root/quota_pulse_host.py --round v2qp_r30",
+  "out": "/root/quota_pulse_v2qp_r30.jsonl"
+ }
+]

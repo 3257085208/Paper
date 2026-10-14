@@ -1,0 +1,7 @@
+cycle 1: naive=1.76 cores vs aware=5.00 cores (truth=5.00)
+  quota phase:    http p99=16.161 redis p99=9.84 | busy=79.5
+  released phase: http p99=2.432 redis p99=2.104 | busy=5.8 | rates=['?', '?', '?', '?', '?']
+cycle 2: naive=1.76 cores vs aware=5.00 cores (truth=5.00)
+  quota phase:    http p99=15.124 redis p99=9.274 | busy=78.8
+  released phase: http p99=2.298 redis p99=2.174 | busy=2.1 | rates=['?', '?', '?', '?', '?']
+CENSOR c1 DONE

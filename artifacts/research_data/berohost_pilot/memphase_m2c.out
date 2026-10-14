@@ -1,0 +1,5 @@
+wave 1: guest_total=7293 MB avail=9161 MB swapfree=1024 MB http_p99=2.125 redis_p99=1.823
+wave 2: guest_total=8177 MB avail=8240 MB swapfree=0 MB http_p99=2.741 redis_p99=2.262
+BREAK: unresponsive guests [5, 6, 7, 8, 9, 10]
+final: avail=7958 MB swap_free=0 MB guest_total=8486 MB
+MEMPHASE m2c DONE

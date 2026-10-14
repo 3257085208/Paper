@@ -1,0 +1,76 @@
+========== cs1 / all_heavy / prior_light ==========
+[cs1 prior_light all_heavy] step 1 -> allow (est=0.00+prior=0.20<=3.2)
+   window: http p99=3.886 redis p99=3.199 viol=False
+[cs1 prior_light all_heavy] step 2 -> allow (est=0.50+prior=0.20<=3.2)
+   window: http p99=4.586 redis p99=5.704 viol=False
+[cs1 prior_light all_heavy] step 3 -> allow (est=1.00+prior=0.20<=3.2)
+   window: http p99=11.698 redis p99=8.679 viol=True
+[cs1 prior_light all_heavy] step 4 -> allow (est=1.50+prior=0.20<=3.2)
+   window: http p99=14.846 redis p99=12.466 viol=True
+[cs1 prior_light all_heavy] step 5 -> allow (est=2.00+prior=0.20<=3.2)
+   window: http p99=17.159 redis p99=13.341 viol=True
+[cs1 prior_light all_heavy] step 6 -> allow (est=2.50+prior=0.20<=3.2)
+   window: http p99=16.476 redis p99=14.15 viol=True
+SUMMARY cs1 prior_light all_heavy: admitted=6 defers=0 violations=4
+========== cs1 / all_heavy / prior_conservative ==========
+[cs1 prior_conservative all_heavy] step 1 -> allow (est=0.00+prior=1.00<=3.2)
+   window: http p99=3.54 redis p99=3.388 viol=False
+[cs1 prior_conservative all_heavy] step 2 -> allow (est=1.00+prior=1.00<=3.2)
+   window: http p99=3.889 redis p99=4.169 viol=False
+[cs1 prior_conservative all_heavy] step 3 -> allow (est=2.00+prior=1.00<=3.2)
+   window: http p99=11.542 redis p99=8.545 viol=True
+[cs1 prior_conservative all_heavy] step 4 -> defer (est=3.00+prior=1.00<=3.2)
+[cs1 prior_conservative all_heavy] step 5 -> defer (est=3.00+prior=1.00<=3.2)
+[cs1 prior_conservative all_heavy] step 6 -> defer (est=3.00+prior=1.00<=3.2)
+SUMMARY cs1 prior_conservative all_heavy: admitted=3 defers=3 violations=1
+========== cs1 / all_heavy / probe_relax ==========
+[cs1 probe_relax all_heavy] step 1 -> allow (est=0.00+prior=1.00<=3.2)
+   window: http p99=3.336 redis p99=3.465 viol=False
+[cs1 probe_relax all_heavy] step 2 -> allow (est=1.00+prior=1.00<=3.2)
+   window: http p99=3.325 redis p99=3.259 viol=False
+[cs1 probe_relax all_heavy] step 3 -> allow (est=2.00+prior=1.00<=3.2)
+   window: http p99=9.101 redis p99=7.926 viol=False
+[cs1 probe_relax all_heavy] step 4 -> defer (est=3.00+prior=1.00<=3.2)
+[cs1 probe_relax all_heavy] step 5 -> defer (est=3.00+prior=1.00<=3.2)
+[cs1 probe_relax all_heavy] step 6 -> defer (est=3.00+prior=1.00<=3.2)
+SUMMARY cs1 probe_relax all_heavy: admitted=3 defers=3 violations=0
+========== cs1 / all_light / prior_light ==========
+[cs1 prior_light all_light] step 1 -> allow (est=0.00+prior=0.20<=3.2)
+   window: http p99=3.361 redis p99=2.624 viol=False
+[cs1 prior_light all_light] step 2 -> allow (est=0.00+prior=0.20<=3.2)
+   window: http p99=3.204 redis p99=3.651 viol=False
+[cs1 prior_light all_light] step 3 -> allow (est=0.01+prior=0.20<=3.2)
+   window: http p99=4.404 redis p99=3.679 viol=False
+[cs1 prior_light all_light] step 4 -> allow (est=0.01+prior=0.20<=3.2)
+   window: http p99=3.367 redis p99=3.159 viol=False
+[cs1 prior_light all_light] step 5 -> allow (est=0.01+prior=0.20<=3.2)
+   window: http p99=4.209 redis p99=3.043 viol=False
+[cs1 prior_light all_light] step 6 -> allow (est=0.01+prior=0.20<=3.2)
+   window: http p99=2.966 redis p99=3.004 viol=False
+SUMMARY cs1 prior_light all_light: admitted=6 defers=0 violations=0
+========== cs1 / all_light / prior_conservative ==========
+[cs1 prior_conservative all_light] step 1 -> allow (est=0.00+prior=1.00<=3.2)
+   window: http p99=3.119 redis p99=3.004 viol=False
+[cs1 prior_conservative all_light] step 2 -> allow (est=1.00+prior=1.00<=3.2)
+   window: http p99=2.782 redis p99=3.054 viol=False
+[cs1 prior_conservative all_light] step 3 -> allow (est=2.00+prior=1.00<=3.2)
+   window: http p99=2.79 redis p99=3.621 viol=False
+[cs1 prior_conservative all_light] step 4 -> defer (est=3.00+prior=1.00<=3.2)
+[cs1 prior_conservative all_light] step 5 -> defer (est=3.00+prior=1.00<=3.2)
+[cs1 prior_conservative all_light] step 6 -> defer (est=3.00+prior=1.00<=3.2)
+SUMMARY cs1 prior_conservative all_light: admitted=3 defers=3 violations=0
+========== cs1 / all_light / probe_relax ==========
+[cs1 probe_relax all_light] step 1 -> allow (est=0.00+prior=1.00<=3.2)
+   window: http p99=3.123 redis p99=2.744 viol=False
+[cs1 probe_relax all_light] step 2 -> allow (est=1.00+prior=1.00<=3.2)
+   window: http p99=3.416 redis p99=3.249 viol=False
+[cs1 probe_relax all_light] step 3 -> allow (est=1.00+prior=0.20<=3.2)
+   window: http p99=2.919 redis p99=3.174 viol=False
+[cs1 probe_relax all_light] step 4 -> allow (est=1.01+prior=0.20<=3.2)
+   window: http p99=3.167 redis p99=3.607 viol=False
+[cs1 probe_relax all_light] step 5 -> allow (est=1.01+prior=0.20<=3.2)
+   window: http p99=3.819 redis p99=2.945 viol=False
+[cs1 probe_relax all_light] step 6 -> allow (est=1.01+prior=0.20<=3.2)
+   window: http p99=3.575 redis p99=3.817 viol=False
+SUMMARY cs1 probe_relax all_light: admitted=6 defers=0 violations=0
+COLDSTART cs1 DONE

@@ -1,0 +1,47 @@
+{
+ "rand_fixed": {
+  "stop": 16,
+  "first_bad": null,
+  "clean": true
+ },
+ "rand_util80": {
+  "stop": 28,
+  "first_bad": null,
+  "clean": true
+ },
+ "rand_quantile": {
+  "stop": 8,
+  "first_bad": null,
+  "clean": true
+ },
+ "rand_audible": {
+  "stop": 16,
+  "first_bad": null,
+  "clean": true
+ },
+ "rand_ours": {
+  "stop": 16,
+  "first_bad": null,
+  "clean": true
+ },
+ "sync_util80": {
+  "stop": 40,
+  "first_bad": null,
+  "clean": true
+ },
+ "sync_quantile": {
+  "stop": 8,
+  "first_bad": null,
+  "clean": true
+ },
+ "sync_audible": {
+  "stop": 40,
+  "first_bad": null,
+  "clean": true
+ },
+ "sync_ours": {
+  "stop": 8,
+  "first_bad": null,
+  "clean": true
+ }
+}

@@ -1,0 +1,18 @@
+cycle 1: naive=1.50 cores vs aware=5.00 cores (truth=5.00)
+  quota phase:    http p99=10.235 redis p99=9.026 | busy=58.0 | viol=True
+  released phase: http p99=20.253 redis p99=20.855 | busy=100.0 | rates=['26M', '28M', '29M', '27M', '28M'] | viol=True
+cycle 2: naive=1.50 cores vs aware=5.00 cores (truth=5.00)
+  quota phase:    http p99=10.898 redis p99=11.679 | busy=58.2 | viol=True
+  released phase: http p99=24.985 redis p99=20.259 | busy=100.0 | rates=['27M', '27M', '28M', '28M', '26M'] | viol=True
+CENSOR c5 DONE
+controls set; swap.max files present=15
+stage A: busy=1.8 avail=2290MB swapfree=0MB
+SYNTHESIS: http p99=3.461 redis p99=3.348 | host_io iops=771.0 mbps=3.3 | avail=2277MB swapfree=0MB
+customer states recorded: 11/16
+SYNTHESIS syn4 DONE
+   http: p50=1.949 p99=14.023 p999=34.733 viol=True
+   redis: p50=1.723 p99=12.075 p999=21.116 viol=True
+PACKING p6d DONE busy=55.2 statuses=['?', '?', '62465666/1', '?', '?', '?', '0/0', '?', '?', '53223374/1']
+   http: p50=1.821 p99=16.56 p999=46.68 viol=True
+   redis: p50=1.651 p99=16.078 p999=23.323 viol=True
+PACKING p3d DONE busy=100.0 statuses=['0/0', '0/0', '0/0', '0/0', '0/0', '0/0', '0/0', '0/0', '61433202/1', '62894783/1']

@@ -1,0 +1,373 @@
+[
+ {
+  "round": "v2prep",
+  "kind": "prep",
+  "timeout": 900,
+  "cmd": "bash /root/activate_phase2_burner.sh && echo ok > /root/phase2_prep.done",
+  "out": "/root/phase2_prep.done"
+ },
+ {
+  "round": "v2est_r01",
+  "kind": "est",
+  "timeout": 3600,
+  "cmd": "python3 /root/estimator_eval_host.py --round v2est_r01",
+  "out": "/root/estimator_v2est_r01.jsonl"
+ },
+ {
+  "round": "v2est_r02",
+  "kind": "est",
+  "timeout": 3600,
+  "cmd": "python3 /root/estimator_eval_host.py --round v2est_r02",
+  "out": "/root/estimator_v2est_r02.jsonl"
+ },
+ {
+  "round": "v2est_r03",
+  "kind": "est",
+  "timeout": 3600,
+  "cmd": "python3 /root/estimator_eval_host.py --round v2est_r03",
+  "out": "/root/estimator_v2est_r03.jsonl"
+ },
+ {
+  "round": "v2est_r04",
+  "kind": "est",
+  "timeout": 3600,
+  "cmd": "python3 /root/estimator_eval_host.py --round v2est_r04",
+  "out": "/root/estimator_v2est_r04.jsonl"
+ },
+ {
+  "round": "v2est_r05",
+  "kind": "est",
+  "timeout": 3600,
+  "cmd": "python3 /root/estimator_eval_host.py --round v2est_r05",
+  "out": "/root/estimator_v2est_r05.jsonl"
+ },
+ {
+  "round": "v2est_r06",
+  "kind": "est",
+  "timeout": 3600,
+  "cmd": "python3 /root/estimator_eval_host.py --round v2est_r06",
+  "out": "/root/estimator_v2est_r06.jsonl"
+ },
+ {
+  "round": "v2est_r07",
+  "kind": "est",
+  "timeout": 3600,
+  "cmd": "python3 /root/estimator_eval_host.py --round v2est_r07",
+  "out": "/root/estimator_v2est_r07.jsonl"
+ },
+ {
+  "round": "v2est_r08",
+  "kind": "est",
+  "timeout": 3600,
+  "cmd": "python3 /root/estimator_eval_host.py --round v2est_r08",
+  "out": "/root/estimator_v2est_r08.jsonl"
+ },
+ {
+  "round": "v2est_r09",
+  "kind": "est",
+  "timeout": 3600,
+  "cmd": "python3 /root/estimator_eval_host.py --round v2est_r09",
+  "out": "/root/estimator_v2est_r09.jsonl"
+ },
+ {
+  "round": "v2est_r10",
+  "kind": "est",
+  "timeout": 3600,
+  "cmd": "python3 /root/estimator_eval_host.py --round v2est_r10",
+  "out": "/root/estimator_v2est_r10.jsonl"
+ },
+ {
+  "round": "v2me_r01",
+  "kind": "me",
+  "timeout": 3600,
+  "cmd": "python3 /root/method_eval_host.py --round v2me_r01",
+  "out": "/root/metheval_v2me_r01.jsonl"
+ },
+ {
+  "round": "v2me_r02",
+  "kind": "me",
+  "timeout": 3600,
+  "cmd": "python3 /root/method_eval_host.py --round v2me_r02",
+  "out": "/root/metheval_v2me_r02.jsonl"
+ },
+ {
+  "round": "v2me_r03",
+  "kind": "me",
+  "timeout": 3600,
+  "cmd": "python3 /root/method_eval_host.py --round v2me_r03",
+  "out": "/root/metheval_v2me_r03.jsonl"
+ },
+ {
+  "round": "v2me_r04",
+  "kind": "me",
+  "timeout": 3600,
+  "cmd": "python3 /root/method_eval_host.py --round v2me_r04",
+  "out": "/root/metheval_v2me_r04.jsonl"
+ },
+ {
+  "round": "v2me_r05",
+  "kind": "me",
+  "timeout": 3600,
+  "cmd": "python3 /root/method_eval_host.py --round v2me_r05",
+  "out": "/root/metheval_v2me_r05.jsonl"
+ },
+ {
+  "round": "v2me_r06",
+  "kind": "me",
+  "timeout": 3600,
+  "cmd": "python3 /root/method_eval_host.py --round v2me_r06",
+  "out": "/root/metheval_v2me_r06.jsonl"
+ },
+ {
+  "round": "v2me_r07",
+  "kind": "me",
+  "timeout": 3600,
+  "cmd": "python3 /root/method_eval_host.py --round v2me_r07",
+  "out": "/root/metheval_v2me_r07.jsonl"
+ },
+ {
+  "round": "v2me_r08",
+  "kind": "me",
+  "timeout": 3600,
+  "cmd": "python3 /root/method_eval_host.py --round v2me_r08",
+  "out": "/root/metheval_v2me_r08.jsonl"
+ },
+ {
+  "round": "v2me_r09",
+  "kind": "me",
+  "timeout": 3600,
+  "cmd": "python3 /root/method_eval_host.py --round v2me_r09",
+  "out": "/root/metheval_v2me_r09.jsonl"
+ },
+ {
+  "round": "v2me_r10",
+  "kind": "me",
+  "timeout": 3600,
+  "cmd": "python3 /root/method_eval_host.py --round v2me_r10",
+  "out": "/root/metheval_v2me_r10.jsonl"
+ },
+ {
+  "round": "v2cs_r01",
+  "kind": "cs",
+  "timeout": 3600,
+  "cmd": "python3 /root/coldstart_host.py --round v2cs_r01",
+  "out": "/root/coldstart_v2cs_r01.jsonl"
+ },
+ {
+  "round": "v2cs_r02",
+  "kind": "cs",
+  "timeout": 3600,
+  "cmd": "python3 /root/coldstart_host.py --round v2cs_r02",
+  "out": "/root/coldstart_v2cs_r02.jsonl"
+ },
+ {
+  "round": "v2cs_r03",
+  "kind": "cs",
+  "timeout": 3600,
+  "cmd": "python3 /root/coldstart_host.py --round v2cs_r03",
+  "out": "/root/coldstart_v2cs_r03.jsonl"
+ },
+ {
+  "round": "v2cs_r04",
+  "kind": "cs",
+  "timeout": 3600,
+  "cmd": "python3 /root/coldstart_host.py --round v2cs_r04",
+  "out": "/root/coldstart_v2cs_r04.jsonl"
+ },
+ {
+  "round": "v2cs_r05",
+  "kind": "cs",
+  "timeout": 3600,
+  "cmd": "python3 /root/coldstart_host.py --round v2cs_r05",
+  "out": "/root/coldstart_v2cs_r05.jsonl"
+ },
+ {
+  "round": "v2cs_r06",
+  "kind": "cs",
+  "timeout": 3600,
+  "cmd": "python3 /root/coldstart_host.py --round v2cs_r06",
+  "out": "/root/coldstart_v2cs_r06.jsonl"
+ },
+ {
+  "round": "v2cs_r07",
+  "kind": "cs",
+  "timeout": 3600,
+  "cmd": "python3 /root/coldstart_host.py --round v2cs_r07",
+  "out": "/root/coldstart_v2cs_r07.jsonl"
+ },
+ {
+  "round": "v2cs_r08",
+  "kind": "cs",
+  "timeout": 3600,
+  "cmd": "python3 /root/coldstart_host.py --round v2cs_r08",
+  "out": "/root/coldstart_v2cs_r08.jsonl"
+ },
+ {
+  "round": "v2cs_r09",
+  "kind": "cs",
+  "timeout": 3600,
+  "cmd": "python3 /root/coldstart_host.py --round v2cs_r09",
+  "out": "/root/coldstart_v2cs_r09.jsonl"
+ },
+ {
+  "round": "v2cs_r10",
+  "kind": "cs",
+  "timeout": 3600,
+  "cmd": "python3 /root/coldstart_host.py --round v2cs_r10",
+  "out": "/root/coldstart_v2cs_r10.jsonl"
+ },
+ {
+  "round": "v2jm8_r01",
+  "kind": "joint",
+  "timeout": 3900,
+  "cmd": "python3 /root/joint_host.py --round v2jm8_r01 --mem-high-mb 800 --canary-max-ms 5500",
+  "out": "/root/joint_v2jm8_r01.jsonl"
+ },
+ {
+  "round": "v2jm8_r02",
+  "kind": "joint",
+  "timeout": 3900,
+  "cmd": "python3 /root/joint_host.py --round v2jm8_r02 --mem-high-mb 800 --canary-max-ms 5500",
+  "out": "/root/joint_v2jm8_r02.jsonl"
+ },
+ {
+  "round": "v2jm8_r03",
+  "kind": "joint",
+  "timeout": 3900,
+  "cmd": "python3 /root/joint_host.py --round v2jm8_r03 --mem-high-mb 800 --canary-max-ms 5500",
+  "out": "/root/joint_v2jm8_r03.jsonl"
+ },
+ {
+  "round": "v2jm8_r04",
+  "kind": "joint",
+  "timeout": 3900,
+  "cmd": "python3 /root/joint_host.py --round v2jm8_r04 --mem-high-mb 800 --canary-max-ms 5500",
+  "out": "/root/joint_v2jm8_r04.jsonl"
+ },
+ {
+  "round": "v2jm8_r05",
+  "kind": "joint",
+  "timeout": 3900,
+  "cmd": "python3 /root/joint_host.py --round v2jm8_r05 --mem-high-mb 800 --canary-max-ms 5500",
+  "out": "/root/joint_v2jm8_r05.jsonl"
+ },
+ {
+  "round": "v2jm9_r01",
+  "kind": "joint",
+  "timeout": 3900,
+  "cmd": "python3 /root/joint_host.py --round v2jm9_r01 --mem-high-mb 1920 --canary-max-ms 2000",
+  "out": "/root/joint_v2jm9_r01.jsonl"
+ },
+ {
+  "round": "v2jm9_r02",
+  "kind": "joint",
+  "timeout": 3900,
+  "cmd": "python3 /root/joint_host.py --round v2jm9_r02 --mem-high-mb 1920 --canary-max-ms 2000",
+  "out": "/root/joint_v2jm9_r02.jsonl"
+ },
+ {
+  "round": "v2jm9_r03",
+  "kind": "joint",
+  "timeout": 3900,
+  "cmd": "python3 /root/joint_host.py --round v2jm9_r03 --mem-high-mb 1920 --canary-max-ms 2000",
+  "out": "/root/joint_v2jm9_r03.jsonl"
+ },
+ {
+  "round": "v2jm9_r04",
+  "kind": "joint",
+  "timeout": 3900,
+  "cmd": "python3 /root/joint_host.py --round v2jm9_r04 --mem-high-mb 1920 --canary-max-ms 2000",
+  "out": "/root/joint_v2jm9_r04.jsonl"
+ },
+ {
+  "round": "v2jm9_r05",
+  "kind": "joint",
+  "timeout": 3900,
+  "cmd": "python3 /root/joint_host.py --round v2jm9_r05 --mem-high-mb 1920 --canary-max-ms 2000",
+  "out": "/root/joint_v2jm9_r05.jsonl"
+ },
+ {
+  "round": "v2prep2",
+  "kind": "prep2",
+  "timeout": 1200,
+  "cmd": "for v in 116 117 118 119 120; do qm stop $v; done; sleep 3; for v in 116 117 118 119 120; do qm set $v --cores 2 >/dev/null; done; for v in 116 117 118 119 120; do qm start $v; done; sleep 25; echo ok > /root/phase2_2p.done",
+  "out": "/root/phase2_2p.done"
+ },
+ {
+  "round": "v2est2p_r01",
+  "kind": "est2p",
+  "timeout": 2700,
+  "cmd": "python3 /root/estimator_eval_host.py --round v2est2p_r01 --vmids 116,117,118,119,120 --vcpus 2",
+  "out": "/root/estimator_v2est2p_r01.jsonl"
+ },
+ {
+  "round": "v2est2p_r02",
+  "kind": "est2p",
+  "timeout": 2700,
+  "cmd": "python3 /root/estimator_eval_host.py --round v2est2p_r02 --vmids 116,117,118,119,120 --vcpus 2",
+  "out": "/root/estimator_v2est2p_r02.jsonl"
+ },
+ {
+  "round": "v2est2p_r03",
+  "kind": "est2p",
+  "timeout": 2700,
+  "cmd": "python3 /root/estimator_eval_host.py --round v2est2p_r03 --vmids 116,117,118,119,120 --vcpus 2",
+  "out": "/root/estimator_v2est2p_r03.jsonl"
+ },
+ {
+  "round": "v2est2p_r04",
+  "kind": "est2p",
+  "timeout": 2700,
+  "cmd": "python3 /root/estimator_eval_host.py --round v2est2p_r04 --vmids 116,117,118,119,120 --vcpus 2",
+  "out": "/root/estimator_v2est2p_r04.jsonl"
+ },
+ {
+  "round": "v2est2p_r05",
+  "kind": "est2p",
+  "timeout": 2700,
+  "cmd": "python3 /root/estimator_eval_host.py --round v2est2p_r05 --vmids 116,117,118,119,120 --vcpus 2",
+  "out": "/root/estimator_v2est2p_r05.jsonl"
+ },
+ {
+  "round": "v2est2p_r06",
+  "kind": "est2p",
+  "timeout": 2700,
+  "cmd": "python3 /root/estimator_eval_host.py --round v2est2p_r06 --vmids 116,117,118,119,120 --vcpus 2",
+  "out": "/root/estimator_v2est2p_r06.jsonl"
+ },
+ {
+  "round": "v2est2p_r07",
+  "kind": "est2p",
+  "timeout": 2700,
+  "cmd": "python3 /root/estimator_eval_host.py --round v2est2p_r07 --vmids 116,117,118,119,120 --vcpus 2",
+  "out": "/root/estimator_v2est2p_r07.jsonl"
+ },
+ {
+  "round": "v2est2p_r08",
+  "kind": "est2p",
+  "timeout": 2700,
+  "cmd": "python3 /root/estimator_eval_host.py --round v2est2p_r08 --vmids 116,117,118,119,120 --vcpus 2",
+  "out": "/root/estimator_v2est2p_r08.jsonl"
+ },
+ {
+  "round": "v2est2p_r09",
+  "kind": "est2p",
+  "timeout": 2700,
+  "cmd": "python3 /root/estimator_eval_host.py --round v2est2p_r09 --vmids 116,117,118,119,120 --vcpus 2",
+  "out": "/root/estimator_v2est2p_r09.jsonl"
+ },
+ {
+  "round": "v2est2p_r10",
+  "kind": "est2p",
+  "timeout": 2700,
+  "cmd": "python3 /root/estimator_eval_host.py --round v2est2p_r10 --vmids 116,117,118,119,120 --vcpus 2",
+  "out": "/root/estimator_v2est2p_r10.jsonl"
+ },
+ {
+  "round": "v2rest2",
+  "kind": "restore2",
+  "timeout": 1200,
+  "cmd": "for v in 116 117 118 119 120; do qm stop $v; done; sleep 3; for v in 116 117 118 119 120; do qm set $v --cores 1 >/dev/null; done; for v in 116 117 118 119 120; do qm start $v; done; sleep 25; echo ok > /root/phase2_2p_restored.done",
+  "out": "/root/phase2_2p_restored.done"
+ }
+]

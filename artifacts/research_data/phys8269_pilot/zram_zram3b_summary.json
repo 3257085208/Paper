@@ -1,0 +1,20 @@
+{
+ "round": "zram3b",
+ "arms": [
+  {
+   "arm": "zram",
+   "duration_s": 1763.0,
+   "aborted_low_avail": false,
+   "allocated_mb": 1146880,
+   "mid_http_p99": 0.745,
+   "zram_peak": "189785243648 3066204732 3505946624        0 3505946624    58106        0     4588     4594"
+  },
+  {
+   "arm": "disk",
+   "duration_s": 1703.6,
+   "aborted_low_avail": true,
+   "allocated_mb": 1069056,
+   "mid_http_p99": 0.738
+  }
+ ]
+}

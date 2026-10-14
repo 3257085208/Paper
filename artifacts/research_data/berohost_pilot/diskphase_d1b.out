@@ -1,0 +1,12 @@
+MODE baseline: host_iops=16533.0 host_mbps=67.9 http_p99=12.052 redis_p99=7.752
+  vm1: read=1810 write=779 iops (p99 2073/2179 us)
+  vm2: read=1909 write=819 iops (p99 2007/2040 us)
+  vm3: read=1751 write=752 iops (p99 2179/2212 us)
+  vm4: read=1892 write=812 iops (p99 2040/2114 us)
+  vm5: read=1770 write=761 iops (p99 2146/2212 us)
+  vm6: read=1907 write=818 iops (p99 2040/2114 us)
+  vm7: read=1790 write=770 iops (p99 2073/2146 us)
+  vm8: read=1832 write=788 iops (p99 2114/2114 us)
+  vm9: read=1858 write=798 iops (p99 2073/2146 us)
+  vm10: read=1866 write=802 iops (p99 2056/2114 us)
+DISKPHASE d1b DONE

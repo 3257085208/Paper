@@ -1,0 +1,36 @@
+{"step": 1, "candidate": 1, "decision": "allow", "reason": "est=0.00+prior=0.20<=3.2", "admitted_before": 0, "light_known": [], "admitted_after": 1, "http_p99": 3.886, "redis_p99": 3.199, "violation": false}
+{"step": 2, "candidate": 2, "decision": "allow", "reason": "est=0.50+prior=0.20<=3.2", "admitted_before": 1, "light_known": [], "admitted_after": 2, "http_p99": 4.586, "redis_p99": 5.704, "violation": false}
+{"step": 3, "candidate": 3, "decision": "allow", "reason": "est=1.00+prior=0.20<=3.2", "admitted_before": 2, "light_known": [], "admitted_after": 3, "http_p99": 11.698, "redis_p99": 8.679, "violation": true}
+{"step": 4, "candidate": 4, "decision": "allow", "reason": "est=1.50+prior=0.20<=3.2", "admitted_before": 3, "light_known": [], "admitted_after": 4, "http_p99": 14.846, "redis_p99": 12.466, "violation": true}
+{"step": 5, "candidate": 5, "decision": "allow", "reason": "est=2.00+prior=0.20<=3.2", "admitted_before": 4, "light_known": [], "admitted_after": 5, "http_p99": 17.159, "redis_p99": 13.341, "violation": true}
+{"step": 6, "candidate": 6, "decision": "allow", "reason": "est=2.50+prior=0.20<=3.2", "admitted_before": 5, "light_known": [], "admitted_after": 6, "http_p99": 16.476, "redis_p99": 14.15, "violation": true}
+{"step": 1, "candidate": 1, "decision": "allow", "reason": "est=0.00+prior=1.00<=3.2", "admitted_before": 0, "light_known": [], "admitted_after": 1, "http_p99": 3.54, "redis_p99": 3.388, "violation": false}
+{"step": 2, "candidate": 2, "decision": "allow", "reason": "est=1.00+prior=1.00<=3.2", "admitted_before": 1, "light_known": [], "admitted_after": 2, "http_p99": 3.889, "redis_p99": 4.169, "violation": false}
+{"step": 3, "candidate": 3, "decision": "allow", "reason": "est=2.00+prior=1.00<=3.2", "admitted_before": 2, "light_known": [], "admitted_after": 3, "http_p99": 11.542, "redis_p99": 8.545, "violation": true}
+{"step": 4, "candidate": 4, "decision": "defer", "reason": "est=3.00+prior=1.00<=3.2", "admitted_before": 3, "light_known": []}
+{"step": 5, "candidate": 5, "decision": "defer", "reason": "est=3.00+prior=1.00<=3.2", "admitted_before": 3, "light_known": []}
+{"step": 6, "candidate": 6, "decision": "defer", "reason": "est=3.00+prior=1.00<=3.2", "admitted_before": 3, "light_known": []}
+{"step": 1, "candidate": 1, "decision": "allow", "reason": "est=0.00+prior=1.00<=3.2", "admitted_before": 0, "light_known": [], "admitted_after": 1, "http_p99": 3.336, "redis_p99": 3.465, "violation": false}
+{"step": 2, "candidate": 2, "decision": "allow", "reason": "est=1.00+prior=1.00<=3.2", "admitted_before": 1, "light_known": [], "admitted_after": 2, "http_p99": 3.325, "redis_p99": 3.259, "violation": false}
+{"step": 3, "candidate": 3, "decision": "allow", "reason": "est=2.00+prior=1.00<=3.2", "admitted_before": 2, "light_known": [], "admitted_after": 3, "http_p99": 9.101, "redis_p99": 7.926, "violation": false}
+{"step": 4, "candidate": 4, "decision": "defer", "reason": "est=3.00+prior=1.00<=3.2", "admitted_before": 3, "light_known": []}
+{"step": 5, "candidate": 5, "decision": "defer", "reason": "est=3.00+prior=1.00<=3.2", "admitted_before": 3, "light_known": []}
+{"step": 6, "candidate": 6, "decision": "defer", "reason": "est=3.00+prior=1.00<=3.2", "admitted_before": 3, "light_known": []}
+{"step": 1, "candidate": 1, "decision": "allow", "reason": "est=0.00+prior=0.20<=3.2", "admitted_before": 0, "light_known": [], "admitted_after": 1, "http_p99": 3.361, "redis_p99": 2.624, "violation": false}
+{"step": 2, "candidate": 2, "decision": "allow", "reason": "est=0.00+prior=0.20<=3.2", "admitted_before": 1, "light_known": [], "admitted_after": 2, "http_p99": 3.204, "redis_p99": 3.651, "violation": false}
+{"step": 3, "candidate": 3, "decision": "allow", "reason": "est=0.01+prior=0.20<=3.2", "admitted_before": 2, "light_known": [], "admitted_after": 3, "http_p99": 4.404, "redis_p99": 3.679, "violation": false}
+{"step": 4, "candidate": 4, "decision": "allow", "reason": "est=0.01+prior=0.20<=3.2", "admitted_before": 3, "light_known": [], "admitted_after": 4, "http_p99": 3.367, "redis_p99": 3.159, "violation": false}
+{"step": 5, "candidate": 5, "decision": "allow", "reason": "est=0.01+prior=0.20<=3.2", "admitted_before": 4, "light_known": [], "admitted_after": 5, "http_p99": 4.209, "redis_p99": 3.043, "violation": false}
+{"step": 6, "candidate": 6, "decision": "allow", "reason": "est=0.01+prior=0.20<=3.2", "admitted_before": 5, "light_known": [], "admitted_after": 6, "http_p99": 2.966, "redis_p99": 3.004, "violation": false}
+{"step": 1, "candidate": 1, "decision": "allow", "reason": "est=0.00+prior=1.00<=3.2", "admitted_before": 0, "light_known": [], "admitted_after": 1, "http_p99": 3.119, "redis_p99": 3.004, "violation": false}
+{"step": 2, "candidate": 2, "decision": "allow", "reason": "est=1.00+prior=1.00<=3.2", "admitted_before": 1, "light_known": [], "admitted_after": 2, "http_p99": 2.782, "redis_p99": 3.054, "violation": false}
+{"step": 3, "candidate": 3, "decision": "allow", "reason": "est=2.00+prior=1.00<=3.2", "admitted_before": 2, "light_known": [], "admitted_after": 3, "http_p99": 2.79, "redis_p99": 3.621, "violation": false}
+{"step": 4, "candidate": 4, "decision": "defer", "reason": "est=3.00+prior=1.00<=3.2", "admitted_before": 3, "light_known": []}
+{"step": 5, "candidate": 5, "decision": "defer", "reason": "est=3.00+prior=1.00<=3.2", "admitted_before": 3, "light_known": []}
+{"step": 6, "candidate": 6, "decision": "defer", "reason": "est=3.00+prior=1.00<=3.2", "admitted_before": 3, "light_known": []}
+{"step": 1, "candidate": 1, "decision": "allow", "reason": "est=0.00+prior=1.00<=3.2", "admitted_before": 0, "light_known": [], "admitted_after": 1, "http_p99": 3.123, "redis_p99": 2.744, "violation": false}
+{"step": 2, "candidate": 2, "decision": "allow", "reason": "est=1.00+prior=1.00<=3.2", "admitted_before": 1, "light_known": [], "admitted_after": 2, "http_p99": 3.416, "redis_p99": 3.249, "violation": false}
+{"step": 3, "candidate": 3, "decision": "allow", "reason": "est=1.00+prior=0.20<=3.2", "admitted_before": 2, "light_known": [1], "admitted_after": 3, "http_p99": 2.919, "redis_p99": 3.174, "violation": false}
+{"step": 4, "candidate": 4, "decision": "allow", "reason": "est=1.01+prior=0.20<=3.2", "admitted_before": 3, "light_known": [1, 2], "admitted_after": 4, "http_p99": 3.167, "redis_p99": 3.607, "violation": false}
+{"step": 5, "candidate": 5, "decision": "allow", "reason": "est=1.01+prior=0.20<=3.2", "admitted_before": 4, "light_known": [1, 2, 3], "admitted_after": 5, "http_p99": 3.819, "redis_p99": 2.945, "violation": false}
+{"step": 6, "candidate": 6, "decision": "allow", "reason": "est=1.01+prior=0.20<=3.2", "admitted_before": 5, "light_known": [1, 2, 3, 4], "admitted_after": 6, "http_p99": 3.575, "redis_p99": 3.817, "violation": false}

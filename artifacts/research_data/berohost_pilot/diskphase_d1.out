@@ -1,0 +1,2 @@
+MODE baseline: host_iops=19877.0 host_mbps=233.0 http_p99=11.878 redis_p99=7.581
+DISKPHASE d1 DONE

@@ -1,0 +1,49 @@
+========== m1 / naive ==========
+[m1 naive] step 1 -> allow (usage_sum=0.00+0.50<=3.2)
+   window: http p99=4.572 redis p99=3.95 viol=False
+[m1 naive] step 2 -> allow (usage_sum=0.50+0.50<=3.2)
+   window: http p99=4.343 redis p99=4.929 viol=False
+[m1 naive] step 3 -> allow (usage_sum=1.00+0.50<=3.2)
+   window: http p99=8.795 redis p99=7.77 viol=False
+[m1 naive] step 4 -> allow (usage_sum=1.50+0.50<=3.2)
+   window: http p99=17.82 redis p99=14.757 viol=True
+[m1 naive] step 5 -> allow (usage_sum=2.00+0.50<=3.2)
+   window: http p99=15.604 redis p99=15.901 viol=True
+[m1 naive] step 6 -> allow (usage_sum=2.50+0.50<=3.2)
+   window: http p99=20.748 redis p99=15.81 viol=True
+SUMMARY m1 naive: admitted=6 defers=0 violations=3
+========== m1 / audible ==========
+[m1 audible] step 1 -> allow (mc_q99_sum=0.00+0.50<=3.2)
+   window: http p99=4.493 redis p99=3.487 viol=False
+[m1 audible] step 2 -> allow (mc_q99_sum=0.50+0.50<=3.2)
+   window: http p99=4.564 redis p99=4.489 viol=False
+[m1 audible] step 3 -> allow (mc_q99_sum=1.00+0.50<=3.2)
+   window: http p99=10.496 redis p99=10.582 viol=True
+[m1 audible] step 4 -> allow (mc_q99_sum=1.50+0.50<=3.2)
+   window: http p99=19.458 redis p99=13.121 viol=True
+[m1 audible] step 5 -> allow (mc_q99_sum=2.01+0.50<=3.2)
+   window: http p99=16.024 redis p99=13.941 viol=True
+[m1 audible] step 6 -> allow (mc_q99_sum=2.51+0.50<=3.2)
+   window: http p99=15.71 redis p99=15.769 viol=True
+SUMMARY m1 audible: admitted=6 defers=0 violations=4
+========== m1 / aware ==========
+[m1 aware] step 1 -> allow (aware_sum=0.00+1.00<=3.2)
+   window: http p99=3.644 redis p99=3.308 viol=False
+[m1 aware] step 2 -> allow (aware_sum=1.00+1.00<=3.2)
+   window: http p99=5.461 redis p99=3.669 viol=False
+[m1 aware] step 3 -> allow (aware_sum=2.00+1.00<=3.2)
+   window: http p99=9.764 redis p99=7.63 viol=False
+[m1 aware] step 4 -> defer (aware_sum=3.00+1.00<=3.2)
+[m1 aware] step 5 -> defer (aware_sum=3.00+1.00<=3.2)
+[m1 aware] step 6 -> defer (aware_sum=3.00+1.00<=3.2)
+SUMMARY m1 aware: admitted=3 defers=3 violations=0
+========== m1 / aware_cal ==========
+[m1 aware_cal] step 1 -> allow (aware_sum=0.00+1.00<=2.88)
+   window: http p99=4.113 redis p99=3.333 viol=False
+[m1 aware_cal] step 2 -> defer (tail_pause last_p999=12.2>12)
+[m1 aware_cal] step 3 -> defer (tail_pause last_p999=12.2>12)
+[m1 aware_cal] step 4 -> defer (tail_pause last_p999=12.2>12)
+[m1 aware_cal] step 5 -> defer (tail_pause last_p999=12.2>12)
+[m1 aware_cal] step 6 -> defer (tail_pause last_p999=12.2>12)
+SUMMARY m1 aware_cal: admitted=1 defers=5 violations=0
+METHEVAL m1 DONE

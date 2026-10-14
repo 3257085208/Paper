@@ -1,0 +1,107 @@
+[
+ {
+  "t": 320.7,
+  "http": {
+   "tag": "replay1-p305",
+   "mode": "http",
+   "target": "10.10.0.11:80",
+   "rate_per_s": 100.0,
+   "duration_s": 15.0,
+   "planned": 1500,
+   "completed_ok": 1500,
+   "timeouts": 0,
+   "errors": {},
+   "schedule_lag_p99_ms": 2.095,
+   "p50_ms": 0.56,
+   "p90_ms": 0.599,
+   "p99_ms": 0.729,
+   "p999_ms": 1.197,
+   "max_ms": 1.537,
+   "connect_p99_ms": 0.426
+  }
+ },
+ {
+  "t": 641.3,
+  "http": {
+   "tag": "replay1-p625",
+   "mode": "http",
+   "target": "10.10.0.11:80",
+   "rate_per_s": 100.0,
+   "duration_s": 15.0,
+   "planned": 1500,
+   "completed_ok": 1500,
+   "timeouts": 0,
+   "errors": {},
+   "schedule_lag_p99_ms": 2.095,
+   "p50_ms": 0.544,
+   "p90_ms": 0.602,
+   "p99_ms": 0.706,
+   "p999_ms": 1.249,
+   "max_ms": 1.426,
+   "connect_p99_ms": 0.422
+  }
+ },
+ {
+  "t": 962.9,
+  "http": {
+   "tag": "replay1-p947",
+   "mode": "http",
+   "target": "10.10.0.11:80",
+   "rate_per_s": 100.0,
+   "duration_s": 15.0,
+   "planned": 1500,
+   "completed_ok": 1500,
+   "timeouts": 0,
+   "errors": {},
+   "schedule_lag_p99_ms": 2.09,
+   "p50_ms": 0.561,
+   "p90_ms": 0.622,
+   "p99_ms": 0.727,
+   "p999_ms": 1.034,
+   "max_ms": 1.495,
+   "connect_p99_ms": 0.423
+  }
+ },
+ {
+  "t": 1283.6,
+  "http": {
+   "tag": "replay1-p1268",
+   "mode": "http",
+   "target": "10.10.0.11:80",
+   "rate_per_s": 100.0,
+   "duration_s": 15.0,
+   "planned": 1500,
+   "completed_ok": 1500,
+   "timeouts": 0,
+   "errors": {},
+   "schedule_lag_p99_ms": 2.098,
+   "p50_ms": 0.549,
+   "p90_ms": 0.602,
+   "p99_ms": 0.719,
+   "p999_ms": 1.356,
+   "max_ms": 1.417,
+   "connect_p99_ms": 0.377
+  }
+ },
+ {
+  "t": 1604.3,
+  "http": {
+   "tag": "replay1-p1588",
+   "mode": "http",
+   "target": "10.10.0.11:80",
+   "rate_per_s": 100.0,
+   "duration_s": 15.0,
+   "planned": 1500,
+   "completed_ok": 1500,
+   "timeouts": 0,
+   "errors": {},
+   "schedule_lag_p99_ms": 2.082,
+   "p50_ms": 0.563,
+   "p90_ms": 0.651,
+   "p99_ms": 1.599,
+   "p999_ms": 2.358,
+   "max_ms": 2.541,
+   "connect_p99_ms": 0.764
+  }
+ }
+]

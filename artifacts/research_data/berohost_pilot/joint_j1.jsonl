@@ -1,0 +1,12 @@
+{"step": 1, "candidate": 1, "decision": "allow", "reason": "est=0.01+prior=0.50<=1.6", "admitted_before": 0, "canary": "5 3828.5 1 1", "admitted_after": 1, "http_p99": 3.028, "redis_p99": 3.246, "violation": false}
+{"step": 2, "candidate": 2, "decision": "allow", "reason": "est=0.50+prior=0.50<=1.6", "admitted_before": 1, "canary": "5 4414.6 1 1", "admitted_after": 2, "http_p99": 2.622, "redis_p99": 2.945, "violation": false}
+{"step": 3, "candidate": 3, "decision": "allow", "reason": "est=0.81+prior=0.50<=1.6", "admitted_before": 2, "canary": "7 3804.6 1 1", "admitted_after": 3, "http_p99": 3.645, "redis_p99": 3.497, "violation": false}
+{"step": 4, "candidate": 4, "decision": "defer", "reason": "est=1.45+prior=0.50<=1.6", "admitted_before": 3, "canary": "5 3796.6 1 1"}
+{"step": 5, "candidate": 5, "decision": "defer", "reason": "est=1.51+prior=0.50<=1.6", "admitted_before": 3, "canary": "5 3819.0 1 1"}
+{"step": 6, "candidate": 6, "decision": "defer", "reason": "est=1.52+prior=0.50<=1.6", "admitted_before": 3, "canary": "5 1.1 0 0"}
+{"step": 1, "candidate": 1, "decision": "allow", "reason": "est=0.01+prior=1.00<=1.6", "admitted_before": 0, "canary": "5 3832.5 1 1", "admitted_after": 1, "http_p99": 2.871, "redis_p99": 2.854, "violation": false}
+{"step": 2, "candidate": 2, "decision": "defer", "reason": "est=1.01+prior=1.00<=1.6", "admitted_before": 1, "canary": "5 1824.4 1 1"}
+{"step": 3, "candidate": 3, "decision": "defer", "reason": "est=1.01+prior=1.00<=1.6", "admitted_before": 1, "canary": "5 3850.5 1 1"}
+{"step": 4, "candidate": 4, "decision": "defer", "reason": "est=1.90+prior=1.00<=1.6", "admitted_before": 1, "canary": "5 3.2 0 0"}
+{"step": 5, "candidate": 5, "decision": "defer", "reason": "est=1.01+prior=1.00<=1.6", "admitted_before": 1, "canary": "5 1814.2 1 1"}
+{"step": 6, "candidate": 6, "decision": "defer", "reason": "est=1.14+prior=1.00<=1.6", "admitted_before": 1, "canary": "5 3845.5 1 1"}

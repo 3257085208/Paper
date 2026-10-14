@@ -1,0 +1,12 @@
+MODE capped: host_iops=15746.0 host_mbps=64.7 http_p99=8.485 redis_p99=13.486
+  vm1: read=1760 write=756 iops (p99 2441/2605 us)
+  vm2: read=1781 write=765 iops (p99 2441/2638 us)
+  vm3: read=1702 write=731 iops (p99 2540/2769 us)
+  vm4: read=1792 write=770 iops (p99 2474/2638 us)
+  vm5: read=1670 write=717 iops (p99 2572/2736 us)
+  vm6: read=1789 write=770 iops (p99 2376/2540 us)
+  vm7: read=1719 write=738 iops (p99 2540/2769 us)
+  vm8: read=1793 write=771 iops (p99 2343/2540 us)
+  vm9: read=1769 write=760 iops (p99 2441/2605 us)
+  vm10: read=1765 write=758 iops (p99 2474/2605 us)
+DISKPHASE d2 DONE

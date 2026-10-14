@@ -1,0 +1,21 @@
+========== joint j1 / naive ==========
+[j1 naive] step 1 -> allow (est=0.01+prior=0.50<=1.6)
+   window: http p99=3.028 redis p99=3.246 viol=False canary=5 3828.5 1 1
+[j1 naive] step 2 -> allow (est=0.50+prior=0.50<=1.6)
+   window: http p99=2.622 redis p99=2.945 viol=False canary=5 4414.6 1 1
+[j1 naive] step 3 -> allow (est=0.81+prior=0.50<=1.6)
+   window: http p99=3.645 redis p99=3.497 viol=False canary=7 3804.6 1 1
+[j1 naive] step 4 -> defer (est=1.45+prior=0.50<=1.6)
+[j1 naive] step 5 -> defer (est=1.51+prior=0.50<=1.6)
+[j1 naive] step 6 -> defer (est=1.52+prior=0.50<=1.6)
+SUMMARY joint j1 naive: admitted=3 defers=3 violations=0
+========== joint j1 / aware ==========
+[j1 aware] step 1 -> allow (est=0.01+prior=1.00<=1.6)
+   window: http p99=2.871 redis p99=2.854 viol=False canary=5 3832.5 1 1
+[j1 aware] step 2 -> defer (est=1.01+prior=1.00<=1.6)
+[j1 aware] step 3 -> defer (est=1.01+prior=1.00<=1.6)
+[j1 aware] step 4 -> defer (est=1.90+prior=1.00<=1.6)
+[j1 aware] step 5 -> defer (est=1.01+prior=1.00<=1.6)
+[j1 aware] step 6 -> defer (est=1.14+prior=1.00<=1.6)
+SUMMARY joint j1 aware: admitted=1 defers=5 violations=0
+JOINT j1 DONE

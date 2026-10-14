@@ -1,0 +1,14 @@
+=== Appendix A executable checks (ideal model) ===
+T-A censoring pair: (u,t)_A=(0.200,0.64)  (u,t)_B=(0.200,0.64)  means=0.556 vs 0.840  -> PASS
+T-B1 marginals: aligned peak=24, random delivered=4.80 cores (util 60%) at N=24, C=8
+T-B2 utilization cap: aligned delivered util stays 20% (=duty) for N in {8..128} -> PASS (any threshold theta>rho admits unbounded N)
+T-B2 numeric: random util at N=24 = 0.60 (paper-measured ~0.66-0.68 incl. overheads) vs aligned 0.20
+T-B3 single-period cap: L=10/30/60 s -> cap 1.00/0.40/0.20; util80 L=30 theta=0.80 > 0.40 -> unbounded  PASS
+T-B4 L= 60: numeric max=0.2000 | U(L)=0.2000 | old min(w,L)/L=0.2000
+T-B4 L= 90: numeric max=0.2667 | U(L)=0.2667 | old min(w,L)/L=0.1333  <- old formula WRONG
+T-B4 L=120: numeric max=0.2000 | U(L)=0.2000 | old min(w,L)/L=0.1000  <- old formula WRONG
+T-B4 L=150: numeric max=0.2400 | U(L)=0.2400 | old min(w,L)/L=0.0800  <- old formula WRONG
+T-B4 multi-period formula verified numerically (L=90 exceeds rho: 0.2667 > 0.20)  PASS
+T-C sampling: Delta=30s, w=12s, samples=[3, 33, 3], burst@[15,27): hits=False (benign hits=False) -> PASS (identical zero sequences)
+T-C positive control: Delta=10s samples=[3, 13, 23, 33, 43, 53] -> burst hit=True
+=== all constructions verified ===

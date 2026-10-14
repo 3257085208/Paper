@@ -1,0 +1,28 @@
+wave 1: guest_total=7405 MB avail=9063 MB swapfree=1024 MB http_p99=2.338 redis_p99=2.068
+wave 2: guest_total=9363 MB avail=7113 MB swapfree=1024 MB http_p99=2.169 redis_p99=2.068
+wave 3: guest_total=11387 MB avail=5083 MB swapfree=1024 MB http_p99=2.261 redis_p99=1.807
+wave 4: guest_total=13430 MB avail=3119 MB swapfree=915 MB http_p99=2.417 redis_p99=1.848
+wave 5: guest_total=13829 MB avail=3223 MB swapfree=17 MB http_p99=2.218 redis_p99=2.167
+MEMPHASE m1 DONE
+Traceback (most recent call last):
+  File "/root/mem_phase_host.py", line 197, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/root/mem_phase_host.py", line 158, in main
+    start_wave(wave)
+  File "/root/mem_phase_host.py", line 85, in start_wave
+    vm_cmd(NEIGHBOR_IP[i],
+  File "/root/mem_phase_host.py", line 44, in vm_cmd
+    res = subprocess.run(["ssh"] + SSH_BASE + ["debian@" + ip, cmd],
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/subprocess.py", line 550, in run
+    stdout, stderr = process.communicate(input, timeout=timeout)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/subprocess.py", line 1207, in communicate
+    stdout, stderr = self._communicate(input, endtime, timeout)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/subprocess.py", line 2060, in _communicate
+    self._check_timeout(endtime, orig_timeout, stdout, stderr)
+  File "/usr/lib/python3.11/subprocess.py", line 1251, in _check_timeout
+    raise TimeoutExpired(
+subprocess.TimeoutExpired: Command '['ssh', '-n', '-i', '/root/.ssh/sci2_key', '-o', 'IdentitiesOnly=yes', '-o', 'BatchMode=yes', '-o', 'StrictHostKeyChecking=accept-new', '-o', 'ConnectTimeout=10', '-o', 'LogLevel=ERROR', 'debian@10.10.10.28', 'nohup python3 /home/debian/ballast.py /tmp/ballast_w6.txt --target-mb 200 --step-mb 50 >/dev/null 2>&1 & echo ok']' timed out after 30 seconds
