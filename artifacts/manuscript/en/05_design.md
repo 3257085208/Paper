@@ -63,7 +63,7 @@ present as an "empirical safety envelope", never as a 1% guarantee.
 | Fixed oversubscription ratio | Any host/tenant state | Admits 5/5, four violation windows (Section 7.2) |
 | Average-utilization threshold | Instantaneous overlap; censoring | Signs off under phase-clustered/synchronized load (Sections 4.1–4.2) |
 | Uncorrected historical quantile | Censoring; synchronization | Throttled tenants read as "idle" (Section 4.3) |
-| **This design** | — (manages both explicitly; pauses on uncertainty) | See Section 6 |
+| This design | — (manages both explicitly; pauses on uncertainty) | See Section 6 |
 
 ## 5.5 Honest Statements
 

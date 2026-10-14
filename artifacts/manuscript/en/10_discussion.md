@@ -8,7 +8,7 @@
 
 ## 10.2 SLO Tiers and the Capacity–Quality Curve
 
-All experiments use the strict tier P99 ≤ 10 ms. Real cheap-VPS customers have no formal SLO and typically tolerate tens of milliseconds; our own data show that the same ten-tenant mix that violates the 10 ms tier would mostly be fine at ~30 ms. **"How much can be sold" is therefore a function of the SLO tier, not a constant** — providers should make the density–tier relation an explicit product parameter (e.g., economy tier P99 ≤ 50 ms, standard ≤ 20 ms) instead of quietly holding everyone to the strictest tier. The sensitivity analysis is on the pre-submission list; the mechanism and initial data are in place.
+All experiments use the strict tier P99 ≤ 10 ms. Real cheap-VPS customers have no formal SLO and typically tolerate tens of milliseconds; our own data show that the same ten-tenant mix that violates the 10 ms tier would mostly be fine at ~30 ms. **"How much can be sold" is therefore a function of the SLO tier, not a constant** — providers should make the density–tier relation an explicit product parameter , e.g., economy tier P99 ≤ 50 ms, standard ≤ 20 ms instead of quietly holding everyone to the strictest tier. The sensitivity analysis is on the pre-submission list; the mechanism and initial data are in place.
 
 ## 10.3 Design Implications
 

@@ -25,7 +25,7 @@ The scenario of Section 4.3 becomes a decision comparison (7 cycles): the same s
 
 | Decision | Evidence used | Action | Outcome |
 |---|---|---|---|
-| Naive (trust usage) | 1.50 cores used, "2.5 cores spare" | Release the caps (believed to be an optimization) | P99 16.7–25.0 ms, **7/7 violating** |
+| Naive (trust usage) | 1.50 cores used, "2.5 cores spare" | Release the caps (believed to be an optimization) | P99 16.7–25.0 ms, 7/7 violating |
 | Censoring-aware | Throttle evidence → ≥ 5.00 cores | Refuse the release; report "no headroom, capacity action required" | No new load introduced; quota state holds (P99 9–14 ms, near the SLO line) |
 
 **Reading.** Both decisions consume the same data and differ only in estimation: naive takes censored usage as demand and hallucinates half the host as empty; aware pins the demand lower bound above the quota using throttle evidence. The former action pushes the host into instantaneous saturation (tenants at 27–32 M it/s, host at 100%); the latter avoids the self-inflicted wound and emits the correct capacity signal. We keep the detail that the quota state itself sits near the SLO line: **this host is already at the overload boundary, and the upper action (migrate/upgrade) is out of scope here.**
@@ -38,16 +38,16 @@ The scenario of Section 4.3 becomes a decision comparison (7 cycles): the same s
 |---|---|---|---|
 | naive (usage) | 6 | 3 | P99 17.8/15.6/20.7 ms from the 4th tenant |
 | AUDIBLE-style (MC convolution, uncorrected) | 6 | 4 | likewise sees only the 50%-censored usage; 10.5 ms already at tenant 3 |
-| **aware (censoring-fixed)** | **3** | **0** | stops exactly at the knee (9.8 ms brushes the line) |
+| aware (censoring-fixed) | 3 | 0 | stops exactly at the knee (9.8 ms brushes the line) |
 | aware + calibration + tail pause | 1 | 0 | a single window with P999 = 12.2 ms falsely paused it with no recovery — another instance of "pausing needs smoothing/hysteresis" |
 
 **Cold start (no history).** Two arrival populations x three priors:
 
 | Prior | All-heavy arrivals | All-light arrivals |
 |---|---|---|
-| optimistic (0.2 core) | 6 admitted, **4 violation windows (11.7–17.2 ms)** | 6 admitted, 0 violations (but a wrong bet breaks the SLO) |
-| conservative (charge configured 1.0 core) | 3 admitted, 1 violation window (at the line) | **only 3 admitted — 3 seats lost** |
-| **probe-and-relax (conservative first, relax after observation)** | **3 admitted, 0 violations** | **6 admitted, 0 violations — safe and full-seat** |
+| optimistic (0.2 core) | 6 admitted, 4 violation windows (11.7–17.2 ms) | 6 admitted, 0 violations (but a wrong bet breaks the SLO) |
+| conservative (charge configured 1.0 core) | 3 admitted, 1 violation window (at the line) | only 3 admitted — 3 seats lost |
+| probe-and-relax (conservative first, relax after observation) | 3 admitted, 0 violations | 6 admitted, 0 violations — safe and full-seat |
 
 Reading: the optimistic prior is unsafe under heavy arrivals; a static conservative prior is safe but halves the seats; "probe first, relax on evidence" wins both sides. Together the two panels support the design principle of Section 5: priors are evidence-driven and must be cost-aware.
 
@@ -57,9 +57,9 @@ Five pegged tenants are measured at quotas 20/40/60%: the estimate $\hat d = \mi
 
 | quota | mean t | estimate | truth | error |
 |---|---|---|---|---|
-| 0.20 | 0.80 | **0.998** | 0.989 | +0.9% |
-| 0.40 | 0.58 | **0.955** | 0.988 | −3.3% |
-| 0.60 | 0.32 | **0.886** | 0.971 | −8.6% |
+| 0.20 | 0.80 | 0.998 | 0.989 | +0.9% |
+| 0.40 | 0.58 | 0.955 | 0.988 | −3.3% |
+| 0.60 | 0.32 | 0.886 | 0.971 | −8.6% |
 
 **Reading (empirical boundaries).** This table validates the estimator on the **saturated-demand** family: host-side counters (quota + throttle counters) recover the censored demand within 9%. This is **not a general guarantee**: the same counters over-estimate bursty demand (counterexample now in unit tests: true 0.3, quota 0.2 → estimate 1.0) and may under-estimate intermittent saturation; the "conservative direction" holds only on the saturated family. We therefore position it as an **empirical censoring-corrected estimator** (assumptions and boundaries in Section 3.3), with a cross-pattern characterization (5 patterns × 3 quotas × 3 periods × multi-vCPU) as a v2 study; it is integrated into the design (Section 5.3).
 
@@ -72,7 +72,7 @@ Under the same knee protocol and service-SLO criterion:
 | No controls | 3 | yes (22.7/20.7 ms) | 100% |
 | Quota 0.75 core | 3 | yes (14.0/11.2 ms) | ~72–78% |
 | Quota 0.50 core | 3 | yes (15.2/11.3 ms) | ~48–53% |
-| **Core isolation** | **≥5 (tested to 5)** | **no violations 1–5 (P99 2.9–3.2 ms)** | shares remaining cores (~44% at five) |
+| Core isolation | ≥5 (tested to 5) | no violations 1–5 (P99 2.9–3.2 ms) | shares remaining cores (~44% at five) |
 
 **Reading.** Only isolation raises the safe limit (to ≥5); quotas change tenant speed, not the limit (Section 4.4.1). The cost relocation is visible: isolation moves the cost from "service SLO" to "economy-tier customers", while quotas satisfy neither side. The remaining defenses — memory double gate and IO caps — do not raise the CPU knee but stop their own storms from dragging the service under (they are necessary parts of the synthesis configuration).
 
@@ -103,11 +103,11 @@ AUDIBLE system**).
 |---|---|---|---|
 | worstcase | 8 OK | 8 OK (both bars: service + customer P5~99% at N=8) | — (vCPU-ceiling only) |
 | quantile | 8 OK | 8 OK (both bars: same as above) | — |
-| fixed 2x | 16 OK | 16 VIOL (service OK; **customer P5=48.6% < 70%**) | beyond fine-scan bracket [8,10); 4-round ladder P5=48.6% at N=16 |
-| audible-style | 16 OK | **40 (cap) VIOL** | independence erases phase; P5=16% from n=18; show5 rerun: 8/8 active customers <70% at 40 |
-| **ours (PPC)** | 16 OK | **8 OK (both bars: customer P5~99%)** | stops inside the fine-scan bracket [8,10) |
-| ours_p | **20 OK** | 8 OK (both bars: same as above) | same |
-| util80 | **28 OK** (P5=78%) | **40 (cap) VIOL** | P5=16% from n=18; show5 rerun: 8/8 active customers <70% at 40 |
+| fixed 2x | 16 OK | 16 VIOL (service OK; customer P5=48.6% < 70%) | beyond fine-scan bracket [8,10); 4-round ladder P5=48.6% at N=16 |
+| audible-style | 16 OK | 40 (cap) VIOL | independence erases phase; P5=16% from n=18; show5 rerun: 8/8 active customers <70% at 40 |
+| ours (PPC) | 16 OK | 8 OK (both bars: customer P5~99%) | stops inside the fine-scan bracket [8,10) |
+| ours_p | 20 OK | 8 OK (both bars: same as above) | same |
+| util80 | 28 OK (P5=78%) | 40 (cap) VIOL | P5=16% from n=18; show5 rerun: 8/8 active customers <70% at 40 |
 
 **Implementation scope.** The `ours` policy in this table implements the **phase-resolution gate** of Algorithm A (one-second history -> 60 phase buckets, peak counting, fixed 10% margin, plus the `ours_p` customer-P5 pause). The full Algorithm A chain (**censoring-aware demand correction + background-residual Q95 reserve + dual service/customer pause guards**) is implemented as `ours_full` (`tb_admit.py`); its online batch (show7) is running and will be merged as supplementary material — the table's conclusions correspond to the gate, and the full-chain end-to-end ablation follows with show7.
 
@@ -119,7 +119,7 @@ AUDIBLE system**).
 | audible-style | (2) phase resolution (iid convolution) | sells 40 in sync (P5 = 16%) |
 | util80 | (3) time resolution (single-point busy) | 28 vs 40 stop drift across identical runs; sells 40 in sync |
 | worstcase | (1)(2)(3), all-conservative | always 8 (wastes 2–3x in rand) |
-| **ours / ours_p** | none (all three) | the only policies safe on both bars with rand 16-20 and aligned 8 (customer P5 ≈ 99% at N=8) |
+| ours / ours_p | none (all three) | the only policies safe on both bars with rand 16-20 and aligned 8 (customer P5 ≈ 99% at N=8) |
 
 **Three conclusions.** (i) the phase-aware controller is the only one combining the aligned-phase 8-seat
 bracket with competitive random-phase capacity (16–20; worstcase/quantile stop at 8 in *both* phases, fixed
@@ -148,7 +148,7 @@ fixed etc. lack the p5 column); the corrected seven-round rerun (show5) is queue
 
 **Collection note.** Customer-side detail under hard throttling collects incompletely (13/16 in syn3); service-side metrics carry the protection conclusion, with customer-side work rates and throttle counters as corroborating evidence.
 
-**v3 rework repeat (Figure 19).** The rework reran the same storm end-to-end (20 s probes, fresh state per round): **25 of 26 rounds pass** — HTTP P99 mean **4.82 ms** (median 4.02, range 2.95–25.26), Redis mean **3.34 ms** (2.53–4.13, always compliant); **one round (r24) violates at 25.3 ms** — in that round 8 tenants returned no rate samples (degraded state), reported honestly. The envelope has held across **29 of 30 passes (4 pilot + 26 rework)**. **Statistical honesty:** the optimistic independent-binomial one-sided 95% bound for 29/30 is ~**14.9%** (the earlier 11.7% for 24/24 was an optimistic pre-rework estimate; rounds share host state and are time-correlated, so the bound is indicative — "near-zero violations" is not a long-term guarantee).
+**v3 rework repeat (Figure 19).** The rework reran the same storm end-to-end (20 s probes, fresh state per round): **25 of 26 rounds pass** — HTTP P99 mean **4.82 ms** (median 4.02, range 2.95–25.26), Redis mean **3.34 ms** (2.53–4.13, always compliant); **one round (r24) violates at 25.3 ms** — in that round 8 tenants returned no rate samples (degraded state). The envelope has held across **29 of 30 passes (4 pilot + 26 rework)**. **Statistical honesty:** the optimistic independent-binomial one-sided 95% bound for 29/30 is ~**14.9%** (the earlier 11.7% for 24/24 was an optimistic pre-rework estimate; rounds share host state and are time-correlated, so the bound is indicative — "near-zero violations" is not a long-term guarantee).
 
 ## 7.5b Joint Admission + Shaping Validation (j1, Figure 13)
 
@@ -205,7 +205,7 @@ experiments here align with that segment; day/night peak regimes are future work
 **Boundaries and the two-state anchor (Figure 31).** The dense window is only 170 minutes and is a
 **night-time quiet segment** (host busy 30.1%, peak 47.2%); the light stream has now accumulated **39
 hours of day/night coverage** (274 points at 5-minute intervals; ~40% of samples missing to relay
-jitter, reported honestly): host busy mean **37.7%**, P95 55.5%, peak **66.1%**; guests consume 14.8%
+jitter): host busy mean **37.7%**, P95 55.5%, peak **66.1%**; guests consume 14.8%
 of host CPU on average; memory available never drops below **87.8 GB**; CPU PSI avg300 mean 5.3, peak
 14.0; no reboot in the window. The two-state anchor holds: the quiet/night dense segment (to which the
 controlled testbed experiments align) and the full day/night light segment together bracket the real

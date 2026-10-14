@@ -14,7 +14,7 @@
 | 1 | 1.44 | 3.00 | 6.3 | 2.68 | ~42% |
 | 2 | 1.59 | 3.38 | 13.7 | 3.19 | ~67% |
 | 3 | 1.92 | 4.86 | 26.8 | 4.95 | ~86% |
-| **4** | **11.0** | **23.8** | 27.4 | **20.8** | 100% |
+| 4 | 11.0 | 23.8 | 27.4 | 20.8 | 100% |
 | 5 | 6.9 | 21.5 | 25.9 | 18.5 | 100% |
 
 **Observations.** (i) The knee is stable at 3→4: with the fourth pegged neighbor, P50 jumps from 1.9 to 11.0 ms and P99 from 4.9 to 23.8 ms, tightly across five rounds. (ii) Tail-percentile warning precedes the median collapse: P999 already fluctuates at 2–3 neighbors (14–27 ms), one or two levels earlier. (iii) The 4-vs-5 comparison is non-monotonic in P50 (11.0 vs 6.9) — reading averages alone would rank 5 neighbors "better". (iv) Zero timeouts throughout: the service "looks healthy" by error rate or mean.
@@ -35,7 +35,7 @@
 | 1 | 50 | 3.42 | 3.31 | 2.74–4.82 | 0 |
 | 2 | 50 | 4.47 | 4.47 | 3.19–5.95 | 0 |
 | 3 | 98 | 7.36 | 7.10 | 4.71–13.50 | 7 (7%) |
-| **4** | **48** | **24.44** | 24.42 | **20.66–28.48** | **48 (100%, all > 20 ms)** |
+| 4 | 48 | 24.44 | 24.42 | 20.66–28.48 | 48 (100%, all > 20 ms) |
 
 Redis mirrors this (6.8 ms → 21.4 ms). The round-1 L4 sample (when the fourth neighbor was still up, i.e. exactly 4 running) reads 22.99 ms — inside the four-neighbor band.
 

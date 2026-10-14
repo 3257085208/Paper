@@ -24,8 +24,8 @@ burner window per config + synchronized 60 s windows + guest `cpu.stat` delivery
 | Config | Delivered CPU | Throttled | Rate | Rate/core |
 |---|---|---|---|---|
 | uncapped | 1.000 cores | 0% | 25.8M | 25.8M |
-| 2 ms (50% quota) | **0.500 cores** | 50% | 13.2–13.4M | 26.4–26.8M |
-| 1 s (50% quota) | **0.500 cores** | ~50% | 13.3M | 26.6M |
+| 2 ms (50% quota) | 0.500 cores | 50% | 13.2–13.4M | 26.4–26.8M |
+| 1 s (50% quota) | 0.500 cores | ~50% | 13.3M | 26.6M |
 
 **Corrected conclusion.** At 50% quota, **2 ms and 1 s deliver identically** (0.500 cores each, ~52%
 of baseline, difference <1%); **the +35% claim is withdrawn** (summary table corrected in step).

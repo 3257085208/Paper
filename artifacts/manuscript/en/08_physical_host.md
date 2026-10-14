@@ -58,7 +58,7 @@ half aligned, all inside one 16-core pool (no isolation).
 | Metric | Random phase | Aligned phase |
 |---|---|---|
 | Service P99 | 8.8 ms | 3.6 ms (mean) |
-| Hot-spot timing | scattered (gaps 20–40 s) | **strict 60 s period** |
+| Hot-spot timing | scattered (gaps 20–40 s) | strict 60 s period |
 | Customer rate | slow erosion | cliff during bursts (quantified in §8.4) |
 
 **Replication (Figure 15 right):** three rounds each (r1–r3). All five hot-cluster gaps of the aligned
@@ -86,8 +86,8 @@ which. Timeouts/errors always count as violations (no polishing P99 by dropping 
 experience not degraded", how many 1-vCPU VPS can be sold?
 
 **Quality bars (pre-declared, to prevent post-hoc selection).** Primary bar = **service P99 ≤ 10 ms AND
-customer workout P5 ≥ 70% of the solo baseline** (i.e., the low tail — the 5th percentile customer keeps
-≥70% of solo; note P5 is a lower-tail quantile, not "the worst decile"). Sensitivity bars P5 ≥ 90% /
+customer workout P5 ≥ 70% of the solo baseline** , i.e., the low tail — the 5th percentile customer keeps
+≥70% of solo; note P5 is a lower-tail quantile, not "the worst decile". Sensitivity bars P5 ≥ 90% /
 P5 ≥ 50% / median P50 ≥ 90% are reported side by side on the same data. Statistics: quantiles are
 estimated after aggregating per customer and per round (no pooling of per-customer-per-time samples as iid);
 round-level uncertainty is resampled by round.
@@ -108,12 +108,12 @@ the record)**.
 | Quality bar | Random safe N | Aligned safe N | Ratio |
 |---|---|---|---|
 | P5 ≥ 90% (strict) | 28 | 8 | 3.5x |
-| **P5 ≥ 70% (primary)** | **28** | **8** | **3.5x** |
+| P5 ≥ 70% (primary) | 28 | 8 | 3.5x |
 | P5 ≥ 50% (floor) | 56 | 14 | 4x |
 | P50 ≥ 90% (median) | 40 | 10 | 4x |
 
 (Random per-step P5: L16=99.7%, L24=93.8%, L28=90.6%, L32=69.1%, L40=64.5%, L48=50.6%, L56=50.0%, L64=42.8% — *gradual*;
-aligned: L8=98.8%, L10=62.2%, L12=53.5%, L14=54.2%, L16=48.6% — *cliff*; 4-round pools, fine-scan brackets sync [8,10), rand [28,32). Round-level ranges (per-round P5): sync N=8 98.6–101.8% (4 rounds), N=10 61.0–70.8% (3), N=16 47.0–49.6% (4); rand N=28 88.7–99.4% (2), N=32 62.2–90.8% (4, wide spread — the bracket statement takes the conservative round, 28). **Formal intervals:** customer-level bootstrap (B=10,000) 95% CIs on the pooled samples — sync N=8 [98.6, 99.0]%, N=10 [61.0, 68.6]%, N=16 [47.1, 48.9]%; rand N=28 [82.5, 99.3]%, N=32 [62.2, 75.5]%; mix50 N=13 [90.5, 99.6]%, mix75 N=10 [98.7, 100.5]% (`tools/bootstrap_ci.py` → `BOOTSTRAP_CI.md`). **Convention robustness (important):** the customer bar "P5 ≥ 70%" depends on the per-customer aggregation. Recomputing with the full 18-sample-per-VM raw series under four conventions (per-customer max / median / time-P5 / min, then cross-customer P5; structurally identical to the paper's per-round pooling): the **sync boundary is identical under all four conventions (8 seats)**; rand is 28/28/26/26; mix25 24/20/20/20; mix50 and mix75 are unchanged (13, 10). The aligned-end conclusion is **convention-invariant** (all conventions give 98.8% at N=8), while the random end tightens by one fine-scan step under the strictest time-domain convention (`tools/p5_convention_check.py` → `P5_CONVENTION_CHECK.md`). **Capacity-risk curves (Figure 30):** with the round-level violation frequency as the risk measure (a round counts when its customer P5 < 70%), safe capacity rises monotonically with the budget — at eps=0: rand 28 / sync 8 / mix25 20 / mix50 13 / mix75 10; at eps=0.5: rand 40; at eps=1: rand 64 / sync 32. All safe policy stops sit on the eps=0 edge (ours/ours_p: sync 8, rand 16-20), while the util80/audible sync stop (40) exceeds the curve's ceiling at any budget (only 32 even at eps=1) — no risk budget legitimizes it. **Scope note:** this curve is the workload-side empirical capacity-risk frontier; complete per-policy frontiers at matched risk budgets (each policy x many N x multiple seeds) are future work; the eps=1 endpoint is merely the curve's terminal point and carries no safe-admission meaning.)
+aligned: L8=98.8%, L10=62.2%, L12=53.5%, L14=54.2%, L16=48.6% — *cliff*; 4-round pools, fine-scan brackets sync [8,10), rand [28,32). Round-level ranges (per-round P5): sync N=8 98.6–101.8% (4 rounds), N=10 61.0–70.8% (3), N=16 47.0–49.6% (4); rand N=28 88.7–99.4% (2), N=32 62.2–90.8% (4, wide spread — the bracket statement takes the conservative round, 28). **Formal intervals:** customer-level bootstrap (B=10,000) 95% CIs on the pooled samples — sync N=8 [98.6, 99.0]%, N=10 [61.0, 68.6]%, N=16 [47.1, 48.9]%; rand N=28 [82.5, 99.3]%, N=32 [62.2, 75.5]%; mix50 N=13 [90.5, 99.6]%, mix75 N=10 [98.7, 100.5]% (`tools/bootstrap_ci.py` → `BOOTSTRAP_CI.md`). **Convention robustness:** the customer bar "P5 ≥ 70%" depends on the per-customer aggregation. Recomputing with the full 18-sample-per-VM raw series under four conventions (per-customer max / median / time-P5 / min, then cross-customer P5; structurally identical to the paper's per-round pooling): the **sync boundary is identical under all four conventions (8 seats)**; rand is 28/28/26/26; mix25 24/20/20/20; mix50 and mix75 are unchanged (13, 10). The aligned-end conclusion is **convention-invariant** (all conventions give 98.8% at N=8), while the random end tightens by one fine-scan step under the strictest time-domain convention (`tools/p5_convention_check.py` → `P5_CONVENTION_CHECK.md`). **Capacity-risk curves (Figure 30):** with the round-level violation frequency as the risk measure (a round counts when its customer P5 < 70%), safe capacity rises monotonically with the budget — at eps=0: rand 28 / sync 8 / mix25 20 / mix50 13 / mix75 10; at eps=0.5: rand 40; at eps=1: rand 64 / sync 32. All safe policy stops sit on the eps=0 edge (ours/ours_p: sync 8, rand 16-20), while the util80/audible sync stop (40) exceeds the curve's ceiling at any budget (only 32 even at eps=1) — no risk budget legitimizes it. **Scope note:** this curve is the workload-side empirical capacity-risk frontier; complete per-policy frontiers at matched risk budgets (each policy x many N x multiple seeds) are future work; the eps=1 endpoint is merely the curve's terminal point and carries no safe-admission meaning.)
 
 **Four conclusions.**
 
@@ -150,15 +150,15 @@ the model is used only for cross-configuration extrapolation and as the admissio
 | Configuration | Model prediction N*_mid | Measured (primary P5 ≥ 70% bar) | Deviation |
 |---|---|---|---|
 | $\varphi=0.25$ | 20.0 | 24 passes (73%), 28 fails (54%) | conservative (half-step) |
-| $\varphi=0.50$ | 13.3 | **13 passes (90%), 16 fails (49%)** | break point hit |
-| $\varphi=0.75$ | 10.0 | **10 passes (99%), 13 fails (52%)** | break point hit |
+| $\varphi=0.50$ | 13.3 | 13 passes (90%), 16 fails (49%) | break point hit |
+| $\varphi=0.75$ | 10.0 | 10 passes (99%), 13 fails (52%) | break point hit |
 
 Structural phases ($\varphi \ge 0.5$) hit the break point; the $\varphi=0.25$ prediction lands inside the
 passing region (conservative), the pure-random end is optimistic — the error directions match the
 tail-vs-median bar expectation.
 
 **Boundaries (honest).** (i) One round per configuration: per-level P5 carries non-monotone sampling noise
-(e.g., $\varphi=0.25$ L24 > L20); round repeats (multiple rounds/seeds) and a prediction-error distribution
+, e.g., $\varphi=0.25$ L24 > L20; round repeats (multiple rounds/seeds) and a prediction-error distribution
 are queued, after which this section reports round-level intervals and an error band. (ii) The C5 anti-phase
 arrangement experiment (same tenants, two groups offset by 30 s, capacity x2) upgrades "phase is
 arrangeable" from observation to intervention. (iii) The positioning is a **capacity approximation with
@@ -234,8 +234,8 @@ policy *is* the PPC actuator and stops on the synchronized oracle).
 | Isolation protects the tail | P99 ≈ 2.9–3.2 ms | P99 0.68–0.78 ms (0–2.5x oversubscription) |
 | Sync → periodic spikes | 60 s period (6 tenants) | 60 s period (64 tenants, 3 rounds, gaps exactly 60 s) |
 | Soft levers fail / hard caps work | verified | (runs on the physical host planned) |
-| Safe sell capacity | qualitative (3 seats in budget) | **quantified: 3.5x primary bar (28 vs 8), 3.5x–4x across bars** |
-| Density law predicts N*(φ) | — (single-scale bed) | **three points hit (Figure 21)** |
+| Safe sell capacity | qualitative (3 seats in budget) | quantified: 3.5x primary bar (28 vs 8), 3.5x–4x across bars |
+| Density law predicts N*(φ) | — (single-scale bed) | three points hit (Figure 21) |
 
 ## 8.8 Chapter Data and Artifacts
 
