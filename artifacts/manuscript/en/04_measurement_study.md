@@ -39,7 +39,7 @@
 
 Redis mirrors this (6.8 ms → 21.4 ms). The round-1 L4 sample (when the fourth neighbor was still up, i.e. exactly 4 running) reads 22.99 ms — inside the four-neighbor band.
 
-**v3 rework (all five neighbors online throughout, 50 rounds; Figure 29).**
+**Rework batch (all five neighbors online throughout, 50 rounds; Figure 29).**
 
 | Neighbors running | n | mean | median | range | > 10 ms |
 |---|---|---|---|---|---|
@@ -51,7 +51,7 @@ Redis mirrors this (6.8 ms → 21.4 ms). The round-1 L4 sample (when the fourth 
 | 5 (v3) | 50 | 21.62 | 21.1 | 18.5–25.5 | 50 (100%) |
 
 
-**Observations.** (i) The 3→4 cliff reproduces **round after round**: 48/48 four-neighbor rounds sit at P99 ≥ 20.7 ms while 93/98 three-neighbor rounds stay ≤ 12 ms — the two distributions do not overlap (Figure 17 right). (ii) Absolute levels run slightly higher than the first 5-round batch (3n 4.9, 4n 23.8 ms → 7.4/24.4 ms here); the ordering and the cliff position are unchanged. We record the drift honestly; plausible causes include host state after ~40 days online and cache/fragmentation differences between batches. (iii) The verdict is threshold-insensitive: even at a 13.5 ms bar only 7% of three-neighbor rounds would be flagged, while the four-neighbor minimum is 20.7 ms. (iv) **v3 rework:** L2 stays clean (all ≤ 8.0 ms; the eps=0 capacity remains 2), but **L3's violation rate moves up sharply — 45/50 rounds (median P99 16.0 ms)** — diverging from the v2 reconstruction (eps~7%; exact Clopper-Pearson 95% interval [78%, 97%] for L3); both batches agree that L4 collapses 100% ([93%, 100%]). So **the eps=0 capacity and the L4 collapse replicate; only L3's risk budget drifts with the host environment** (same protocol, same 87% busy; absolute drift recorded honestly) — the conservative statement uses the eps=0 capacity of 2.
+**Observations.** (i) The 3→4 cliff reproduces **round after round**: 48/48 four-neighbor rounds sit at P99 ≥ 20.7 ms while 93/98 three-neighbor rounds stay ≤ 12 ms — the two distributions do not overlap (Figure 17 right). (ii) Absolute levels run slightly higher than the first 5-round batch (3n 4.9, 4n 23.8 ms → 7.4/24.4 ms here); the ordering and the cliff position are unchanged. We record the drift; plausible causes include host state after ~40 days online and cache/fragmentation differences between batches. (iii) The verdict is threshold-insensitive: even at a 13.5 ms bar only 7% of three-neighbor rounds would be flagged, while the four-neighbor minimum is 20.7 ms. (iv) **v3 rework:** L2 stays clean (all ≤ 8.0 ms; the eps=0 capacity remains 2), but **L3's violation rate moves up sharply — 45/50 rounds (median P99 16.0 ms)** — diverging from the v2 reconstruction (eps~7%; exact Clopper-Pearson 95% interval [78%, 97%] for L3); both batches agree that L4 collapses 100% ([93%, 100%]). So **the eps=0 capacity and the L4 collapse replicate; only L3's risk budget drifts with the host environment** (same protocol, same 87% busy; absolute drift recorded) — the conservative statement uses the eps=0 capacity of 2.
 
 **Boundaries.** The batch baseline differs from the first batch (absolute drift); the post-mortem level merging uses run logs and is automated in `make_v2_figs.py`. The v3 rework shows the L3 risk budget is batch-sensitive (7% vs 90% violation across batches at the same busy) — capacity claims use the eps=0 bar (2 neighbors) and per-batch eps values are reported explicitly.
 
@@ -116,7 +116,7 @@ Raising the service VMs' `cpu.weight` to 1000 (10×) and 10000 (100×, a verific
 
 ### 4.4.3 Core isolation: the only lever that survives storms on our testbed (Figures 6, 10)
 
-Pinning services and probe to cores 0–1 and tenants to cores 2–3 yields zero violations at 1–5 pegged neighbors (P99 2.9–3.2 ms); tenants share the remaining two cores as expected (about 44% of full speed each at five tenants). The triple-storm synthesis (Section 4.5 / 6.5) reproduces this four times. The cost is explicitly relocated to the "economy tier" — protected services no longer compete.
+Pinning services and probe to cores 0–1 and tenants to cores 2–3 yields zero violations at 1–5 pegged neighbors (P99 2.9–3.2 ms); tenants share the remaining two cores as expected (about 44% of full speed each at five tenants). The combined-stress synthesis (Section 4.5 / 6.5) reproduces this four times. The cost is explicitly relocated to the "economy tier" — protected services no longer compete.
 
 ### 4.4.4 Memory: the double gate (Figure 7)
 

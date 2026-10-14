@@ -1,10 +1,10 @@
 # 7 Evaluation
 
-> Three evaluation groups: (A) admission-policy comparison; (B) shaping and protection-envelope comparison; (C) triple-storm synthesis validation, followed by the production-telemetry usage and an explicit gap list. Common SLO: service P99 ≤ 10 ms.
+> Three evaluation groups: (A) admission-policy comparison; (B) shaping and protection-envelope comparison; (C) combined-stress synthesis validation, followed by the production-telemetry usage and an explicit gap list. Common SLO: service P99 ≤ 10 ms.
 
 ## 7.1 Setup Recap
 
-Testbed and metrics: Sections 3–4 and 7. Admission comparisons use a closed loop: five candidate tenants arrive one at a time, a policy decides allow/defer from evidence visible at that moment, and allowed candidates are actually started and measured. Shaping comparisons use the neighbor sweep (0–5 tenants) plus the full triple storm. Every key conclusion replicates at least twice (knee: 5 rounds; censoring: 7 cycles; synthesis: 4 passes).
+Testbed and metrics: Sections 3–4 and 7. Admission comparisons use a closed loop: five candidate tenants arrive one at a time, a policy decides allow/defer from evidence visible at that moment, and allowed candidates are actually started and measured. Shaping comparisons use the neighbor sweep (0–5 tenants) plus the full combined-stress. Every key conclusion replicates at least twice (knee: 5 rounds; censoring: 7 cycles; synthesis: 4 passes).
 
 ## 7.2 Admission-Policy Comparison (companion to Figure 4)
 
@@ -61,7 +61,7 @@ Five pegged tenants are measured at quotas 20/40/60%: the estimate $\hat d = \mi
 | 0.40 | 0.58 | 0.955 | 0.988 | −3.3% |
 | 0.60 | 0.32 | 0.886 | 0.971 | −8.6% |
 
-**Reading (empirical boundaries).** This table validates the estimator on the **saturated-demand** family: host-side counters (quota + throttle counters) recover the censored demand within 9%. This is **not a general guarantee**: the same counters over-estimate bursty demand (counterexample now in unit tests: true 0.3, quota 0.2 → estimate 1.0) and may under-estimate intermittent saturation; the "conservative direction" holds only on the saturated family. We therefore position it as an **empirical censoring-corrected estimator** (assumptions and boundaries in Section 3.3), with a cross-pattern characterization (5 patterns × 3 quotas × 3 periods × multi-vCPU) as a v2 study; it is integrated into the design (Section 5.3).
+**Reading (empirical boundaries).** This table validates the estimator on the **saturated-demand** family: host-side counters (quota + throttle counters) recover the censored demand within 9%. This is **not a general guarantee**: the same counters over-estimate bursty demand (counterexample in the unit tests: true 0.3, quota 0.2 → estimate 1.0) and may under-estimate intermittent saturation; the "conservative direction" holds only on the saturated family. We therefore position it as an **empirical censoring-corrected estimator** (assumptions and boundaries in Section 3.3), with a cross-pattern characterization (5 patterns × 3 quotas × 3 periods × multi-vCPU) as a v2 study; it is integrated into the design (Section 5.3).
 
 ## 7.4 Shaping Comparison: Safe Packing Limit and Cost (Figure 6)
 
@@ -76,7 +76,7 @@ Under the same knee protocol and service-SLO criterion:
 
 **Reading.** Only isolation raises the safe limit (to ≥5); quotas change tenant speed, not the limit (Section 4.4.1). The cost relocation is visible: isolation moves the cost from "service SLO" to "economy-tier customers", while quotas satisfy neither side. The remaining defenses — memory double gate and IO caps — do not raise the CPU knee but stop their own storms from dragging the service under (they are necessary parts of the synthesis configuration).
 
-## 7.4b Online Admission Showdown (Figure 20)
+## 7.4b Online Admission Comparison (Figure 20)
 
 **Protocol.** On the 8-core tenant pool, seven policies (`worstcase` quota-conservative / `fixed` 2x /
 `util80` busy-80% / `quantile` history-quantile / `audible`-style MC convolution / `ours` phase-profile /
@@ -129,7 +129,7 @@ same policy, same hardware, opposite risk; audible-style collapses likewise; (ii
 quantile verify the other two corners. Safe VM-hours and round-level intervals from the show4/show5
 repeats are reported above where available.
 
-**Sampling caveat (honest):** v2 sync rounds have a probe-before-rates ordering defect that pushed rate
+**Sampling caveat:** the earlier sync rounds have a probe-before-rates ordering defect that pushed rate
 sampling out of the burst window (audible/util80 happen to have valid violation evidence via phase drift;
 fixed etc. lack the p5 column); the corrected seven-round rerun (show5) was completed and the sync customer columns are reported via the four-round ladder.
 
@@ -148,7 +148,7 @@ fixed etc. lack the p5 column); the corrected seven-round rerun (show5) was comp
 
 **Collection note.** Customer-side detail under hard throttling collects incompletely (13/16 in syn3); service-side metrics carry the protection conclusion, with customer-side work rates and throttle counters as corroborating evidence.
 
-**v3 rework repeat (Figure 19).** The rework reran the same storm end-to-end (20 s probes, fresh state per round): **25 of 26 rounds pass** — HTTP P99 mean **4.82 ms** (median 4.02, range 2.95–25.26), Redis mean **3.34 ms** (2.53–4.13, always compliant); **one round (r24) violates at 25.3 ms** — in that round 8 tenants returned no rate samples (degraded state). The envelope has held across **29 of 30 passes (4 pilot + 26 rework)**. **Statistical honesty:** the optimistic independent-binomial one-sided 95% bound for 29/30 is ~**14.9%** (the earlier 11.7% for 24/24 was an optimistic pre-rework estimate; rounds share host state and are time-correlated, so the bound is indicative — "near-zero violations" is not a long-term guarantee).
+**Rework repeat (Figure 19).** The rework reran the same storm end-to-end (20 s probes, fresh state per round): **25 of 26 rounds pass** — HTTP P99 mean **4.82 ms** (median 4.02, range 2.95–25.26), Redis mean **3.34 ms** (2.53–4.13, always compliant); **one round (r24) violates at 25.3 ms** — in that round 8 tenants returned no rate samples (degraded state). The envelope has held across **29 of 30 passes (4 pilot + 26 rework)**. **Statistical note:** the optimistic independent-binomial one-sided 95% bound for 29/30 is ~**14.9%** (the earlier 11.7% for 24/24 was an optimistic pre-rework estimate; rounds share host state and are time-correlated, so the bound is indicative — "near-zero violations" is not a long-term guarantee).
 
 ## 7.5b Joint Admission + Shaping Validation (j1, Figure 13)
 
@@ -159,7 +159,7 @@ The protection envelope is fully active (services/probe pinned to cores 0–1; c
 | naive (usage) | 3 | 0 | max wakeup stall 3.8–4.4 s per 5 s window |
 | aware (throttle-corrected) | 1 | 0 | 3.8 s (same source) |
 
-**Reading (three honest points).** (i) Pinning and caps keep the service safe: zero violations under both policies — in joint operation the admission policy decides *how many seats are committed*, not service safety. (ii) The dominant customer-side pain comes from the tight memory gate: the canary's multi-second stalls are nearly identical at 1 and 3 seats, showing that `memory.high = 800 MB` is too tight for a 3 GB guest (cf. the soft-threshold semantics of Section 4.4.4); the economy tier's experience ceiling is a product parameter, not a policy defect. (iii) Throttle-corrected estimation carries a phase bias: with bursty background, instant sampling at decision time underestimates demand (estimates oscillated between 0.01 and 1.90 cores), making the aware policy over-conservative (1 seat vs naive's 3) — the design-to-implementation gap versus the time-aligned aggregate upper quantile of Section 5.3, tracked as an improvement item. The v2 revision now implements the time-aligned aggregation and is re-measured as a four-policy comparison on the second testbed; results merge as supplementary material.
+**Reading.** (i) Pinning and caps keep the service safe: zero violations under both policies — in joint operation the admission policy decides *how many seats are committed*, not service safety. (ii) The dominant customer-side pain comes from the tight memory gate: the canary's multi-second stalls are nearly identical at 1 and 3 seats, showing that `memory.high = 800 MB` is too tight for a 3 GB guest (cf. the soft-threshold semantics of Section 4.4.4); the economy tier's experience ceiling is a product parameter, not a policy defect. (iii) Throttle-corrected estimation carries a phase bias: with bursty background, instant sampling at decision time underestimates demand (estimates oscillated between 0.01 and 1.90 cores), making the aware policy over-conservative (1 seat vs naive's 3) — the design-to-implementation gap versus the time-aligned aggregate upper quantile of Section 5.3, tracked as an improvement item. The revision implements the time-aligned aggregation; it is re-measured as a four-policy comparison on the second testbed, with results merged as supplementary material.
 
 ## 7.6 Production Telemetry: Workload Portrait (Figure 27)
 
@@ -195,7 +195,7 @@ rhythm, and capacity-model anchors taken from the quiet segment are labeled as s
 experiments here align with that segment; day/night peak regimes are future work).
 
 **Boundaries and the two-state anchor (Figure 31).** The dense window is only 170 minutes and is a
-**night-time quiet segment** (host busy 30.1%, peak 47.2%); the light stream has now accumulated **39
+**night-time quiet segment** (host busy 30.1%, peak 47.2%); the light stream has accumulated **39
 hours of day/night coverage** (274 points at 5-minute intervals; ~40% of samples missing to relay
 jitter): host busy mean **37.7%**, P95 55.5%, peak **66.1%**; guests consume 14.8%
 of host CPU on average; memory available never drops below **87.8 GB**; CPU PSI avg300 mean 5.3, peak

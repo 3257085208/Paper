@@ -8,7 +8,7 @@ telemetry from two production hosts we operate ourselves, recasts "safe oversubs
 problems whose organizing thesis is **observation necessity** (Section 3.6): censoring identification, phase
 resolution and time resolution are each necessary — with (1)(2) directly measured and (3) currently a
 construction plus indirect evidence — and jointly sufficient as an empirical statement for our target workload
-family (the policy with all three is the only one in the 14-round showdown combining random-phase capacity
+family (the policy with all three is the only one in the 14-round comparison combining random-phase capacity
 (16–20 seats) with the aligned-phase 8-seat stop and random-phase customer compliance; aligned-phase customer P5 ~99% at 8 seats, 4-round ladder).
 
 **Identify.** Quota censoring makes demand unobservable in aggregate counters: the point estimate equals the
@@ -23,13 +23,13 @@ the window-dilution effect that multi-resolution throttle sequences will fix.
 **Predict.** Capacity is set by phase structure, not average utilization: random vs aligned safe capacity 28 vs
 8 (primary bar P5 ≥ 70%; 3.5x–4x across bars), with the utilization-impossibility counterexample — and the
 measured inversion (safe fleet reports 66.4-68.0% busy, the collapsing fleet 30.4%). The safe-capacity
-approximation N* = C/(phi + (1-phi) rho) is stated with explicit assumptions and honest error directions. The
-Phase-Profile Convolution (PPC) now has three artifact-backed modes (parametric simulation, strict three-way
+approximation N* = C/(phi + (1-phi) rho) is stated with explicit assumptions and measured error directions. The
+Phase-Profile Convolution (PPC) has three artifact-backed modes (parametric simulation, strict three-way
 joint block bootstrap with a held-out test third, online peak-envelope approximation); iid convolution is
 provably blind to exactly the axis that decides safety (the marginal illusion), and the C5 intervention shows
 the axis is controllable (capacity x2/x4 by phase arrangement alone).
 
-**Actuate.** In the complete 14-round showdown (identical arrival streams and evidence), the phase-aware
+**Actuate.** In the complete 14-round comparison (identical arrival streams and evidence), the phase-aware
 admission is the only policy combining the verified aligned-phase bracket (8 seats, customer P5 ~99%) with competitive
 random-phase capacity (16–20); the audible-style and busy-threshold baselines sell 40 in the aligned phase and
 collapse customer P5 to 16%, and the fixed-oversubscription baseline violates the primary bar at 16 — the

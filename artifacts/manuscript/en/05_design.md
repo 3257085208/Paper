@@ -19,7 +19,7 @@ Both layers share one set of monitors (service tail latency, host pressure, per-
 
 **Block IO.** Per-tenant `io.max` (riops/wiops or bandwidth per sold tier) is the only measured remedy against "IO explosion": host IOPS and business latency snap back immediately, with the cost landing on the throttled tenant's own queueing delay (Section 4.4.5). Two implementation notes: cgroup accounting keys to the whole-disk device (partition numbers may be inert); `io.weight`/`io.latency` depend on an IO scheduler honoring them (the default `none` makes weights no-ops), so do not rely on weights before enabling BFQ. (`io.cost`/iocost offers a scheduler-independent cost model; we did not evaluate it here and draw no conclusions about it.)
 
-**Envelope language.** "Selling 16 vCPU / 48 GiB / 400 GiB" is the **nominal sales envelope**; the protection envelope is: the SLO commitment on $c_{\text{svc}}$ dedicated cores for services + each tenant's $\text{high}$ bytes of honest memory + each tenant's IO cap. The difference between the two envelopes *is* the economy-tier product space — the basis for tiered pricing.
+**Envelope language.** "Selling 16 vCPU / 48 GiB / 400 GiB" is the **nominal sales envelope**; the protection envelope is: the SLO commitment on $c_{\text{svc}}$ dedicated cores for services + each tenant's $\text{high}$ bytes of hot memory + each tenant's IO cap. The difference between the two envelopes *is* the economy-tier product space — the basis for tiered pricing.
 
 ## 5.3 Risk-Calibrated Admission
 

@@ -50,7 +50,7 @@
 \f0\b\fs34\fsmilli17333 \cf2 \strokec2 Abstract\
 \pard\pardeftab720\sa160\qj\partightenfactor0
 
-\f1\b0\fs30\fsmilli15333 \cf2 Small VPS providers pack many cheap, mostly-idle, occasionally-bursty tenants onto few physical cores; oversubscription is their business model. We recast safe oversubscription as three ordered problems whose bottleneck is observational capability. First, quota censoring hides demand: the point estimate equals the running-stretch mean, exact only when running and throttled stretch means agree; a conditional floor holds under continuous saturation; and from aggregate counters alone no estimator can be correct for all workloads, since two processes can produce identical observations with different demand. Across 180 cycles, throttle-corrected estimates track the truth while naive quota-release decisions violate the SLO in all 30 independent rounds. Second, capacity is set by phase structure, not average utilization: at the same 20% duty, random-phase and aligned fleets differ 3.5x in safe capacity (28 versus 8 seats at customer P5 >= 70%), and a 35%-busy set collapsing while a 98%-busy set stays safe shows that safety cannot be read off utilization. Third, the sampling rate must resolve the bursts it prices. Together these capabilities form an observation set that a risk-calibrated admission controller implements: in a complete 14-round showdown it is the only policy combining competitive random-phase capacity with a conservative aligned-phase stop, while baseline policies oversell (customer P5 collapsing to 16%) or waste 2-3x capacity. All claims rest on mass repeats, two testbeds, read-only telemetry from production hosts we operate, and released artifacts.\
+\f1\b0\fs30\fsmilli15333 \cf2 Small VPS providers pack many cheap, mostly-idle, occasionally-bursty tenants onto few physical cores; oversubscription is their business model. We recast safe oversubscription as three ordered problems whose bottleneck is observational capability. First, quota censoring hides demand: the point estimate equals the running-stretch mean, exact only when running and throttled stretch means agree; a conditional floor holds under continuous saturation; and from aggregate counters alone no estimator can be correct for all workloads, since two processes can produce identical observations with different demand. Across 180 cycles, throttle-corrected estimates track the truth while naive quota-release decisions violate the SLO in all 30 independent rounds. Second, capacity is set by phase structure, not average utilization: at the same 20% duty, random-phase and aligned fleets differ 3.5x in safe capacity (28 versus 8 seats at customer P5 >= 70%), and a 35%-busy set collapsing while a 98%-busy set stays safe shows that safety cannot be read off utilization. Third, the sampling rate must resolve the bursts it prices. Together these capabilities form an observation set that a risk-calibrated admission controller implements: in the 14 evaluated scenarios it admitted 16-20 tenants under randomized phases and stopped at eight under aligned phases while meeting the customer-quality bar, whereas baseline policies either oversold (customer P5 collapsing to 16%) or wasted 2-3x capacity. All claims rest on mass repeats, two testbeds, read-only telemetry from production hosts we operate, and released artifacts.\
 \pard\pardeftab720\sa160\partightenfactor0
 
 \f0\b\fs34\fsmilli17333 \cf2 Keywords\
@@ -77,7 +77,7 @@
 \outl0\strokewidth0 \strokec2 Identify: demand is censored, and aggregates cannot fully recover it.
 \f1\b0  CPU quotas are standard; once a tenant hits its cap, its "usage" no longer represents demand \'97 a tenant throttled at 50% while wanting 100% looks like an idle one. We further formalize this: from aggregate (usage, throttle-fraction) counters alone, 
 \f0\b no estimator that sees only these counters can be correct for all workloads
-\f1\b0  (exact non-identifiability \'97 identical observations, different demand; stronger than statistical unbiasedness; construction in Section 3.3.1); what can be certified is a point estimate of the running-stretch mean plus a shape-free floor $q(1+t)$. The honest posture is to write down the identifiability boundary rather than pretend exact recovery.\
+\f1\b0  (exact non-identifiability \'97 identical observations, different demand; stronger than statistical unbiasedness; construction in Section 3.3.1); what can be certified is a point estimate of the running-stretch mean plus a shape-free floor $q(1+t)$. The identifiability boundary is therefore stated explicitly rather than assumed away.\
 \ls1\ilvl0
 \f0\b \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
 \outl0\strokewidth0 \strokec2 Predict: capacity is set by phase structure, not average utilization.
@@ -90,9 +90,7 @@
 \f1\b0  Core isolation, KSM dedup, and free-page reporting are invisible to tenants; quotas, IO caps, and zram carry explicit prices. The product space of a small provider is exactly "how far density can be pushed without reducing tenant-visible resources".\
 \pard\pardeftab720\li480\fi-480\ri480\sa213\partightenfactor0
 
-\fs28 \cf3 \strokec3 Organizing thesis: the three problems tighten into 
-\f0\b observation necessity
-\f1\b0  \'97 three capabilities (censoring identification / phase resolution / time resolution) are each necessary (Section 3.6) and jointly sufficient for our target workload family (an empirical statement); the Section 7 showdown attributes each baseline's failure to exactly the capability it lacks.\
+\fs28 \cf3 \strokec3 Observation design: the three problems share one bottleneck \'97 observational capability. Three capabilities (censoring identification / phase resolution / time resolution) are each necessary (Section 3.6) and jointly sufficient for our target workload family (an empirical statement); the Section 7 comparison attributes each baseline's failure to the capability it lacks.\
 \pard\pardeftab720\sa160\partightenfactor0
 
 \f0\b\fs34\fsmilli17333 \cf2 \strokec2 1.3 Approach Overview\
@@ -115,10 +113,10 @@
 \ls2\ilvl0
 \f0\b \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	3	}\expnd0\expndtw0\kerning0
 \outl0\strokewidth0 \strokec2 Actuate
-\f1\b0  \'97 risk-calibrated admission (pseudocode and calibration protocol in Section 5.3.1) landing on the capacity oracle in an online head-to-head showdown; no-regression controls (KSM/FPR/zram, adaptive IO; micro-period quotas re-measured \'97 the earlier +35% claim is withdrawn, Section 9.1) raising density per resource.\
+\f1\b0  \'97 risk-calibrated admission (pseudocode and calibration protocol in Section 5.3.1) landing on the capacity oracle in an online head-to-head comparison; no-regression controls (KSM/FPR/zram, adaptive IO; micro-period quotas re-measured \'97 the earlier +35% claim is withdrawn, Section 9.1) raising density per resource.\
 \pard\pardeftab720\sa160\partightenfactor0
 
-\f0\b\fs34\fsmilli17333 \cf2 1.4 Headline Findings\
+\f0\b\fs34\fsmilli17333 \cf2 1.4 Summary of Results\
 \pard\tx220\tx720\pardeftab720\li720\fi-720\partightenfactor0
 \ls3\ilvl0
 \fs30\fsmilli15333 \cf2 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
@@ -143,13 +141,13 @@
 \ls3\ilvl0
 \f0\b \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
 \outl0\strokewidth0 \strokec2 Evidence strength
-\f1\b0 : 100-round knee (v2/v3), 180-cycle censoring (two batches), 30-round triple storm (4+26), 4-round fine scan, 3-round sync; explicit statistics (round-clustered, binomial bounds, P99 primary), anomalies (OOM-offline VMs, degraded rounds, batch drift) archived and merged via the v3 rework.\
+\f1\b0 : 100-round knee (two batches), 180-cycle censoring (two batches), 30-round combined-stress campaign, 4-round fine scan, 3-round sync; explicit statistics (round-clustered, binomial bounds, P99 primary), anomalies (OOM-offline VMs, degraded rounds, batch drift) archived and merged via the v3 rework.\
 \pard\pardeftab720\sa160\partightenfactor0
 
 \f0\b\fs34\fsmilli17333 \cf2 1.5 Contributions\
 \pard\pardeftab720\sa160\qj\partightenfactor0
 
-\fs30\fsmilli15333 \cf2 Primary contributions (the paper's spine: Identify + Actuate)
+\fs30\fsmilli15333 \cf2 Primary contributions (Identify and Actuate)
 \f1\b0 \
 \pard\tx220\tx720\pardeftab720\li720\fi-720\partightenfactor0
 \ls4\ilvl0
@@ -159,16 +157,16 @@
 \ls4\ilvl0
 \f0\b \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	2	}\expnd0\expndtw0\kerning0
 \outl0\strokewidth0 \strokec2 Actuate (phase-aware admission + intervention evidence)
-\f1\b0 : the complete risk-calibrated admission specification (pseudocode, parameters, calibration protocol), the complete 14-round showdown (both-bar final), the C5 anti-phase intervention (same tenants; phase arrangement alone changes capacity x2/x4), and fine-scan boundary pinning (sync [8,10), rand [28,32)).\
+\f1\b0 : the complete risk-calibrated admission specification (pseudocode, parameters, calibration protocol), the complete 14-round comparison (both-bar final), the C5 anti-phase intervention (same tenants; phase arrangement alone changes capacity x2/x4), and fine-scan boundary pinning (sync [8,10), rand [28,32)).\
 \pard\pardeftab720\sa160\qj\partightenfactor0
 
-\f0\b \cf2 Supporting contributions (serve the spine; not standalone claims)
+\f0\b \cf2 Supporting contributions (supporting evidence; not standalone claims)
 \f1\b0 \
 \pard\tx220\tx720\pardeftab720\li720\fi-720\partightenfactor0
 \ls5\ilvl0
 \f0\b \cf2 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	1	}\expnd0\expndtw0\kerning0
 \outl0\strokewidth0 \strokec2 Predict (approximation model + three-artifact PPC)
-\f1\b0 : the assumption-explicit safe-capacity approximation and the PPC (parametric / empirical forward prediction / online actuator), with honestly reported prediction quality (4/5 zero over-admission; the optimistic sync case is vetoed by the online peak gate) \'97 prediction is step advice and risk ranking; the online gate carries safety.\
+\f1\b0 : the assumption-explicit safe-capacity approximation and the PPC (parametric / empirical forward prediction / online actuator), with prediction quality reported as measured (4/5 zero over-admission; the optimistic sync case is vetoed by the online peak gate) \'97 prediction is step advice and risk ranking; the online gate carries safety.\
 \ls5\ilvl0
 \f0\b \kerning1\expnd0\expndtw0 \outl0\strokewidth0 {\listtext	2	}\expnd0\expndtw0\kerning0
 \outl0\strokewidth0 \strokec2 Efficiency ledger (supports the density ceiling, Chapter 9)
@@ -182,7 +180,7 @@
 \f0\b\fs34\fsmilli17333 \cf2 1.6 Structure\
 \pard\pardeftab720\sa160\qj\partightenfactor0
 
-\f1\b0\fs30\fsmilli15333 \cf2 Section 2 related work; Section 3 system model and problem definition (incl. 3.3.1 identifiability); Section 4 measurement study; Section 5 design (risk-calibrated admission and the no-regression control stack, with algorithm pseudocode); Section 6 implementation and testbed; Section 7 evaluation (showdown, triple storm, estimator characterization); Section 8 physical-host validation and the density law; Section 9 resource-efficiency modules (KSM/FPR/zram/adaptive IO, incl. the micro-period self-audit correction); Section 10 discussion and limitations; Section 11 conclusion.\
+\f1\b0\fs30\fsmilli15333 \cf2 Section 2 related work; Section 3 system model and problem definition (incl. 3.3.1 identifiability); Section 4 measurement study; Section 5 design (risk-calibrated admission and the no-regression control stack, with algorithm pseudocode); Section 6 implementation and testbed; Section 7 evaluation (comparison, combined-stress, estimator characterization); Section 8 physical-host validation and the density law; Section 9 resource-efficiency modules (KSM/FPR/zram/adaptive IO, incl. the micro-period self-audit correction); Section 10 discussion and limitations; Section 11 conclusion.\
 \pard\pardeftab720\sa213\partightenfactor0
 
 \f0\b\fs40 \cf2 2 Related Work\
@@ -264,7 +262,7 @@ On the KVM scheduling side, the community has long studied lock-holder preemptio
 \f1\i0 .\
 We claim neither a new learning algorithm nor new prediction theory. This is a 
 \f0\b measurement-driven systems study
-\f1\b0  for small providers: it decomposes "multi-resource oversubscription with multiple control levers" into separately comparable experimental units, quantifies which folk practices hold and which do not under short history, censored demand, and mixed bursty loads, and delivers a triple-storm-validated admission and shaping configuration. The relationship to hyperscale work is complementary: our hosts are smaller, observability is worse, and the decision population is cheaper \'97 exactly the operating conditions of a large share of the global low-cost VPS market.\
+\f1\b0  for small providers: it decomposes "multi-resource oversubscription with multiple control levers" into separately comparable experimental units, quantifies which folk practices hold and which do not under short history, censored demand, and mixed bursty loads, and delivers a combined-stress-validated admission and shaping configuration. The relationship to hyperscale work is complementary: our hosts are smaller, observability is worse, and the decision population is cheaper \'97 exactly the operating conditions of a large share of the global low-cost VPS market.\
 \pard\pardeftab720\partightenfactor0
 \cf4 \strokec4 \
 \pard\pardeftab720\sa133\partightenfactor0
@@ -372,7 +370,7 @@ i.e., the tenant was actually throttled in the window. Two estimators follow:\
 \f0\b saturated
 \f1\b0  demand (our primary workload family; ground-truth error \uc0\u8804 9% in Section 7.3c), 
 \f0\b over-estimates bursty demand
-\f1\b0  (counterexample now in unit tests: true demand 0.3, quota 0.2 \uc0\u8594  estimate 1.0), and may under-estimate intermittent saturation. It is therefore an 
+\f1\b0  (counterexample in the unit tests: true demand 0.3, quota 0.2 \uc0\u8594  estimate 1.0), and may under-estimate intermittent saturation. It is therefore an 
 \f0\b empirical estimator to be characterized per workload family, not a distribution-free bound
 \f1\b0 ; "at least its full vCPU" remains the conservative fallback. If $\\text\{censored\}_i = 0$, use $u_i$ \'97 note $u_i$ is always a (weak) lower bound on demand; the absence of throttling only rules out quota censoring, not contention shrinkage.\
 \pard\pardeftab720\sa160\qj\partightenfactor0
@@ -385,7 +383,7 @@ i.e., the tenant was actually throttled in the window. Two estimators follow:\
 \pard\pardeftab720\sa160\qj\partightenfactor0
 
 \fs30\fsmilli15333 \cf2 Observation model and assumptions.
-\f1\b0  Window $W$ spanning several quota periods $P$; quota $q$ (cores); budget $qP$ per period. Let $u$ = mean usage, $t$ = throttled-time fraction, $\\bar d$ = window-mean demand, $\\overline\{d\}_\{\\text\{run\}\}/\\overline\{d\}_\{\\text\{thr\}\}$ = mean demand inside the running / throttled stretches. Assumptions: (A1) single cgroup, work-conserving, no external steal; (A2) the budget is exhausted within the window (else no throttle evidence); (A3) $W \\gg P$, ignoring period-boundary effects for now. 
+\f1\b0  Window $W$ spanning several quota periods $P$; quota $q$ (cores); budget $qP$ per period. Let $u$ = mean usage, $t$ = throttled-time fraction, $\\bar d$ = window-mean demand, $\\overline\{d\}_\{\\text\{run\}\}/\\overline\{d\}_\{\\text\{thr\}\}$ = mean demand inside the running / throttled stretches. Assumptions: (A1) single cgroup, work-conserving, no external steal; (A2) the budget is exhausted within the window (else no throttle evidence); (A3) $W \\gg P$, ignoring period-boundary effects. 
 \f0\b Caveat:
 \f1\b0  
 \f3\fs28\fsmilli14107 throttled_usec
@@ -424,7 +422,7 @@ i.e., the tenant was actually throttled in the window. Two estimators follow:\
 \f0\b cannot be verified from aggregate counters
 \f1\b0  \'97 it is a property of the target workload family (continuous saturation), not a per-tenant certification. In the system this floor is used only for tenants with continuous throttle evidence (the conservative backstop of Section 3.3); for everyone else we report the point estimate plus uncertainty and claim no bound.\
 
-\f0\b Added boundary (reviewer counterexample, 2026-10-13):
+\f0\b Boundary (counterexample):
 \f1\b0  "continuous throttling" and "d>=q throughout" are 
 \f0\b not equivalent
 \f1\b0  \'97 e.g. q=0.2 with demand 1.0 for the first 20% of each period and 0.1 for the rest: the budget still exhausts every period (t=0.8, constant throttle evidence) yet the true mean is 0.28, 
@@ -926,7 +924,7 @@ Figure 29 Knee v3 rework (all neighbors online): L2 clean, L3 45/50, L4 100% col
 \fs30\fsmilli15333 \cf2 Redis mirrors this (6.8 ms \uc0\u8594  21.4 ms). The round-1 L4 sample (when the fourth neighbor was still up, i.e. exactly 4 running) reads 22.99 ms \'97 inside the four-neighbor band.\
 \pard\pardeftab720\sa160\qj\partightenfactor0
 
-\f0\b \cf2 v3 rework (all five neighbors online throughout, 50 rounds; Figure 29).
+\f0\b \cf2 Rework batch (all five neighbors online throughout, 50 rounds; Figure 29).
 \f1\b0 \
 
 \itap1\trowd \taflags1 \trgaph108\trleft-108 \tamart213 \tamarb213 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrr\brdrnil 
@@ -1075,13 +1073,13 @@ Figure 29 Knee v3 rework (all neighbors online): L2 clean, L3 45/50, L4 100% col
 \f0\b\fs30\fsmilli15333 \cf2 Observations.
 \f1\b0  (i) The 3\uc0\u8594 4 cliff reproduces 
 \f0\b round after round
-\f1\b0 : 48/48 four-neighbor rounds sit at P99 \uc0\u8805  20.7 ms while 93/98 three-neighbor rounds stay \u8804  12 ms \'97 the two distributions do not overlap (Figure 17 right). (ii) Absolute levels run slightly higher than the first 5-round batch (3n 4.9, 4n 23.8 ms \u8594  7.4/24.4 ms here); the ordering and the cliff position are unchanged. We record the drift honestly; plausible causes include host state after ~40 days online and cache/fragmentation differences between batches. (iii) The verdict is threshold-insensitive: even at a 13.5 ms bar only 7% of three-neighbor rounds would be flagged, while the four-neighbor minimum is 20.7 ms. (iv) 
+\f1\b0 : 48/48 four-neighbor rounds sit at P99 \uc0\u8805  20.7 ms while 93/98 three-neighbor rounds stay \u8804  12 ms \'97 the two distributions do not overlap (Figure 17 right). (ii) Absolute levels run slightly higher than the first 5-round batch (3n 4.9, 4n 23.8 ms \u8594  7.4/24.4 ms here); the ordering and the cliff position are unchanged. We record the drift; plausible causes include host state after ~40 days online and cache/fragmentation differences between batches. (iii) The verdict is threshold-insensitive: even at a 13.5 ms bar only 7% of three-neighbor rounds would be flagged, while the four-neighbor minimum is 20.7 ms. (iv) 
 \f0\b v3 rework:
 \f1\b0  L2 stays clean (all \uc0\u8804  8.0 ms; the eps=0 capacity remains 2), but 
 \f0\b L3's violation rate moves up sharply \'97 45/50 rounds (median P99 16.0 ms)
 \f1\b0  \'97 diverging from the v2 reconstruction (eps~7%; exact Clopper-Pearson 95% interval [78%, 97%] for L3); both batches agree that L4 collapses 100% ([93%, 100%]). So 
 \f0\b the eps=0 capacity and the L4 collapse replicate; only L3's risk budget drifts with the host environment
-\f1\b0  (same protocol, same 87% busy; absolute drift recorded honestly) \'97 the conservative statement uses the eps=0 capacity of 2.\
+\f1\b0  (same protocol, same 87% busy; absolute drift recorded) \'97 the conservative statement uses the eps=0 capacity of 2.\
 
 \f0\b Boundaries.
 \f1\b0  The batch baseline differs from the first batch (absolute drift); the post-mortem level merging uses run logs and is automated in 
@@ -1300,7 +1298,7 @@ Figure 9 Quota pulse: service P99\
 \f0\b\fs32 \cf2 4.4.3 Core isolation: the only lever that survives storms on our testbed (Figures 6, 10)\
 \pard\pardeftab720\sa160\qj\partightenfactor0
 
-\f1\b0\fs30\fsmilli15333 \cf2 Pinning services and probe to cores 0\'961 and tenants to cores 2\'963 yields zero violations at 1\'965 pegged neighbors (P99 2.9\'963.2 ms); tenants share the remaining two cores as expected (about 44% of full speed each at five tenants). The triple-storm synthesis (Section 4.5 / 6.5) reproduces this four times. The cost is explicitly relocated to the "economy tier" \'97 protected services no longer compete.\
+\f1\b0\fs30\fsmilli15333 \cf2 Pinning services and probe to cores 0\'961 and tenants to cores 2\'963 yields zero violations at 1\'965 pegged neighbors (P99 2.9\'963.2 ms); tenants share the remaining two cores as expected (about 44% of full speed each at five tenants). The combined-stress synthesis (Section 4.5 / 6.5) reproduces this four times. The cost is explicitly relocated to the "economy tier" \'97 protected services no longer compete.\
 \pard\pardeftab720\sa133\partightenfactor0
 
 \f0\b\fs32 \cf2 4.4.4 Memory: the double gate (Figure 7)\
@@ -1427,7 +1425,7 @@ Figure 8 Block-IO cap (io.max)\
 \f0\b Envelope language.
 \f1\b0  "Selling 16 vCPU / 48 GiB / 400 GiB" is the 
 \f0\b nominal sales envelope
-\f1\b0 ; the protection envelope is: the SLO commitment on $c_\{\\text\{svc\}\}$ dedicated cores for services + each tenant's $\\text\{high\}$ bytes of honest memory + each tenant's IO cap. The difference between the two envelopes 
+\f1\b0 ; the protection envelope is: the SLO commitment on $c_\{\\text\{svc\}\}$ dedicated cores for services + each tenant's $\\text\{high\}$ bytes of hot memory + each tenant's IO cap. The difference between the two envelopes 
 \f2\i is
 \f1\i0  the economy-tier product space \'97 the basis for tiered pricing.\
 \pard\pardeftab720\sa160\partightenfactor0
@@ -1778,13 +1776,13 @@ Load topology: 2 service VMs (HTTP/nginx, Redis; 1 vCPU / 1 GiB each), 1 probe V
 \f0\b\fs40 \cf2 7 Evaluation\
 \pard\pardeftab720\li480\fi-480\ri480\sa213\partightenfactor0
 
-\f1\b0\fs28 \cf3 \strokec3 Three evaluation groups: (A) admission-policy comparison; (B) shaping and protection-envelope comparison; (C) triple-storm synthesis validation, followed by the production-telemetry usage and an explicit gap list. Common SLO: service P99 \uc0\u8804  10 ms.\
+\f1\b0\fs28 \cf3 \strokec3 Three evaluation groups: (A) admission-policy comparison; (B) shaping and protection-envelope comparison; (C) combined-stress synthesis validation, followed by the production-telemetry usage and an explicit gap list. Common SLO: service P99 \uc0\u8804  10 ms.\
 \pard\pardeftab720\sa160\partightenfactor0
 
 \f0\b\fs34\fsmilli17333 \cf2 \strokec2 7.1 Setup Recap\
 \pard\pardeftab720\sa160\qj\partightenfactor0
 
-\f1\b0\fs30\fsmilli15333 \cf2 Testbed and metrics: Sections 3\'964 and 7. Admission comparisons use a closed loop: five candidate tenants arrive one at a time, a policy decides allow/defer from evidence visible at that moment, and allowed candidates are actually started and measured. Shaping comparisons use the neighbor sweep (0\'965 tenants) plus the full triple storm. Every key conclusion replicates at least twice (knee: 5 rounds; censoring: 7 cycles; synthesis: 4 passes).\
+\f1\b0\fs30\fsmilli15333 \cf2 Testbed and metrics: Sections 3\'964 and 7. Admission comparisons use a closed loop: five candidate tenants arrive one at a time, a policy decides allow/defer from evidence visible at that moment, and allowed candidates are actually started and measured. Shaping comparisons use the neighbor sweep (0\'965 tenants) plus the full combined-stress. Every key conclusion replicates at least twice (knee: 5 rounds; censoring: 7 cycles; synthesis: 4 passes).\
 \pard\pardeftab720\sa160\partightenfactor0
 
 \f0\b\fs34\fsmilli17333 \cf2 7.2 Admission-Policy Comparison (companion to Figure 4)\
@@ -2167,7 +2165,7 @@ Figure 12 Demand-recovery validation (b2)\
 \f0\b saturated-demand
 \f1\b0  family: host-side counters (quota + throttle counters) recover the censored demand within 9%. This is 
 \f0\b not a general guarantee
-\f1\b0 : the same counters over-estimate bursty demand (counterexample now in unit tests: true 0.3, quota 0.2 \uc0\u8594  estimate 1.0) and may under-estimate intermittent saturation; the "conservative direction" holds only on the saturated family. We therefore position it as an 
+\f1\b0 : the same counters over-estimate bursty demand (counterexample in the unit tests: true 0.3, quota 0.2 \uc0\u8594  estimate 1.0) and may under-estimate intermittent saturation; the "conservative direction" holds only on the saturated family. We therefore position it as an 
 \f0\b empirical censoring-corrected estimator
 \f1\b0  (assumptions and boundaries in Section 3.3), with a cross-pattern characterization (5 patterns \'d7 3 quotas \'d7 3 periods \'d7 multi-vCPU) as a v2 study; it is integrated into the design (Section 5.3).\
 \pard\pardeftab720\sa160\partightenfactor0
@@ -2254,13 +2252,13 @@ Figure 12 Demand-recovery validation (b2)\
 \f1\b0  Only isolation raises the safe limit (to \uc0\u8805 5); quotas change tenant speed, not the limit (Section 4.4.1). The cost relocation is visible: isolation moves the cost from "service SLO" to "economy-tier customers", while quotas satisfy neither side. The remaining defenses \'97 memory double gate and IO caps \'97 do not raise the CPU knee but stop their own storms from dragging the service under (they are necessary parts of the synthesis configuration).\
 \pard\pardeftab720\sa160\partightenfactor0
 
-\f0\b\fs34\fsmilli17333 \cf2 7.4b Online Admission Showdown (Figure 20)\
+\f0\b\fs34\fsmilli17333 \cf2 7.4b Online Admission Comparison (Figure 20)\
 \pard\pardeftab720\qc\partightenfactor0
 
 \f1\b0\fs30\fsmilli15333 \cf2 \pard\pardeftab720\qc\partightenfactor0
 
 \fs25\fsmilli12667 \cf3 \strokec3 \
-Figure 20 Online admission showdown: policy stops vs measured capacity brackets (14 rounds)\
+Figure 20 Online admission comparison: policy stops vs measured capacity brackets (14 rounds)\
 \pard\pardeftab720\sa160\qj\partightenfactor0
 
 \f0\b\fs30\fsmilli15333 \cf2 \strokec2 Protocol.
@@ -2517,8 +2515,8 @@ Figure 20 Online admission showdown: policy stops vs measured capacity brackets 
 \f2\i both
 \f1\i0  phases, fixed at 16 in both; the fine scan pins the aligned boundary at [8,10): 10 seats give customer P5=62.2%, first fail); (ii) utilization-based criteria are quantified as phase-dependent: util80 sells 28 (safe) under random and 40 (customer P5 collapses to 16%) under aligned \'97same policy, same hardware, opposite risk; audible-style collapses likewise; (iii) fixed and worstcase/quantile verify the other two corners. Safe VM-hours and round-level intervals from the show4/show5 repeats are reported above where available.\
 
-\f0\b Sampling caveat (honest):
-\f1\b0  v2 sync rounds have a probe-before-rates ordering defect that pushed rate sampling out of the burst window (audible/util80 happen to have valid violation evidence via phase drift; fixed etc. lack the p5 column); the corrected seven-round rerun (show5) was completed and the sync customer columns are reported via the four-round ladder.\
+\f0\b Sampling caveat:
+\f1\b0  the earlier sync rounds have a probe-before-rates ordering defect that pushed rate sampling out of the burst window (audible/util80 happen to have valid violation evidence via phase drift; fixed etc. lack the p5 column); the corrected seven-round rerun (show5) was completed and the sync customer columns are reported via the four-round ladder.\
 \pard\pardeftab720\sa160\partightenfactor0
 
 \f0\b\fs34\fsmilli17333 \cf2 7.5 Triple-Storm Synthesis (Figure 10)\
@@ -2527,7 +2525,7 @@ Figure 20 Online admission showdown: policy stops vs measured capacity brackets 
 \f1\b0\fs30\fsmilli15333 \cf2 \pard\pardeftab720\qc\partightenfactor0
 
 \fs25\fsmilli12667 \cf3 \strokec3 \
-Figure 10 Triple-storm synthesis (4 runs)\
+Figure 10 Combined-stress validation (4 runs)\
 \pard\pardeftab720\sa160\qj\partightenfactor0
 
 \f0\b\fs30\fsmilli15333 \cf2 \strokec2 Configuration.
@@ -2635,7 +2633,7 @@ Figure 10 Triple-storm synthesis (4 runs)\
 \f0\b Collection note.
 \f1\b0  Customer-side detail under hard throttling collects incompletely (13/16 in syn3); service-side metrics carry the protection conclusion, with customer-side work rates and throttle counters as corroborating evidence.\
 
-\f0\b v3 rework repeat (Figure 19).
+\f0\b Rework repeat (Figure 19).
 \f1\b0  The rework reran the same storm end-to-end (20 s probes, fresh state per round): 
 \f0\b 25 of 26 rounds pass
 \f1\b0  \'97 HTTP P99 mean 
@@ -2647,7 +2645,7 @@ Figure 10 Triple-storm synthesis (4 runs)\
 \f1\b0  \'97 in that round 8 tenants returned no rate samples (degraded state). The envelope has held across 
 \f0\b 29 of 30 passes (4 pilot + 26 rework)
 \f1\b0 . 
-\f0\b Statistical honesty:
+\f0\b Statistical note:
 \f1\b0  the optimistic independent-binomial one-sided 95% bound for 29/30 is ~
 \f0\b 14.9%
 \f1\b0  (the earlier 11.7% for 24/24 was an optimistic pre-rework estimate; rounds share host state and are time-correlated, so the bound is indicative \'97 "near-zero violations" is not a long-term guarantee).\
@@ -2655,7 +2653,7 @@ Figure 10 Triple-storm synthesis (4 runs)\
 \cf2 \pard\pardeftab720\qc\partightenfactor0
 
 \fs25\fsmilli12667 \cf3 \strokec3 \
-Figure 19 Triple-storm rework, 26 rounds: 25/26 pass, one degraded round at 25.3 ms\
+Figure 19 Combined-stress rework, 26 rounds: 25/26 pass, one degraded round at 25.3 ms\
 \pard\pardeftab720\sa160\partightenfactor0
 
 \f0\b\fs34\fsmilli17333 \cf2 \strokec2 7.5b Joint Admission + Shaping Validation (j1, Figure 13)\
@@ -2714,12 +2712,12 @@ Figure 13 Joint admission + shaping validation (j1)\
 \cf2 3.8 s (same source)\cell \lastrow\row
 \pard\pardeftab720\sa160\qj\partightenfactor0
 
-\f0\b\fs30\fsmilli15333 \cf2 Reading (three honest points).
+\f0\b\fs30\fsmilli15333 \cf2 Reading.
 \f1\b0  (i) Pinning and caps keep the service safe: zero violations under both policies \'97 in joint operation the admission policy decides 
 \f2\i how many seats are committed
 \f1\i0 , not service safety. (ii) The dominant customer-side pain comes from the tight memory gate: the canary's multi-second stalls are nearly identical at 1 and 3 seats, showing that 
 \f3\fs28\fsmilli14107 memory.high = 800 MB
-\f1\fs30\fsmilli15333  is too tight for a 3 GB guest (cf. the soft-threshold semantics of Section 4.4.4); the economy tier's experience ceiling is a product parameter, not a policy defect. (iii) Throttle-corrected estimation carries a phase bias: with bursty background, instant sampling at decision time underestimates demand (estimates oscillated between 0.01 and 1.90 cores), making the aware policy over-conservative (1 seat vs naive's 3) \'97 the design-to-implementation gap versus the time-aligned aggregate upper quantile of Section 5.3, tracked as an improvement item. The v2 revision now implements the time-aligned aggregation and is re-measured as a four-policy comparison on the second testbed; results merge as supplementary material.\
+\f1\fs30\fsmilli15333  is too tight for a 3 GB guest (cf. the soft-threshold semantics of Section 4.4.4); the economy tier's experience ceiling is a product parameter, not a policy defect. (iii) Throttle-corrected estimation carries a phase bias: with bursty background, instant sampling at decision time underestimates demand (estimates oscillated between 0.01 and 1.90 cores), making the aware policy over-conservative (1 seat vs naive's 3) \'97 the design-to-implementation gap versus the time-aligned aggregate upper quantile of Section 5.3, tracked as an improvement item. The revision implements the time-aligned aggregation; it is re-measured as a four-policy comparison on the second testbed, with results merged as supplementary material.\
 \pard\pardeftab720\sa160\partightenfactor0
 
 \f0\b\fs34\fsmilli17333 \cf2 7.6 Production Telemetry: Workload Portrait (Figure 27)\
@@ -2772,7 +2770,7 @@ Figure 27 Production portrait: 72% near-idle, 4268 short bursts, 5.76x oversubsc
 \f0\b Boundaries and the two-state anchor (Figure 31).
 \f1\b0  The dense window is only 170 minutes and is a
 \f0\b night-time quiet segment
-\f1\b0  (host busy 30.1%, peak 47.2%); the light stream has now accumulated 
+\f1\b0  (host busy 30.1%, peak 47.2%); the light stream has accumulated 
 \f0\b 39 hours of day/night coverage
 \f1\b0  (274 points at 5-minute intervals; ~40% of samples missing to relay jitter): host busy mean 
 \f0\b 37.7%
@@ -2824,7 +2822,7 @@ Fleet: one HTTP (nginx), one Redis, one probe (open loop, 100 req/s),
 \f1\b0 : the SMT siblings of the service cores (50/51/52) do not intersect the sibling set of the tenant pool 8\'9623 (56\'9671), and all live on NUMA node 0 \'97 physical-core isolation, not merely disjoint logical numbering.\
 \pard\pardeftab720\li480\fi-480\ri480\sa213\partightenfactor0
 
-\fs28 \cf3 \strokec3 Incident (recorded honestly): during setup the host suffered one kernel panic (
+\fs28 \cf3 \strokec3 Recorded incident: during setup the host suffered one kernel panic (
 \f3\fs25\fsmilli12880 Attempted to kill init! exitcode=0x9
 \f1\fs28 , log stops near a batch VM start); at the time its memory subsystem was degraded (only 7 of 8 DCPMM online). After a cold boot fixed memory (8/8 online, 991 GiB), batched starts of 48 VMs plus hours of saturated experiments ran clean. Not part of the method, but evidence that production hardware also runs sick \'97 monitoring and conservative design matter more, not less.\
 \pard\pardeftab720\sa160\partightenfactor0
@@ -3207,8 +3205,8 @@ i.e., the concentration form $N^*_\{\\text\{mid\}\} = C/(\\rho\\kappa)$.
 \fs30\fsmilli15333 \cf2 Structural phases ($\\varphi \\ge 0.5$) hit the break point; the $\\varphi=0.25$ prediction lands inside the passing region (conservative), the pure-random end is optimistic \'97 the error directions match the tail-vs-median bar expectation.\
 \pard\pardeftab720\sa160\qj\partightenfactor0
 
-\f0\b \cf2 Boundaries (honest).
-\f1\b0  (i) Each configuration now pools three capmix rounds; per-level P5 still carries non-monotone sampling noise, e.g., $\\varphi=0.25$ L24 > L20 \'97 larger round pools and a prediction-error distribution over more seeds are future work. (ii) The C5 anti-phase arrangement experiment (same tenants, two groups offset by 30 s, capacity x2) upgrades "phase is arrangeable" from observation to intervention. (iii) The positioning is a 
+\f0\b \cf2 Boundaries.
+\f1\b0  (i) Each configuration pools three capmix rounds; per-level P5 still carries non-monotone sampling noise, e.g., $\\varphi=0.25$ L24 > L20 \'97 larger round pools and a prediction-error distribution over more seeds are future work. (ii) The C5 anti-phase arrangement experiment (same tenants, two groups offset by 30 s, capacity x2) upgrades "phase is arrangeable" from observation to intervention. (iii) The positioning is a 
 \f0\b capacity approximation with explicit assumptions
 \f1\b0  \'97 used for extrapolation and admission priors under structural phases, with safe values taken from measured bars; no universal law is claimed.\
 \pard\pardeftab720\sa160\partightenfactor0
@@ -3238,9 +3236,9 @@ Figure 28 Phase-Profile Convolution: iid blind vs PPC varying with phase structu
 \f3\fs28\fsmilli14107 ppc_bootstrap.py
 \f1\fs30\fsmilli15333 ) on real traces with a strict three-way split: the first third trains, the middle third selects the block length by KS distance (B=1), and the last third is used for scoring only. Predictive blocks are drawn from the training third alone, never from validation or test, so this is not a self-resampling of the test segment. Blocks are resampled jointly across tenants to preserve co-occurrence, with an iid-shuffle control that keeps marginals and destroys the joint. Forward prediction scored against the test third: joint predicted peaks P50/P95/max = 14/14/14 with P(peak>8)=99%, iid predicted 12/13/16 with P=100%, and the observed test peak is 12 with 8% of seconds above the pool. On this production schedule both predictors get the risk direction right, and the minute-level joint-vs-iid gap is small, consistent with the fleet's drifting-phase profile; the extreme-phase evidence lives in the synthetic experiments. 
 \f0\b Scope:
-\f1\b0  inputs are one-minute production duties plus an in-period activity model and contain no sub-minute phase structure; this supports a minute-granularity replay model, not measured sub-minute structure. Real-trace measurements over the 64-VM x 30-min replay schedules: joint peak 14 cores (P50=P95=max=14) versus iid peaks 12-15. On this low-correlation drifting fleet the two differ little, and the iid risk grows with phase alignment (extremes in C5 and the synchronized sells). Block-length selection chose B=1 with KS~0.16; the spread across B in \{1,2,5,10,15\} is 0.16-0.21, weakly resolvable and reported honestly. The online replay (replay1) drove the 64-tenant schedule for 30 minutes on the 8-core pool: mean pool busy 42.0% (3.4 cores), peak saturation 100% (>=8 cores concurrent), service P99 0.706-0.729 ms across five probes with one 1.599 ms tail. The predicted over-pool risk materializes at peak while the isolation envelope keeps the service flat. The multi-window recheck sliced the same telemetry into five non-overlapping 30-minute windows, each with an independent forward prediction: direction hit 5/5 (predicted P(peak>8)=98-100% versus observed over-pool 3.5-8.3%), peak magnitudes of the same order (predicted P50 11-19 versus observed 12-16; per-window offsets +5/\'b11/-2/-1/0, variance reported honestly). 
+\f1\b0  inputs are one-minute production duties plus an in-period activity model and contain no sub-minute phase structure; this supports a minute-granularity replay model, not measured sub-minute structure. Real-trace measurements over the 64-VM x 30-min replay schedules: joint peak 14 cores (P50=P95=max=14) versus iid peaks 12-15. On this low-correlation drifting fleet the two differ little, and the iid risk grows with phase alignment (extremes in C5 and the synchronized sells). Block-length selection chose B=1 with KS~0.16; the spread across B in \{1,2,5,10,15\} is 0.16-0.21, weakly resolvable. The online replay (replay1) drove the 64-tenant schedule for 30 minutes on the 8-core pool: mean pool busy 42.0% (3.4 cores), peak saturation 100% (>=8 cores concurrent), service P99 0.706-0.729 ms across five probes with one 1.599 ms tail. The predicted over-pool risk materializes at peak while the isolation envelope keeps the service flat. The multi-window recheck sliced the same telemetry into five non-overlapping 30-minute windows, each with an independent forward prediction: direction hit 5/5 (predicted P(peak>8)=98-100% versus observed over-pool 3.5-8.3%), peak magnitudes of the same order (predicted P50 11-19 versus observed 12-16; per-window offsets +5/\'b11/-2/-1/0, variance reported). 
 \f0\b Scope:
-\f1\b0  the second-level series is reconstructed from minute-level duties plus a within-period phase model; this validates model-replay consistency, not independently measured second-level production truth. Both methods predict over-pool on this deliberately low-correlation fleet, so the discrimination evidence lives in the synthetic configurations (iid blind versus PPC separating five structures) and the online showdown (util80/audible collapsing in sync); independent second-level truth, false-positive/negative rates and multi-threshold behavior are future work. The third mode is the online actuator: a Taligned-style peak envelope (60 one-second phase buckets plus a class prior), a low-cost online approximation of PPC rather than a resampler; its showdown behavior (Section 7.4b) is the evidence for that approximation. All three share one principle \'97 accounting on the joint phase structure \'97 at different resolutions and for different purposes, and the paper labels them separately.\
+\f1\b0  the second-level series is reconstructed from minute-level duties plus a within-period phase model; this validates model-replay consistency, not independently measured second-level production truth. Both methods predict over-pool on this deliberately low-correlation fleet, so the discrimination evidence lives in the synthetic configurations (iid blind versus PPC separating five structures) and the online comparison (util80/audible collapsing in sync); independent second-level truth, false-positive/negative rates and multi-threshold behavior are future work. The third mode is the online actuator: a Taligned-style peak envelope (60 one-second phase buckets plus a class prior), a low-cost online approximation of PPC rather than a resampler; its comparison behavior (Section 7.4b) is the evidence for that approximation. All three share one principle \'97 accounting on the joint phase structure \'97 at different resolutions and for different purposes, and the paper labels them separately.\
 
 \f0\b Results (Figure 28).
 \f1\b0  With identical parameters: iid convolution predicts 
@@ -3251,7 +3249,7 @@ Figure 28 Phase-Profile Convolution: iid blind vs PPC varying with phase structu
 \f2\i coarse
 \f1\i0  brackets. 
 \f0\b Caveat:
-\f1\b0  falling inside a bracket is not hitting the exact oracle \'97 e.g. the sync prediction of 10 now sits exactly at the fine-scan first-fail step (boundary [8,10): 8 seats P5=98.8%, 10 seats P5=62.2%) \'97 the online peak gate, not the offline prediction, is what stops at 8; rand 24 is conservative by 4 after the fine scan pinned the bracket at [28,32). The random-end tail optimism matches Section 8.5 and is corrected by the measured bar.\
+\f1\b0  falling inside a bracket is not hitting the exact oracle \'97 e.g. the sync prediction of 10 sits exactly at the fine-scan first-fail step (boundary [8,10): 8 seats P5=98.8%, 10 seats P5=62.2%) \'97 the online peak gate, not the offline prediction, is what stops at 8; rand 24 is conservative by 4 after the fine scan pinned the bracket at [28,32). The random-end tail optimism matches Section 8.5 and is corrected by the measured bar.\
 
 \f0\b Prediction-quality metrics (stricter than "inside the bracket").
 \f1\b0  Per configuration: 
@@ -3269,7 +3267,7 @@ Figure 28 Phase-Profile Convolution: iid blind vs PPC varying with phase structu
 \f1\b0 ; the sync case is exactly why the online peak gate \'97 not the offline predictor \'97 carries the safety argument.\
 
 \f0\b Boundaries.
-\f1\b0  PPC needs phase history (cold start degrades to priors/observation windows); the random end still needs the measured bar; validation is offline forward prediction (train-only resampling scored on the held-out third) plus the online showdown (the 
+\f1\b0  PPC needs phase history (cold start degrades to priors/observation windows); the random end still needs the measured bar; validation is offline forward prediction (train-only resampling scored on the held-out third) plus the online comparison (the 
 \f3\fs28\fsmilli14107 ours
 \f1\fs30\fsmilli15333 policy 
 \f2\i is
@@ -3406,7 +3404,7 @@ Figure 28 Phase-Profile Convolution: iid blind vs PPC varying with phase structu
 
 \f1\b0\fs28 \cf3 \strokec3 This chapter carries the "no-regression resource-efficiency" pillar (skeleton \'a79): per-resource precision control measured under three no-regression constraints \'97 service P99 \uc0\u8804  10 ms, no customer-rate degradation, and no reduction of tenant-visible memory. Phase C experiments are complete (zram3b/ioctl2/ FPR/canary3) and the sections below are filled (Figures 22\'9626). 
 \f0\b Positioning: this chapter is a supporting extension
-\f1\b0  \'97 the paper's spine is the Identify/Predict/Actuate chain of Sections 3/5/7/8; this chapter verifies that the no-regression principle extends across resources and provides density-ceiling context.\
+\f1\b0  \'97 the main line is the Identify/Predict/Actuate chain of Sections 3/5/7/8; this chapter verifies that the no-regression principle extends across resources and provides density-ceiling context.\
 \pard\pardeftab720\partightenfactor0
 
 \fs30\fsmilli15333 \cf4 \strokec4 \
@@ -3510,7 +3508,7 @@ Figure 22 Micro-period self-audit: 2 ms and 1 s deliver identically (+35% withdr
 \f1\b0  (0.500 cores each, ~52%of baseline, difference <1%); 
 \f0\b the +35% claim is withdrawn
 \f1\b0  (summary table corrected in step). Services are unaffected by the period (0.73\'960.75 ms; the qp2c service data remain valid). 
-\f0\b Lessons, now fixed in 
+\f0\b Lessons, fixed in 
 \f5\fs28\fsmilli14107 tb_qp2v.py
 \f0\fs30\fsmilli15333 :
 \f1\b0  throughput comparisons must (i) reset the cumulative window per config and (ii) cross-check against cgroup delivery rather than the rate file.\
@@ -3578,7 +3576,7 @@ Figure 26 Tenant 4K random storm: ~66k IOPS, service untouched (P99 0.74-0.76 ms
 \f0\b 8.3 ms
 \f1\b0 ; across the three arms (none / static / adaptive) the service HTTP P99 stays at 
 \f0\b 0.743\'960.756 ms
-\f1\b0  \'97 the tenant storm does not touch the service (isolation envelope); arm differences <1% (adaptive shows no advantage under this load \'97 reported honestly).\
+\f1\b0  \'97 the tenant storm does not touch the service (isolation envelope); arm differences <1% (adaptive shows no advantage under this load).\
 \pard\pardeftab720\sa160\partightenfactor0
 
 \f0\b\fs34\fsmilli17333 \cf2 9.4 Relation to the (Domain-Scoped) No-Regression Constraint\
@@ -3588,7 +3586,7 @@ Figure 26 Tenant 4K random storm: ~66k IOPS, service untouched (P99 0.74-0.76 ms
 \f0\b KSM, FPR and isolation are zero-visible-regression
 \f1\b0  (customer rate distribution and visible configuration unchanged); 
 \f0\b zram's cost is host-side compression work
-\f1\b0  (service unaffected; the compression ratio is reported for compressible cold pages, honestly); 
+\f1\b0  (service unaffected; the compression ratio is reported for compressible cold pages); 
 \f0\b quotas and IO caps are explicitly priced on the throttled tenants
 \f1\b0 (rate, queueing) \'97 closing the loop with Chapter 5's "economy tier = a priced degradation budget". Data sources: ksm1 (21.9 GB = 33.4% dedup, ksmd ~0.16 core, service P99 0.73\uc0\u8594 0.76 ms); fpr1/fpr5 (idle"1 GB" VMs hold 156\'96315 MB; a 300 MB allocation reclaims 303 MB with the guest-visible memory unchanged); zram3b (three arms: none aborts ~940 GB without swap / zram reaches 1120 GB with 176.8 GB absorbed and a flat P99 / disk swapfile exhausts at 96 GB and aborts).\
 \pard\pardeftab720\qc\partightenfactor0
@@ -3655,7 +3653,7 @@ Figure 25 Swap arms: zram absorbs 176.8 GB (P99 flat) vs the disk swapfile exhau
 \fs30\fsmilli15333 \cf2 Construct validity.
 \f1\b0  The "business" services are lightweight HTTP/Redis stand-ins; real services (databases, gateways) have longer and more syscall-dependent paths, which change absolute numbers but not the structure of overlap-driven tails. Tenant loads are synthetic duty-cycle loops without real-application slow paths (lock contention, GC); replication with real application images is future work.
 \f0\b Internal validity.
-\f1\b0  Nested virtualization adds a scheduling layer; randomized orders and replicates suppress noise, and service-side metrics are stable across synthesis passes. The weight-failure mechanism is not yet localized (a host-side packet-path hypothesis is unverified) and is kept as an open question. The joint validation exposed a further issue: instant sampling of bursty background load carries a phase bias, the full controller (phase profiles + censoring correction + pause guardrail) is now implemented and evaluated in the online showdown (Section 7.4b; the j1 joint pilot is kept as a historical design\'96implementation gap record); the customer-side canary shows that a tight 
+\f1\b0  Nested virtualization adds a scheduling layer; randomized orders and replicates suppress noise, and service-side metrics are stable across synthesis passes. The weight-failure mechanism is not yet localized (a host-side packet-path hypothesis is unverified) and is kept as an open question. The joint validation exposed a further issue: instant sampling of bursty background load carries a phase bias, the full controller (phase profiles + censoring correction + pause guardrail) is implemented and evaluated in the online comparison (Section 7.4b; the j1 joint pilot is kept as a historical design\'96implementation gap record); the customer-side canary shows that a tight 
 \f3\fs28\fsmilli14107 memory.high
 \f1\fs30\fsmilli15333  gate can cause multi-second stalls, so gate sizing must be an explicitly calibrated product parameter.
 \f0\b External validity.
@@ -3663,7 +3661,7 @@ Figure 25 Swap arms: zram absorbs 176.8 GB (P99 flat) vs the disk swapfile exhau
 \f2\i reconstructed
 \f1\i0  second-level series (model-replay consistency) \'97 independent second-level truth and false-positive/negative rates remain future work; cross-vendor hardware extrapolation remains a follow-up item.
 \f0\b Statistics.
-\f1\b0  Key conclusions carry mass repeats (knee 50, censoring 90 cycles in 30 rounds, triple storm 24); the admission showdown v2 (14 rounds), boundary fine scans (multi-cycle, 2 rounds per step) and mixed-phase repeats are running; zero-failure claims are reported with Clopper-Pearson bounds and explicit trial counts, never as long-term guarantees.\
+\f1\b0  Key conclusions carry mass repeats (knee 50, censoring 90 cycles in 30 rounds, combined-stress 24); the admission comparison v2 (14 rounds), boundary fine scans (multi-cycle, 2 rounds per step) and mixed-phase repeats are running; zero-failure claims are reported with Clopper-Pearson bounds and explicit trial counts, never as long-term guarantees.\
 \pard\pardeftab720\sa160\partightenfactor0
 
 \f0\b\fs34\fsmilli17333 \cf2 10.5 Boundary to Hyperscale Approaches\
@@ -3681,17 +3679,17 @@ Figure 25 Swap arms: zram absorbs 176.8 GB (P99 flat) vs the disk swapfile exhau
 \f0\b mass repeats at the 50/90/24-round scale
 \f1\b0  and read-only telemetry from two production hosts we operate ourselves, recasts "safe oversubscription" as three ordered problems whose organizing thesis is 
 \f0\b observation necessity
-\f1\b0  (Section 3.6): censoring identification, phase resolution and time resolution are each necessary \'97 with (1)(2) directly measured and (3) currently a construction plus indirect evidence \'97 and jointly sufficient as an empirical statement for our target workload family (the policy with all three is the only one in the 14-round showdown combining random-phase capacity (16\'9620 seats) with the aligned-phase 8-seat stop and random-phase customer compliance; aligned-phase customer P5 ~99% at 8 seats, 4-round ladder).\
+\f1\b0  (Section 3.6): censoring identification, phase resolution and time resolution are each necessary \'97 with (1)(2) directly measured and (3) currently a construction plus indirect evidence \'97 and jointly sufficient as an empirical statement for our target workload family (the policy with all three is the only one in the 14-round comparison combining random-phase capacity (16\'9620 seats) with the aligned-phase 8-seat stop and random-phase customer compliance; aligned-phase customer P5 ~99% at 8 seats, 4-round ladder).\
 \pard\pardeftab720\sa160\qj\partightenfactor0
 
 \f0\b \cf2 Identify.
 \f1\b0  Quota censoring makes demand unobservable in aggregate counters: the point estimate equals the running-stretch mean (exact iff the two stretch means agree; constant demand is sufficient but not necessary), the floor q(1+t) is conditional (and, since the reviewer counterexample, explicitly an empirical conservative heuristic rather than a certified bound), and aggregate non-identifiability is constructed. Validation across 90 cycles (30 independent rounds, clustered) shows throttle-corrected estimates match the truth while naive release decisions violate in 90/90; the mixed-occupancy ablation quantifies all five estimators (naive -2.31, quota-scaling +0.01 by coincidence, throttle correction -0.20, full-vCPU +2.70, uncapped -0.16) and isolates the window-dilution effect that multi-resolution throttle sequences will fix.\
 
 \f0\b Predict.
-\f1\b0  Capacity is set by phase structure, not average utilization: random vs aligned safe capacity 28 vs 8 (primary bar P5 \uc0\u8805  70%; 3.5x\'964x across bars), with the utilization-impossibility counterexample \'97 and the measured inversion (safe fleet reports 66.4-68.0% busy, the collapsing fleet 30.4%). The safe-capacity approximation N* = C/(phi + (1-phi) rho) is stated with explicit assumptions and honest error directions. The Phase-Profile Convolution (PPC) now has three artifact-backed modes (parametric simulation, strict three-way joint block bootstrap with a held-out test third, online peak-envelope approximation); iid convolution is provably blind to exactly the axis that decides safety (the marginal illusion), and the C5 intervention shows the axis is controllable (capacity x2/x4 by phase arrangement alone).\
+\f1\b0  Capacity is set by phase structure, not average utilization: random vs aligned safe capacity 28 vs 8 (primary bar P5 \uc0\u8805  70%; 3.5x\'964x across bars), with the utilization-impossibility counterexample \'97 and the measured inversion (safe fleet reports 66.4-68.0% busy, the collapsing fleet 30.4%). The safe-capacity approximation N* = C/(phi + (1-phi) rho) is stated with explicit assumptions and measured error directions. The Phase-Profile Convolution (PPC) has three artifact-backed modes (parametric simulation, strict three-way joint block bootstrap with a held-out test third, online peak-envelope approximation); iid convolution is provably blind to exactly the axis that decides safety (the marginal illusion), and the C5 intervention shows the axis is controllable (capacity x2/x4 by phase arrangement alone).\
 
 \f0\b Actuate.
-\f1\b0  In the complete 14-round showdown (identical arrival streams and evidence), the phase-aware admission is the only policy combining the verified aligned-phase bracket (8 seats, customer P5 ~99%) with competitive random-phase capacity (16\'9620); the audible-style and busy-threshold baselines sell 40 in the aligned phase and collapse customer P5 to 16%, and the fixed-oversubscription baseline violates the primary bar at 16 \'97 the phase-blindness of independence assumptions and of utilization criteria, quantified end to end. On the resource-efficiency side (supporting extension, Chapter 9), balloon-free reclaim (KSM 33.4% of fleet RAM; free-page reporting reclaiming 303 MB; zram absorbing 176.8 GB of overflow) raises density without shrinking tenant-visible resources under the 
+\f1\b0  In the complete 14-round comparison (identical arrival streams and evidence), the phase-aware admission is the only policy combining the verified aligned-phase bracket (8 seats, customer P5 ~99%) with competitive random-phase capacity (16\'9620); the audible-style and busy-threshold baselines sell 40 in the aligned phase and collapse customer P5 to 16%, and the fixed-oversubscription baseline violates the primary bar at 16 \'97 the phase-blindness of independence assumptions and of utilization criteria, quantified end to end. On the resource-efficiency side (supporting extension, Chapter 9), balloon-free reclaim (KSM 33.4% of fleet RAM; free-page reporting reclaiming 303 MB; zram absorbing 176.8 GB of overflow) raises density without shrinking tenant-visible resources under the 
 \f0\b domain-scoped
 \f1\b0  no-regression definition; micro-period quotas, IO storms and the QoE canary each carry a gain / hidden-cost / visible-regression ledger.\
 
@@ -3767,12 +3765,12 @@ Figure 25 Swap arms: zram absorbs 176.8 GB (P99 flat) vs the disk swapfile exhau
 \f1\b0  The sampling rate must be at least $1/w$ (this paper's online history uses 1 s for 12-s bursts \'97 a 12x margin).\
 \pard\pardeftab720\sa160\partightenfactor0
 
-\f0\b\fs34\fsmilli17333 \cf2 A.5 What is not provable here (honest statement)\
+\f0\b\fs34\fsmilli17333 \cf2 A.5 Scope of the formal results\
 \pard\pardeftab720\sa160\qj\partightenfactor0
 
 \f1\b0\fs30\fsmilli15333 \cf2 The 
 \f0\b sufficiency
-\f1\b0  of the minimal observation set is an empirical statement over the target workload family (the 14-round showdown plus the C5 intervention), not a theorem; its direct checks (aligned-phase customer evidence, anti-aliasing sampling comparison) are reported where available, with the anti-aliasing experiment listed as future work.\
+\f1\b0  of the minimal observation set is an empirical statement over the target workload family (the 14-round comparison plus the C5 intervention), not a theorem; its direct checks (aligned-phase customer evidence, anti-aliasing sampling comparison) are reported where available, with the anti-aliasing experiment listed as future work.\
 \pard\pardeftab720\partightenfactor0
 \cf4 \strokec4 \
 \pard\pardeftab720\sa213\partightenfactor0

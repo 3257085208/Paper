@@ -24,9 +24,10 @@ structure, not average utilization: at the same 20% duty, random-phase and align
 in safe capacity (28 versus 8 seats at customer P5 >= 70%), and a 35%-busy set collapsing while a
 98%-busy set stays safe shows that safety cannot be read off utilization. Third, the sampling rate
 must resolve the bursts it prices. Together these capabilities form an observation set that a
-risk-calibrated admission controller implements: in a complete 14-round showdown it is the only
-policy combining competitive random-phase capacity with a conservative aligned-phase stop, while
-baseline policies oversell (customer P5 collapsing to 16%) or waste 2-3x capacity. All claims rest on
+risk-calibrated admission controller implements: in the 14 evaluated scenarios it admitted 16-20
+tenants under randomized phases and stopped at eight under aligned phases while meeting the
+customer-quality bar, whereas baseline policies either oversold (customer P5 collapsing to 16%) or
+wasted 2-3x capacity. All claims rest on
 mass repeats, two testbeds, read-only telemetry from production hosts we operate, and released
 artifacts.
 
@@ -39,8 +40,8 @@ artifacts.
 | 3 | No evidence for choosing control levers | Soft priorities are relied upon: 100x CPU weight still 24 ms; io.weight inert | Controlled comparisons → shaping playbook (isolation first, hard caps, memory double-gate) | Isolation: 29 of 30 storm rounds with zero service violations (1 degraded round at 25.3 ms); io.max: service P99 12.1→2.7 ms |
 | 4 | Memory oversubscription vs "no visible shrink" | Ballooning shrinks guest-visible memory; without it the host never reclaims; swap amplifies reclaim tax | Balloon-free trio (KSM / free-page reporting / zram) + double gate | KSM reclaims 33.4% of fleet RAM (21.9 GB); an idle "1 GB" VM holds only 156-315 MB of host RAM, invisible to the guest |
 | 5 | Rate is period-independent (self-audit correction) | We had reported "micro-period quotas +35%" — a clean-window re-measurement (qp2v1) proves it was a windowing artifact | Fresh burner window per config + guest `cpu.stat` delivery as ground truth | At 50% quota, 2 ms and 1 s deliver identically (0.500 cores each, ~52% of baseline); the +35% claim is withdrawn; services unaffected |
-| 6 | Admission lacks fair validation and risk semantics | "Zero violations" is treated as a guarantee (the one-sided bound after 29/30 clean rounds is still ~14.9%) | Seven-policy, same-arrival-stream showdown + Clopper-Pearson certification protocol | Complete 14-round showdown: ours/ours_p both-bar safe (aligned 8, random 16-20); util80 sells 28 (safe) in random but collapses at 40 in sync (P5 16%); fine-scan boundaries sync [8,10), rand [28,32) |
+| 6 | Admission lacks fair validation and risk semantics | "Zero violations" is treated as a guarantee (the one-sided bound after 29/30 clean rounds is still ~14.9%) | Seven-policy, same-arrival-stream comparison + Clopper-Pearson certification protocol | Complete 14-round comparison: ours/ours_p both-bar safe (aligned 8, random 16-20); util80 sells 28 (safe) in random but collapses at 40 in sync (P5 16%); fine-scan boundaries sync [8,10), rand [28,32) |
 
 **Keywords:** virtualization; oversubscription; admission control; censored demand; identifiability; cgroup v2; tail latency; density
 
-**Status & honest gaps:** all campaigns, rework batches and Phase C modules are complete and merged (Sections 4/7/8/9); round-level ranges are reported throughout. Remaining before submission: formal round-level bootstrap intervals (post data-freeze) and a direct anti-aliasing sampling experiment (future work); five minor reference fields are being completed at packaging time.
+**Status and remaining gaps:** all campaigns, rework batches and Phase C modules are complete and merged (Sections 4/7/8/9); round-level ranges are reported throughout. Remaining before submission: formal round-level bootstrap intervals (post data-freeze) and a direct anti-aliasing sampling experiment (future work); five minor reference fields are being completed at packaging time.

@@ -4,7 +4,7 @@
 > precision control measured under three no-regression constraints — service P99 ≤ 10 ms, no customer-rate
 > degradation, and no reduction of tenant-visible memory. Phase C experiments are complete (zram3b/ioctl2/
 > FPR/canary3) and the sections below are filled (Figures 22–26). **Positioning: this chapter is a supporting
-> extension** — the paper's spine is the Identify/Predict/Actuate chain of Sections 3/5/7/8; this chapter
+> extension** — the main line is the Identify/Predict/Actuate chain of Sections 3/5/7/8; this chapter
 > verifies that the no-regression principle extends across resources and provides density-ceiling context.
 
 ---
@@ -30,7 +30,7 @@ burner window per config + synchronized 60 s windows + guest `cpu.stat` delivery
 **Corrected conclusion.** At 50% quota, **2 ms and 1 s deliver identically** (0.500 cores each, ~52%
 of baseline, difference <1%); **the +35% claim is withdrawn** (summary table corrected in step).
 Services are unaffected by the period (0.73–0.75 ms; the qp2c service data remain valid). **Lessons,
-now fixed in `tb_qp2v.py`:** throughput comparisons must (i) reset the cumulative window per config
+fixed in `tb_qp2v.py`:** throughput comparisons must (i) reset the cumulative window per config
 and (ii) cross-check against cgroup delivery rather than the rate file.
 
 **Boundaries.** Pure CPU-pegged busy loops; period effects on latency-sensitive/mixed workloads are
@@ -61,14 +61,14 @@ under either density or phase arrangement.
 60 s per arm: host **~98k IOPS**, aggregate tenant **~66k IOPS** (n=8), tenant per-op P99max **8.3 ms**;
 across the three arms (none / static / adaptive) the service HTTP P99 stays at **0.743–0.756 ms** — the
 tenant storm does not touch the service (isolation envelope); arm differences <1% (adaptive shows no
-advantage under this load — reported honestly).
+advantage under this load).
 
 ## 9.4 Relation to the (Domain-Scoped) No-Regression Constraint
 
 Per-mechanism ledger (density gain / hidden cost / tenant-visible regression): **KSM, FPR and isolation
 are zero-visible-regression** (customer rate distribution and visible configuration unchanged); **zram's
 cost is host-side compression work** (service unaffected; the compression ratio is reported for
-compressible cold pages, honestly); **quotas and IO caps are explicitly priced on the throttled tenants**
+compressible cold pages); **quotas and IO caps are explicitly priced on the throttled tenants**
 (rate, queueing) — closing the loop with Chapter 5's "economy tier = a priced degradation budget".
 Data sources: ksm1 (21.9 GB = 33.4% dedup, ksmd ~0.16 core, service P99 0.73→0.76 ms); fpr1/fpr5 (idle
 "1 GB" VMs hold 156–315 MB; a 300 MB allocation reclaims 303 MB with the guest-visible memory unchanged);

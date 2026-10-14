@@ -59,9 +59,9 @@ sample necessarily lands inside the burst. ∎
 **Corollary.** The sampling rate must be at least $1/w$ (this paper's online history uses 1 s for
 12-s bursts — a 12x margin).
 
-## A.5 What is not provable here (honest statement)
+## A.5 Scope of the formal results
 
 The **sufficiency** of the minimal observation set is an empirical statement over the target workload
-family (the 14-round showdown plus the C5 intervention), not a theorem; its direct checks (aligned-phase
+family (the 14-round comparison plus the C5 intervention), not a theorem; its direct checks (aligned-phase
 customer evidence, anti-aliasing sampling comparison) are reported where available, with the
 anti-aliasing experiment listed as future work.

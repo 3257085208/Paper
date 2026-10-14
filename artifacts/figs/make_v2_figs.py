@@ -168,7 +168,7 @@ def fig19_syn_repeat():
                linestyle="--")
     ax.set_xlabel("repeat round (16 tenants, three storms at once)")
     ax.set_ylabel("service P99 (ms)")
-    ax.set_title("BeroHost v3 rework: %d-round triple-storm repeat — HTTP mean %.2f ms "
+    ax.set_title("BeroHost rework: %d-round combined-stress repeat — HTTP mean %.2f ms "
                  "[%.2f-%.2f], %d/%d below SLO, zero timeouts" % (
                      len(http), statistics.mean(http), min(http), max(http),
                      sum(1 for x in http if x <= SLO), len(http)), fontsize=10)
