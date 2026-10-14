@@ -159,7 +159,7 @@ The protection envelope is fully active (services/probe pinned to cores 0–1; c
 | naive (usage) | 3 | 0 | max wakeup stall 3.8–4.4 s per 5 s window |
 | aware (throttle-corrected) | 1 | 0 | 3.8 s (same source) |
 
-**Reading (three honest points).** (i) **Pinning and caps keep the service safe**: zero violations under both policies — in joint operation the admission policy decides *how many seats are committed*, not service safety. (ii) **The dominant customer-side pain comes from the tight memory gate**: the canary's multi-second stalls are nearly identical at 1 and 3 seats, showing that `memory.high = 800 MB` is too tight for a 3 GB guest (cf. the soft-threshold semantics of Section 4.4.4) — the economy tier's experience ceiling is a product parameter (gate sizing), not a policy defect. (iii) **Throttle-corrected estimation carries a phase bias**: with bursty background, instant sampling at decision time underestimates demand (estimates oscillated between 0.01 and 1.90 cores), making the aware policy over-conservative (1 seat vs naive's 3) — precisely the design-to-implementation gap versus the time-aligned aggregate upper quantile of Section 5.3, tracked as an improvement item. **v2 revision (joint-comparison batch running on the second testbed)**: the time-aligned aggregation is now fully implemented (1 s history sampling + phase-profile prediction + quota-cap consumption accounting + closed-loop canary guard); the four-policy fair comparison (naive / AUDIBLE-style / aware / taligned) ×10 rounds with an 800/1920 MB memory-gate A/B runs automatically; results will be merged as supplementary material.
+**Reading (three honest points).** (i) Pinning and caps keep the service safe: zero violations under both policies — in joint operation the admission policy decides *how many seats are committed*, not service safety. (ii) The dominant customer-side pain comes from the tight memory gate: the canary's multi-second stalls are nearly identical at 1 and 3 seats, showing that `memory.high = 800 MB` is too tight for a 3 GB guest (cf. the soft-threshold semantics of Section 4.4.4); the economy tier's experience ceiling is a product parameter, not a policy defect. (iii) Throttle-corrected estimation carries a phase bias: with bursty background, instant sampling at decision time underestimates demand (estimates oscillated between 0.01 and 1.90 cores), making the aware policy over-conservative (1 seat vs naive's 3) — the design-to-implementation gap versus the time-aligned aggregate upper quantile of Section 5.3, tracked as an improvement item. The v2 revision now implements the time-aligned aggregation and is re-measured as a four-policy comparison on the second testbed; results merge as supplementary material.
 
 ## 7.6 Production Telemetry: Workload Portrait (Figure 27)
 
@@ -177,15 +177,7 @@ lifecycle. Usage boundary: no training, no scheduling feedback, no active experi
 single-core reading gives only 10.2 cores — the guest `cpu` field is confirmed as **fraction of allocated
 vCPU**, consistent at host level.
 
-**Portrait (Figure 27).** (i) Classes: **idle (<5%) 71.9%, light (5–30%) 27.1%, heavy (>30%) 1.0%** —
-matching the "mostly idle, a few heavy" modeling premise. (ii) Oversubscription anchors: **5.76x vCPU
-oversubscription** (configured vCPUs / 50 cores), memory-limit oversubscription 1.12x, actual memory ~95 GiB
-— the testbed's 5x scale comes from real practice, not inflation. (iii) Burst structure: 4268 active runs
-(>=5% consecutive), **median 1 minute** (3550 single-minute runs) — short bursts dominate; value-level
-autocorrelation is ~0 across 1–30 min (no minute-scale persistence, no clock period), while the state layer
-persists (Markov self-transitions 0.85/0.37/0.26) — real bursts are "runs of varying length with drifting
-phase", neither i.i.d. nor clocked. (iv) Saturated instances (>=95% vCPU) occupy 0.046% of VM-samples —
-genuinely heavy tenants are rare but present.
+**Portrait (Figure 27).** Classes: idle (<5%) 71.9%, light (5–30%) 27.1%, heavy (>30%) 1.0%, matching the "mostly idle, a few heavy" modeling premise. Oversubscription anchors: 5.76x vCPU oversubscription (configured vCPUs over 50 cores), 1.12x memory-limit oversubscription, and about 95 GiB of actual memory in use — the testbed's 5x scale comes from real practice, not inflation. Burst structure: 4268 active runs (>=5% consecutive), median 1 minute, 3550 of them single-minute, short bursts dominate; value-level autocorrelation is ~0 across 1–30 min, so there is no minute-scale persistence and no clock period, while the state layer persists (Markov self-transitions 0.85/0.37/0.26) — real bursts are runs of varying length with drifting phase, neither i.i.d. nor clocked. Saturated instances (>=95% vCPU) occupy 0.046% of VM-samples: genuinely heavy tenants are rare but present.
 
 **Implications.** (i) A 1% heavy class plus instantaneous overlap is the entire risk source — echoing the
 Chapter 4 result that a single pegged neighbor collapses the tail; (ii) real bursts drift rather than tick:
