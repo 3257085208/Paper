@@ -1,0 +1,27 @@
+# 10 Discussion and Limitations
+
+## 10.1 What Transfers, What Is Environment-Bound
+
+**Mechanistic results that transfer:** (i) tail latency is governed by instantaneous concurrency/overlap rather than average utilization — independent of core count and virtualization depth, depending only on whether the runnable set periodically exceeds capacity; (ii) the censoring logic — any system whose self-protection uses quotas will let usage underestimate demand, and throttle counters are a portable detector; (iii) the reliability hierarchy — isolation > hard caps > soft priorities, with the failures of the latter having mechanism-level explanations (lock-holder preemption, scheduling-credit dynamics, upstream dispatch) rather than being testbed accidents.
+
+**Environment-bound numbers:** the "3→4" knee is specific to 4 logical cores with 1-core pegged tenants as the worst case; the memory cliff (~13.8 GB tenant residency with 1 GB swap) is bound to 19.5 GiB physical and the swap layout; IO numbers are bound to the virtual disk and the host's `none` scheduler (no BFQ). The paper reports mechanisms and the relative limit–cost relation; readers should recompute absolute numbers for their own cores and reserves.
+
+## 10.2 SLO Tiers and the Capacity–Quality Curve
+
+All experiments use the strict tier P99 ≤ 10 ms. Real cheap-VPS customers have no formal SLO and typically tolerate tens of milliseconds; our own data show that the same ten-tenant mix that violates the 10 ms tier would mostly be fine at ~30 ms. **"How much can be sold" is therefore a function of the SLO tier, not a constant** — providers should make the density–tier relation an explicit product parameter (e.g., economy tier P99 ≤ 50 ms, standard ≤ 20 ms) instead of quietly holding everyone to the strictest tier. The sensitivity analysis is on the pre-submission list; the mechanism and initial data are in place.
+
+## 10.3 Design Implications
+
+For providers: **isolation first, density second** — one dedicated core for sensitive workloads beats any parameter tuning; backstop memory and IO with the double gate and caps; state the nominal sales envelope separately from the protection envelope (the basis for tiered pricing); feed admission with evidence (throttle counters, time-aligned demand upper quantiles) rather than dashboard numbers.
+For platform builders: several "intuitive" cgroup v2 semantics need empirical calibration — IO accounting binds to the whole disk rather than the partition; `io.weight` depends on the IO scheduler being one that honors it (the IO-cost route `io.cost.*` exists but was not exercised here); `memory.high` reclaim pressure spills into host swap unless paired with `memory.swap.max` (or swap disabled), and as a soft threshold it is not an OOM exemption; CPU weight is not a latency-protection tool. These gaps deserve documentation and default-configuration fixes.
+
+## 10.4 Validity and Threats
+
+**Construct validity.** The "business" services are lightweight HTTP/Redis stand-ins; real services (databases, gateways) have longer and more syscall-dependent paths, which change absolute numbers but not the structure of overlap-driven tails. Tenant loads are synthetic duty-cycle loops without real-application slow paths (lock contention, GC); replication with real application images is future work.
+**Internal validity.** Nested virtualization adds a scheduling layer; randomized orders and replicates suppress noise, and service-side metrics are stable across synthesis passes. The weight-failure mechanism is not yet localized (a host-side packet-path hypothesis is unverified) and is kept as an open question. The joint validation exposed a further issue: instant sampling of bursty background load carries a phase bias, the full controller (phase profiles + censoring correction + pause guardrail) is now implemented and evaluated in the online showdown (Section 7.4b; the j1 joint pilot is kept as a historical design–implementation gap record); the customer-side canary shows that a tight `memory.high` gate can cause multi-second stalls, so gate sizing must be an explicitly calibrated product parameter.
+**External validity.** Two testbeds (a 4-vCPU nested bed and a 96-thread bare-metal host) with production telemetry as a realistic anchor; the production-schedule replay (64 real per-minute duty traces; 30-min excerpt plus five-window forward validation) has been run (Section 8.6); production telemetry is minute-level, so the multi-window PPC validation uses *reconstructed* second-level series (model-replay consistency) — independent second-level truth and false-positive/negative rates remain future work; cross-vendor hardware extrapolation remains a follow-up item.
+**Statistics.** Key conclusions carry mass repeats (knee 50, censoring 90 cycles in 30 rounds, triple storm 24); the admission showdown v2 (14 rounds), boundary fine scans (multi-cycle, 2 rounds per step) and mixed-phase repeats are running; zero-failure claims are reported with Clopper-Pearson bounds and explicit trial counts, never as long-term guarantees.
+
+## 10.5 Boundary to Hyperscale Approaches
+
+This work does not replace AUDIBLE/Coach-class methods at hyperscale, which solve capacity optimization given long histories and scheduling freedom; it addresses how a history-less, migration-less small host avoids incidents — and whose dashboard lies to it. The two are composable: censoring correction can produce clean demand evidence at the small-host edge before a platform-scale predictor performs global planning.

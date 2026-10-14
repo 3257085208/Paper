@@ -13,6 +13,10 @@ mkdir -p site/artifacts/figs
 rsync -a --include='*.py' --exclude='*' manuscript/figs/ site/artifacts/figs/
 cp manuscript/REPRODUCE.md site/REPRODUCE.md
 cp manuscript/README.md site/README.md
+# publish the manuscript sources (zh chapters + en submission chapters + appendices)
+mkdir -p site/artifacts/manuscript
+rsync -a --delete --exclude ".DS_Store" --exclude "__pycache__" manuscript/*.md site/artifacts/manuscript/
+rsync -a --delete --exclude ".DS_Store" --exclude "__pycache__" manuscript/en/ site/artifacts/manuscript/en/
 cd site
 git add -A
 if git diff --cached --quiet; then
