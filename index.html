@@ -67,10 +67,10 @@ window.MathJax = {
 <div class="page">
 <header class="paper">
 <h1 class="title">识别、预测、行动：截断需求、相位结构与分域无回归约束下的 VPS 安全密度最大化</h1>
-<div class="subtitle">技术报告 · 初稿 v0.9.10</div>
+<div class="subtitle">技术报告 · 初稿 1.0</div>
 <div class="authors">Kaixiang Nie</div>
 <div class="affil">Fujian Chuanzheng Communications College</div>
-<div class="meta">2026-10-13 · <a href="https://github.com/3257085208/Paper">GitHub</a> · <a href="changelog.html">修订记录</a> · <a href="report.html">汇报版</a> · <a href="report.pptx">汇报 PPT</a> · <a href="paper.pptx">论文 PPT 通读版</a> · 数据快照 v0.9.10</div>
+<div class="meta">2026-10-13 · <a href="https://github.com/3257085208/Paper">GitHub</a> · <a href="changelog.html">修订记录</a> · <a href="report.html">汇报版</a> · <a href="report.pptx">汇报 PPT</a> · <a href="paper.pptx">论文 PPT 通读版</a> · 数据快照 1.0</div>
 </header>
 <section class="abstract"><h2>摘 要</h2><blockquote>本文研究小型 VPS 服务商在<strong>固定容量、有限观测、低运营成本</strong>约束下的资源超售管理问题，把它重塑为三个依次递进的问题。</blockquote>
 <p><strong>识别（Identify）。</strong> 被 CPU 配额截断的需求在用量面板上不可观测：点估计 $q/(1-t)$ 实际等于运行段平均需求，其精确条件为运行段与节流段需求均值相等（需求恒定只是充分条件）；在"持续饱和"假设下存在形状无关的条件性下界 $q(1+t)$，而聚合计数器上<strong>任何估计器都不可能对所有负载无偏</strong>（非可辨识构造）。90 个 cycle（450 台·窗口）的配对实验显示节流校正与真值一致，而"看着用量余量松绑配额"的直觉决策在 30 个独立轮（90 个时间相关 cycle，按轮聚类）中全部违约（90/90）。</p>
