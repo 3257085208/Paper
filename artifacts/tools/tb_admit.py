@@ -428,7 +428,7 @@ def main():
     ap.add_argument("--round", required=True)
     ap.add_argument("--mode", required=True, choices=["rand", "sync"])
     ap.add_argument("--policy", required=True,
-                    choices=["worstcase", "fixed", "util80", "quantile", "audible", "ours", "ours_p", "ours_full", "ours_sel"])
+                    choices=["worstcase", "fixed", "util80", "quantile", "audible", "ours", "ours_p", "ours_full", "ours_sel", "ours_int"])
     ap.add_argument("--pool", default="8-15")
     ap.add_argument("--step", type=int, default=2)
     ap.add_argument("--max", type=int, default=40)
@@ -565,7 +565,8 @@ def main():
         pending = []           # ours_sel: candidates under probation (running at 5%)
         prob_ready_at = 0.0
         while n + args.step <= min(args.max, len(vmids_sorted)):
-            if args.policy == "ours_sel":
+            if args.policy in ("ours_sel", "ours_int"):
+                full_chain = args.policy == "ours_int"
                 cap = min(args.max, len(vmids_sorted))
                 # top up the probation set (candidates become observable at 5% quota)
                 while len(pending) < args.sel_window and n + len(pending) < cap:
@@ -620,9 +621,31 @@ def main():
                     pk = max(sum(p[ph] for p in profs) for ph in range(60))
                     if best is None or pk < best[0]:
                         best = (pk, combo)
-                if best is None or best[0] > 0.9 * len(pool):
-                    log("n=%d -> defer (ours_sel best peak=%.2f > %.2f)"
-                        % (n + args.step, best[0] if best else 9e9, 0.9 * len(pool)))
+                reserve = 0.0
+                if full_chain:
+                    global _BUSY_PREV
+                    cur_busy = pool_busy_snapshot(_POOL_CPUS) if _POOL_CPUS else {}
+                    busy_cores = _busy_delta_cores(_BUSY_PREV, cur_busy) if _BUSY_PREV else None
+                    _BUSY_PREV = cur_busy
+                    tenant = 0.0
+                    for vmid, s2 in snap_now.items():
+                        vals30 = [u for (t, u) in s2 if t >= time.time() - 30.0]
+                        if vals30:
+                            tenant += statistics.mean(vals30)
+                    residual = max(0.0, busy_cores - tenant) if busy_cores is not None else 0.0
+                    _RESID.append(residual)
+                    del _RESID[:-20]
+                    rq95 = p95(_RESID) or 0.0
+                    reserve = max(0.0, rq95 - 0.2)
+                    low_hist = sum(1 for v in admitted if len(snap_now.get(v, [])) < 30)
+                    if admitted and low_hist > max(1, len(admitted) // 3):
+                        log("n=%d -> defer (ours_int low-history %d/%d)"
+                            % (n + args.step, low_hist, len(admitted)))
+                        continue
+                if best is None or best[0] + reserve > 0.9 * len(pool):
+                    log("n=%d -> defer (%s best peak=%.2f + reserve=%.2f > %.2f)"
+                        % (n + args.step, args.policy, best[0] if best else 9e9,
+                           reserve, 0.9 * len(pool)))
                     break
                 chosen = [cand[i][0] for i in best[1]]
                 for c in chosen:
@@ -631,9 +654,9 @@ def main():
                 n += args.step
                 sampler.admitted = list(admitted + chosen)
                 admitted.extend(chosen)
-                log("n=%d -> allow (ours_sel peak=%.2f, chose %s from %d pending)"
-                    % (n, best[0], chosen, len(cand)))
-                measure_and_record(n, "ours_sel peak=%.2f" % best[0],
+                log("n=%d -> allow (%s peak=%.2f, chose %s from %d pending)"
+                    % (n, args.policy, best[0], chosen, len(cand)))
+                measure_and_record(n, "%s peak=%.2f" % (args.policy, best[0]),
                                    extra={"admitted_n": n, "candidate_n": n,
                                           "sel_pending": len(pending)})
                 prob_ready_at = 0.0

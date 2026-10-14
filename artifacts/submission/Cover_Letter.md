@@ -8,9 +8,11 @@ Structure and Domain-Scoped No-Regression" by Kaixiang Nie.
 
 Small VPS providers oversubscribe by necessity: many cheap, mostly-idle tenants on a few physical
 cores. Yet the prevailing capacity practices — usage panels, average-utilization thresholds,
-independence-based convolutions — silently fail in this regime for three structural reasons that
-large-cloud research does not face: quotas censor demand, tenant bursts share phase structure, and
-short histories force sampling decisions. The manuscript turns these three failure modes into an
+independence-based convolutions — are calibrated for large-cloud settings (long histories, migration
+freedom, global scheduling) and degrade in this regime along three axes: quotas censor demand, tenant
+bursts share phase structure, and short histories force sampling decisions. These axes also exist at
+hyperscale, where abundant history and scheduling freedom largely mitigate them; on a small,
+migration-less host they bind directly at decision time. The manuscript turns these three failure modes into an
 organizing principle (observation necessity), backs each with constructive counterexamples (with
 executable checks), and delivers the controller that follows from them: a minimal observation set
 (censoring evidence + joint phase profiles + one-second resolution) realized as a risk-calibrated

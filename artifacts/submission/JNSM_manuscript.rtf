@@ -2770,7 +2770,9 @@ Figure 20 Online admission comparison: policy stops vs measured capacity bracket
 \f0\b Guard-metric sensitivity (show10).
 \f1\b0  Switching the guard metric from max to median keeps the aligned stop at 8 but pulls the random stop down to 
 \f0\b 4
-\f1\b0  (pause-monitor triggers on 6/6 checks; P5 = 101.9% at stop): the metric trades random-phase efficiency for conservatism. Max is the default because the operator's commitment is the worst short-horizon shortfall a tenant can actually observe, and a median guard can smooth away exactly those bursts; thresholds are fixed on validation splits only, and the sensitivity of the operating point to the guard definition is reported here as measured.\
+\f1\b0  (pause-monitor triggers on 6/6 checks; P5 = 101.9% at stop): the metric trades random-phase efficiency for conservatism. 
+\f0\b Guard semantics (precise):
+\f1\b0  the customer guard consumes one number per admitted tenant - the tenant's rate series (six samples, ordered before the service probes so work phases are captured) summarized per tenant by max (largest observed work-phase rate), med or min - and the guard value is the cross-customer 5th percentile of that summary (p5_max / p5_med / p5_min); admission pauses when it falls below 70% (or the service/canary thresholds fire). The primary bar uses p5_max because idle samples are not evidence of denial: a tenant's work capability is evidenced by its work-phase rate, and sustained contention lowers the max too - a full-speed burst cannot survive sustained overload. Median/min conflate design-idle with contention-throttling and false-alarm: in the show10 median arm every pause check in the random phase tripped (6/6 windows; idle samples dilute each tenant's median), stopping at 4 seats, while the aligned phase keeps tenants active and still stops at 8. The 70% and service thresholds are the pre-declared constants of Section 8.4; the 0.9 budget and hysteresis are fixed on validation splits.\
 
 \f0\b Phase-selective admission (show11, 
 \f5\fs28\fsmilli14107 ours_sel
