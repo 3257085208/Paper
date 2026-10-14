@@ -34,7 +34,7 @@
 \pard\pardeftab720\qc\partightenfactor0
 
 \f0\b\fs45\fsmilli22667 \cf2 \expnd0\expndtw0\kerning0
-\outl0\strokewidth0 \strokec2 Identify, Predict, Actuate: Safe Density Maximization for Small VPS Hosts under Censored Demand, Phase Structure and Domain-Scoped No-Regression\
+\outl0\strokewidth0 \strokec2 Identify, Predict, Actuate: Observation-Calibrated Safe Capacity for Small VPS Hosts under Censored Demand and Phase Structure\
 \pard\pardeftab720\qc\partightenfactor0
 
 \f1\b0\fs33\fsmilli16667 \cf2 Kaixiang Nie\
@@ -2772,7 +2772,17 @@ Figure 20 Online admission comparison: policy stops vs measured capacity bracket
 \f0\b 4
 \f1\b0  (pause-monitor triggers on 6/6 checks; P5 = 101.9% at stop): the metric trades random-phase efficiency for conservatism. 
 \f0\b Guard semantics (precise):
-\f1\b0  the customer guard consumes one number per admitted tenant - the tenant's rate series (six samples, ordered before the service probes so work phases are captured) summarized per tenant by max (largest observed work-phase rate), med or min - and the guard value is the cross-customer 5th percentile of that summary (p5_max / p5_med / p5_min); admission pauses when it falls below 70% (or the service/canary thresholds fire). The primary bar uses p5_max because idle samples are not evidence of denial: a tenant's work capability is evidenced by its work-phase rate, and sustained contention lowers the max too - a full-speed burst cannot survive sustained overload. Median/min conflate design-idle with contention-throttling and false-alarm: in the show10 median arm every pause check in the random phase tripped (6/6 windows; idle samples dilute each tenant's median), stopping at 4 seats, while the aligned phase keeps tenants active and still stops at 8. The 70% and service thresholds are the pre-declared constants of Section 8.4; the 0.9 budget and hysteresis are fixed on validation splits.\
+\f1\b0  the customer guard consumes one number per admitted tenant - the tenant's rate series (six samples, ordered before the service probes so work phases are captured) summarized per tenant by max (largest observed work-phase rate), med or min - and the guard value is the cross-customer 5th percentile of that summary (p5_max / p5_med / p5_min); admission pauses when it falls below 70% (or the service/canary thresholds fire). The primary bar uses p5_max because idle samples are not evidence of denial: a tenant's work capability is evidenced by its work-phase rate, and sustained contention lowers the max too - a full-speed burst cannot survive sustained overload. Median/min conflate design-idle with contention-throttling and false-alarm: in the show10 median arm every pause check in the random phase tripped (6/6 windows; idle samples dilute each tenant's median), stopping at 4 seats, while the aligned phase keeps tenants active and still stops at 8. The 70% and service thresholds are the pre-declared constants of Section 8.4; the 0.9 budget and hysteresis are fixed on validation splits. 
+\f0\b Activity-conditioned cross-check (implemented mid-batch, show14).
+\f1\b0  To separate design-idle from denial without relying on the max convention, the customer metric is also computed over 
+\f0\b active samples only
+\f1\b0  - per-customer median over the samples where the workload itself reports a work phase (state flag), excluding design-idle samples, then cross-customer P5 (
+\f3\fs28\fsmilli14107 p5_act
+\f1\fs30\fsmilli15333 ). The false-alarm mechanism is visible directly in the logs: windows whose raw p5_med / p5_min read 0.0% (idle-sample dilution) read 102.6% under the activity-conditioned rule, and across the integrated runs 
+\f3\fs28\fsmilli14107 p5_act
+\f1\fs30\fsmilli15333  tracks 
+\f3\fs28\fsmilli14107 p5_max
+\f1\fs30\fsmilli15333  (101-103% at every safe stop) - the two conventions agree once design-idle samples are excluded.\
 
 \f0\b Phase-selective admission (show11, 
 \f5\fs28\fsmilli14107 ours_sel
@@ -2788,12 +2798,14 @@ Figure 20 Online admission comparison: policy stops vs measured capacity bracket
 \f5\fs28\fsmilli14107 ours_int
 \f0\fs30\fsmilli15333  = probation + full-chain background reserve and low-history guards).
 \f1\b0  End-to-end, the integrated controller stops at 
-\f0\b random 14 / aligned 6
-\f1\b0  (both capacity-bracket deferrals: subset peak 6.15 / 6.03 + reserve 1.62 / 1.56 > 7.20). The probation mechanism's 24-seat random figure therefore does 
+\f0\b random 12-16 across three arrival orders (14/12/16) and aligned 6 in both repeated orders
+\f1\b0  (all capacity-bracket deferrals: subset peak 6.1-7.0 + reserve 1.1-1.6 > 7.20). The probation mechanism's 24-seat random figure therefore does 
 \f0\b not
 \f1\b0  survive equal-accounting integration: its gain is consumed by the background-reserve term (which the probation-only decision omitted), and in the aligned phase the probation-priced candidates stop earlier than the class-prior-priced chain (6 vs 8). The unified operating point of the complete system remains 
 \f3\fs28\fsmilli14107 ours_full
-\f1\fs30\fsmilli15333  (random 16 / aligned 8); the three measured points (24/8 probation-only upper bound, 14/6 integrated, 16/8 full chain) and the accounting difference behind them are reported as measured, and reconciling candidate pricing with the reserve is future work.\
+\f1\fs30\fsmilli15333  (random 16 / aligned 8); the three measured points (24/8 probation-only upper bound, 14/6 integrated, 16/8 full chain) and the accounting difference behind them are reported as measured, and reconciling candidate pricing with the reserve is future work. 
+\f0\b Why the integrated stop is lower (analysis).
+\f1\b0  Two accounting differences explain the drop. (i) The background-reserve term (1.56-1.62 cores against the 7.20-core budget) is charged in the integrated runs but absent from the probation-only decision; at the defer points the subset peak (6.15/6.03) plus reserve exceeds 7.20 while the same peak without reserve is admissible - the reserve alone accounts for the gap. (ii) Candidate pricing differs roughly 3x between conventions: probation prices each candidate by its own corrected measured profile (about 0.6-0.75 cores per aligned candidate at the stop point), while the full chain charges the class prior (about 0.2 cores); the integrated configuration inherits the stricter convention. Reconciling the two (e.g., capping probation-derived candidate billing at the class prior, or explicitly folding the reserve into candidate pricing) and re-validating at equal accounting is future work.\
 \pard\pardeftab720\sa160\partightenfactor0
 
 \f0\b\fs34\fsmilli17333 \cf2 7.5 Triple-Storm Synthesis (Figure 10)\

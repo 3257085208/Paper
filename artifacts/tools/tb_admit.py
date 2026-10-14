@@ -514,6 +514,16 @@ def main():
                 return (vals[int(0.05 * (len(vals) - 1))] / BASE_RATE * 100.0) if vals else None
 
             p5_max, p5_min, p5_med = xp5(active_max), xp5(active_min), xp5(active_med)
+            # activity-conditioned: median over ACTIVE samples only (state==1),
+            # excluding design-idle samples; per-customer median -> cross-customer P5
+            act_med = []
+            for vmid, samples in rates_series.items():
+                rs_a = [r for r, st in samples if r is not None and st]
+                if rs_a:
+                    rs_a = sorted(rs_a)
+                    act_med.append(rs_a[len(rs_a) // 2])
+            act_med.sort()
+            p5_act = xp5(act_med)
             _LASTP5.update({"max": p5_max, "med": p5_med, "min": p5_min})
             if p5_max is not None:
                 last_p5 = p5_max
@@ -550,6 +560,7 @@ def main():
                    "p5_max": round(p5_max, 1) if p5_max is not None else None,
                    "p5_med": round(p5_med, 1) if p5_med is not None else None,
                    "p5_min": round(p5_min, 1) if p5_min is not None else None,
+                   "p5_act": round(p5_act, 1) if p5_act is not None else None,
                    "thr_mean": thr_mean, "quota_pct": args.quota_pct,
                    "guard_metric": args.guard_metric,
                    "timestamp_utc": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")}
@@ -557,10 +568,10 @@ def main():
                 rec.update(extra)
             sink.write(json.dumps(rec) + "\n")
             sink.flush()
-            log("   n=%d busy_mean=%s busy_max=%s http=%s redis=%s active=%d slow=%d svc_viol=%s p5=%s/%s/%s thr=%s" % (
+            log("   n=%d busy_mean=%s busy_max=%s http=%s redis=%s active=%d slow=%d svc_viol=%s p5=%s/%s/%s act=%s thr=%s" % (
                 n_val, rec["busy_mean"], rec["busy_max"], rec["http_p99"], rec["redis_p99"],
                 len(active_max), slow, svc_viol, rec["p5_max"], rec["p5_med"], rec["p5_min"],
-                rec["thr_mean"]))
+                rec.get("p5_act"), rec["thr_mean"]))
 
         pending = []           # ours_sel: candidates under probation (running at 5%)
         prob_ready_at = 0.0

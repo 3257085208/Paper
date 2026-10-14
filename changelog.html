@@ -66,7 +66,7 @@ window.MathJax = {
 </head><body>
 <div class="page">
 <header class="paper">
-<h1 class="title">识别、预测、行动：截断需求、相位结构与分域无回归约束下的 VPS 安全密度最大化</h1>
+<h1 class="title">识别、预测、行动：截断需求与相位结构下小型 VPS 的安全容量观测校准</h1>
 <div class="subtitle">研究论文 · 初稿 1.0</div>
 <div class="authors">Kaixiang Nie</div>
 <div class="affil">Fujian Chuanzheng Communications College</div>
@@ -76,6 +76,9 @@ window.MathJax = {
 
 <main>
 <blockquote>面向"审稿意见 → 处置"的可追溯记录。版本号随重大修改递增；每版标注对应评审轮次。</blockquote>
+<h2 id="s-v1-1-review6-2026-10-15-凌晨-show14-重复-活动态">v1.1-review6 — 2026-10-15 凌晨（show14 重复 + 活动态指标）</h2>
+<p><strong>show14 并入 §7.4.2</strong>：集成方案重复（rand 12/14/16 三序带宽、sync 6/6 两序）；<strong>活动态客户指标 <code>p5_act</code></strong>（仅 state=1 工作段样本、逐客户中位→跨客户 P5）：日志直接示范误报机理（p5_med=0.0% vs act=102.6%），集成各局安全停点 p5_act≈p5_max（101–103%）。标题重定位（Observation-Calibrated Safe Capacity，去 Density Maximization）；集成损失归因段；README/封面信同步。修复 p5_act 定义顺序 bug 后重跑。</p>
+<hr>
 <h2 id="s-v1-1-review5-2026-10-15-凌晨-show13-集成验证并入">v1.1-review5 — 2026-10-15 凌晨（show13 集成验证并入）</h2>
 <p><strong>show13 完成并并入 §7.4.2</strong>：ours_int（probation + 完整链预留/护栏）端到端 rand 14 / sync 6（均容量括号 defer：峰 6.15/6.03 + 预留 1.62/1.56 &gt; 7.20）。<strong>统一验证结论（如实）</strong>：24 席试用增益在等安全计账下不存活（被预留项吃掉）；统一工作点仍为 ours_full 16/8；三点（24/8 上界、14/6 集成、16/8 完整链）及计账差异按实测报告。数据：admit_show13_*.jsonl。</p>
 <hr>

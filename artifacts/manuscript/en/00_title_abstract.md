@@ -6,7 +6,7 @@ Kaixiang Nie — Fujian Chuanzheng Communications College
 
 ## Title
 
-**Identify, Predict, Actuate: Safe VPS Density Maximization under Censored Demand, Phase Structure, and Domain-Scoped No-Regression Constraints**
+**Identify, Predict, Actuate: Observation-Calibrated Safe Capacity under Censored Demand and Phase Structure (working title; supersedes No-Regression Constraints**
 
 (alternate): *No-Regression Resource Efficiency for Small VPS Hosts: Censoring Identifiability, the Density Law, and Precision Control*
 

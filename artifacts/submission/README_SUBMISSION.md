@@ -2,11 +2,11 @@
 
 ## Files
 - **`JNSM_manuscript.docx`** — primary editable source (required by JNSM): 31 figures embedded,
-  22 real Word tables, title page with affiliation (Fuzhou, China) and corresponding email,
+  24 real Word tables and 185 native Office Math objects, title page with affiliation (Fuzhou, China) and corresponding email,
   "Statements and Declarations" section (funding / competing interests / data availability /
   author contributions / AI-assisted tools) and references. Equations are rendered as readable
   Unicode text (the PDF carries typeset math; Word equation-editor conversion can follow at revision).
-- `JNSM_manuscript.pdf` — typeset A4 copy (61 pages, figures embedded) for review convenience.
+- `JNSM_manuscript.pdf` — typeset A4 copy (63 pages, figures embedded) for review convenience.
 - `JNSM_manuscript.rtf` / `.html` / `.md` — alternate/source copies.
 - `Cover_Letter.md` — cover letter; three suggested reviewers with institutional emails (JNSM requirement).
 - `Declarations.md` — same statements as the manuscript section, for the submission interface.
@@ -33,5 +33,7 @@
   sensitivity and phase-selective admission are **reported in Section 7.4.2 of this version**.
 - Word equation-editor formatting of the display equations can be added at revision if the editors
   request it (the PDF shows them typeset; the DOCX carries them as editable text).
-- A faithful re-implementation of the full AUDIBLE system, and integration of the probation variant
-  into the full chain, are marked as future work in the manuscript.
+- One integrated validation of the probation variant with the full chain is **reported in Section 7.4.2**
+  (random 14 / aligned 6 - lower than the full chain's 16/8, a deliberately reported negative result);
+  reconciling candidate pricing with the background reserve, and a faithful re-implementation of the
+  full AUDIBLE system, are marked as future work.
