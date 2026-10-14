@@ -153,9 +153,9 @@ Structural phases ($\varphi \ge 0.5$) hit the break point; the $\varphi=0.25$ pr
 passing region (conservative), the pure-random end is optimistic — the error directions match the
 tail-vs-median bar expectation.
 
-**Boundaries (honest).** (i) One round per configuration: per-level P5 carries non-monotone sampling noise
-, e.g., $\varphi=0.25$ L24 > L20; round repeats (multiple rounds/seeds) and a prediction-error distribution
-are queued, after which this section reports round-level intervals and an error band. (ii) The C5 anti-phase
+**Boundaries (honest).** (i) Each configuration now pools three capmix rounds; per-level P5 still carries
+non-monotone sampling noise, e.g., $\varphi=0.25$ L24 > L20 — larger round pools and a prediction-error
+distribution over more seeds are future work. (ii) The C5 anti-phase
 arrangement experiment (same tenants, two groups offset by 30 s, capacity x2) upgrades "phase is
 arrangeable" from observation to intervention. (iii) The positioning is a **capacity approximation with
 explicit assumptions** — used for extrapolation and admission priors under structural phases, with safe
