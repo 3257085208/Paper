@@ -2783,9 +2783,17 @@ Figure 20 Online admission comparison: policy stops vs measured capacity bracket
 \f3\fs28\fsmilli14107 ours_full
 \f1\fs30\fsmilli15333  16, 
 \f3\fs28\fsmilli14107 ours_p
-\f1\fs30\fsmilli15333  20), showing that phase evidence acquired before the decision converts into measurable random-phase capacity at equal safety. The 24-seat figure comes from the probation variant as a 
-\f0\b separate configuration
-\f1\b0 ; integration is design-compatible (probation observations are ordinary usage/throttle samples feeding the same envelope, censoring correction and reserve accounting), but the combined configuration must be re-validated end-to-end, which is future work.\
+\f1\fs30\fsmilli15333  20), showing that phase evidence acquired before the decision converts into measurable random-phase capacity at equal safety. 
+\f0\b Integrated re-validation (show13, 
+\f5\fs28\fsmilli14107 ours_int
+\f0\fs30\fsmilli15333  = probation + full-chain background reserve and low-history guards).
+\f1\b0  End-to-end, the integrated controller stops at 
+\f0\b random 14 / aligned 6
+\f1\b0  (both capacity-bracket deferrals: subset peak 6.15 / 6.03 + reserve 1.62 / 1.56 > 7.20). The probation mechanism's 24-seat random figure therefore does 
+\f0\b not
+\f1\b0  survive equal-accounting integration: its gain is consumed by the background-reserve term (which the probation-only decision omitted), and in the aligned phase the probation-priced candidates stop earlier than the class-prior-priced chain (6 vs 8). The unified operating point of the complete system remains 
+\f3\fs28\fsmilli14107 ours_full
+\f1\fs30\fsmilli15333  (random 16 / aligned 8); the three measured points (24/8 probation-only upper bound, 14/6 integrated, 16/8 full chain) and the accounting difference behind them are reported as measured, and reconciling candidate pricing with the reserve is future work.\
 \pard\pardeftab720\sa160\partightenfactor0
 
 \f0\b\fs34\fsmilli17333 \cf2 7.5 Triple-Storm Synthesis (Figure 10)\
