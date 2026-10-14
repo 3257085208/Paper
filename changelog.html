@@ -67,15 +67,17 @@ window.MathJax = {
 <div class="page">
 <header class="paper">
 <h1 class="title">识别、预测、行动：截断需求、相位结构与分域无回归约束下的 VPS 安全密度最大化</h1>
-<div class="subtitle">技术报告 · 初稿 v0.9.5</div>
+<div class="subtitle">技术报告 · 初稿 v0.9.6</div>
 <div class="authors">Kaixiang Nie</div>
 <div class="affil">Fujian Chuanzheng Communications College</div>
-<div class="meta">2026-10-13 · <a href="https://github.com/3257085208/Paper">GitHub</a> · <a href="changelog.html">修订记录</a> · <a href="report.html">汇报版</a> · <a href="report.pptx">汇报 PPT</a> · <a href="paper.pptx">论文 PPT 通读版</a> · 数据快照 v0.9.5</div>
+<div class="meta">2026-10-13 · <a href="https://github.com/3257085208/Paper">GitHub</a> · <a href="changelog.html">修订记录</a> · <a href="report.html">汇报版</a> · <a href="report.pptx">汇报 PPT</a> · <a href="paper.pptx">论文 PPT 通读版</a> · 数据快照 v0.9.6</div>
 </header>
 
 
 <main>
 <blockquote>面向"审稿意见 → 处置"的可追溯记录。版本号随重大修改递增；每版标注对应评审轮次。</blockquote>
+<h2 id="s-v0-9-6-2026-10-14-v3-返工回填-Phase-C-图-轮级范围">v0.9.6 — 2026-10-14（v3 返工回填 + Phase C 图 + 轮级范围）</h2>
+<ul><li><strong>BeroHost v3 返工全部回填</strong>（§4/§7，中英）：</li><li><strong>膝点</strong>：v3 返工（五台邻居全程在线，50 轮，新图 29）显示 L2 全净（ε=0 容量=2）、<strong>L3 越线率 45/50（中位 16.0 ms）</strong>，与 v2 重建口径（7%）分歧——<strong>ε=0 与 L4 坍塌两批一致、唯 L3 风险预算随宿主环境漂移</strong>（同忙率 87%），保守口径取 ε=0 的 2 台；新表并列两批。</li><li><strong>Censoring</strong>：v3cen（90 cycle @30%）——naive 1.54 vs 真值 5.59（低估 3.6×）、校正 |err| 中位 0.55 核（88/90 在 ±20%）、naive 90/90 &lt;70% 真值。</li><li><strong>三风暴</strong>：v3syn 26 轮——25/26 通过（HTTP 均值 4.82 ms）；<strong>1 轮降级状态违约 25.3 ms 如实报告</strong>；包络 29/30 失信上界修正为 ≈14.9%（返工前 11.7% 属乐观）。</li><li><strong>Phase C 图 22–26 新建</strong>（微周期配额 / KSM / FPR / zram 三臂 / IO 风暴）。</li><li><strong>轮级范围</strong>（§8.4）：sync N=8 98.6–101.8%、N=10 61–71%、N=16 47–50%；rand N=28 88.7–99.4%、N=32 62–91%（轮间方差大，边界取保守轮）。</li><li>SUBMISSION 清单 8 项全勾（形式化 bootstrap CI 留待终刷）。</li><li>版本 v0.9.6。</li></ul>
 <h2 id="s-v0-9-5-2026-10-14-多窗-PPC-收窄-降压编辑">v0.9.5 — 2026-10-14（多窗 PPC + 收窄/降压编辑）</h2>
 <ul><li><strong>多窗 PPC 复验</strong>（<code>ppc_multiwindow.py</code>）：3 小时稠密遥测切 5 个非重叠 30 分钟窗、每窗独立三段前向预测——<strong>方向命中 5/5</strong>（预测 P(峰&gt;8)=98–100% vs 实测超池 3.5–8.3%），峰值同阶（预测 P50 11–19 vs 实测 12–16；逐窗偏差 +5/±1/−2/−1/0 如实报告）；"单条短轨迹"局限由多窗复验部分缓解。</li><li><strong>收窄主线（2+2）</strong>：贡献表重构——主贡献 = 识别（截断可识别性）+ 行动（相位感知准入 + C5 干预 + 细档钉定）；支撑 = 容量预测（PPC 三工件）+ 资源效率账本（中英同步）。</li><li><strong>Ch9 降权</strong>：定位改为"支撑性扩展"（验证无回归原则跨资源扩展、非独立主张）；结论资源句收紧。</li><li><strong>理论 framing 降压</strong>："三个不可能性" → "三个构造性反例 + 最小充分观测集（经验）"（§3.6 标题/导语、摘要/引言组织命题，中英同步；附录 A 证明保留）。</li><li>版本 v0.9.5。</li></ul>
 <h2 id="s-v0-9-4-2026-10-14-show5-细扫-PPC-修订-9-全量回填">v0.9.4 — 2026-10-14（show5/细扫/PPC 修订/§9 全量回填：数据整合批）</h2>
