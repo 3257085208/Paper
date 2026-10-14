@@ -73,6 +73,8 @@ bounds and the trials required for a target bound (zero-failure: <=10% needs >=2
 
 **Correlation correction.** Rounds share host state (long-run drift, caches, same-batch VM state), so independence is an optimistic bound; the protocol requires (i) effective sample size computed by time-block/round clustering, reporting effective < nominal rounds; (ii) block-level worst-window sensitivity; (iii) every "zero-violation" statement carries its round count and bound.
 
+**Scope of the protocol.** This protocol defines how safety statements must be phrased and what evidence they carry; it is not itself a guarantee. The experiments reported in this paper state their round counts and measured bounds explicitly (e.g., 29/30 envelope passes carry an optimistic one-sided bound of ~14.9%) and do not constitute a 1% risk certificate.
+
 ## 5.4 Contrast with Naive Policies
 
 **Table 7.** Naive policies: what each cannot see and the measured consequence

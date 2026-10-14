@@ -1580,6 +1580,9 @@ bounds and the trials required for a target bound (zero-failure: <=10% needs >=2
 
 \f0\b\fs30\fsmilli15333 \cf2 Correlation correction.
 \f1\b0  Rounds share host state (long-run drift, caches, same-batch VM state), so independence is an optimistic bound; the protocol requires (i) effective sample size computed by time-block/round clustering, reporting effective < nominal rounds; (ii) block-level worst-window sensitivity; (iii) every "zero-violation" statement carries its round count and bound.\
+
+\f0\b Scope of the protocol.
+\f1\b0  This protocol defines how safety statements must be phrased and what evidence they carry; it is not itself a guarantee. The experiments reported in this paper state their round counts and measured bounds explicitly (e.g., 29/30 envelope passes carry an optimistic one-sided bound of ~14.9%) and do not constitute a 1% risk certificate.\
 \pard\pardeftab720\sa160\partightenfactor0
 
 \f0\b\fs34\fsmilli17333 \cf2 5.4 Contrast with Naive Policies\
@@ -2780,7 +2783,7 @@ Figure 20 Online admission comparison: policy stops vs measured capacity bracket
 \f3\fs28\fsmilli14107 ours_p
 \f1\fs30\fsmilli15333  20), showing that phase evidence acquired before the decision converts into measurable random-phase capacity at equal safety. The 24-seat figure comes from the probation variant as a 
 \f0\b separate configuration
-\f1\b0 ; integrating probation into the full chain and verifying the combined configuration end-to-end is future work.\
+\f1\b0 ; integration is design-compatible (probation observations are ordinary usage/throttle samples feeding the same envelope, censoring correction and reserve accounting), but the combined configuration must be re-validated end-to-end, which is future work.\
 \pard\pardeftab720\sa160\partightenfactor0
 
 \f0\b\fs34\fsmilli17333 \cf2 7.5 Triple-Storm Synthesis (Figure 10)\

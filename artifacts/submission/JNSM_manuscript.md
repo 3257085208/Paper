@@ -465,6 +465,8 @@ bounds and the trials required for a target bound (zero-failure: <=10% needs >=2
 
 **Correlation correction.** Rounds share host state (long-run drift, caches, same-batch VM state), so independence is an optimistic bound; the protocol requires (i) effective sample size computed by time-block/round clustering, reporting effective < nominal rounds; (ii) block-level worst-window sensitivity; (iii) every "zero-violation" statement carries its round count and bound.
 
+**Scope of the protocol.** This protocol defines how safety statements must be phrased and what evidence they carry; it is not itself a guarantee. The experiments reported in this paper state their round counts and measured bounds explicitly (e.g., 29/30 envelope passes carry an optimistic one-sided bound of ~14.9%) and do not constitute a 1% risk certificate.
+
 ## 5.4 Contrast with Naive Policies
 
 **Table 7.** Naive policies: what each cannot see and the measured consequence
@@ -711,7 +713,7 @@ fixed etc. lack the p5 column); the corrected seven-round rerun (show5) was comp
 
 **Guard-metric sensitivity (show10).** Switching the guard metric from max to median keeps the aligned stop at 8 but pulls the random stop down to **4** (pause-monitor triggers on 6/6 checks; P5 = 101.9% at stop): the metric trades random-phase efficiency for conservatism. Max is the default because the operator's commitment is the worst short-horizon shortfall a tenant can actually observe, and a median guard can smooth away exactly those bursts; thresholds are fixed on validation splits only, and the sensitivity of the operating point to the guard definition is reported here as measured.
 
-**Phase-selective admission (show11, `ours_sel`).** The probation mechanism (candidates observed at 5% quota for 40 s before the admission decision) keeps the aligned stop at 8 and raises the random stop to **24 with no violation** - the highest safe random-phase stop in the comparison (`ours_full` 16, `ours_p` 20), showing that phase evidence acquired before the decision converts into measurable random-phase capacity at equal safety. The 24-seat figure comes from the probation variant as a **separate configuration**; integrating probation into the full chain and verifying the combined configuration end-to-end is future work.
+**Phase-selective admission (show11, `ours_sel`).** The probation mechanism (candidates observed at 5% quota for 40 s before the admission decision) keeps the aligned stop at 8 and raises the random stop to **24 with no violation** - the highest safe random-phase stop in the comparison (`ours_full` 16, `ours_p` 20), showing that phase evidence acquired before the decision converts into measurable random-phase capacity at equal safety. The 24-seat figure comes from the probation variant as a **separate configuration**; integration is design-compatible (probation observations are ordinary usage/throttle samples feeding the same envelope, censoring correction and reserve accounting), but the combined configuration must be re-validated end-to-end, which is future work.
 
 ## 7.5 Triple-Storm Synthesis (Figure 10)
 
