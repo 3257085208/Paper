@@ -38,9 +38,10 @@ RAM; free-page reporting reclaiming 303 MB; zram absorbing 176.8 GB of overflow)
 shrinking tenant-visible resources under the **domain-scoped** no-regression definition; micro-period quotas,
 IO storms and the QoE canary each carry a gain / hidden-cost / visible-regression ledger.
 
-**Limitations.** Two testbeds, one bare-metal host; synthetic duty-cycle loads dominate until the
-production-schedule replay completes; round-level intervals, boundary fine scans, show4/show5 repeats and
-Phase C modules are labeled in progress rather than concluded; "jointly sufficient" remains an empirical
-statement until the anti-aliasing runs and show5 land. We hope this provides small VPS providers with a
+**Limitations.** Two testbeds, one bare-metal host; synthetic duty-cycle loads dominate, with the
+production-schedule replay (30-minute real schedule plus five-window forward validation) as a scenario
+anchor; real mixed application workloads and more arrival-order repeats remain future work; round-level
+ranges are reported throughout, and the formal bootstrap intervals will be refreshed on the frozen data
+set. "Jointly sufficient" remains an empirical statement for our target workload family. We hope this provides small VPS providers with a
 reproducible "observation design + capacity model + controller" starting point, and adds "identifiability
 boundaries and phase structure" to the oversubscription research agenda.
