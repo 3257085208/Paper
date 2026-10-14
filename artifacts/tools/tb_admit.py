@@ -338,6 +338,12 @@ def start_burners(vmids, mode, duty=0.20, period=60.0):
         list(ex.map(one, vmids))
 
 
+def set_quota(vmid, pct):
+    val = "max 100000" if pct is None else "%d 100000" % int(pct / 100.0 * 100000)
+    subprocess.run('echo "%s" > /sys/fs/cgroup/qemu.slice/%d.scope/cpu.max' % (val, vmid),
+                   shell=True, capture_output=True)
+
+
 def kill_burners_all():
     def one(vmid):
         vm_cmd(CUSTOMERS[vmid], 'pkill -f "^python3 /home/debian/burner.py" 2>/dev/null; true', timeout=30)
@@ -427,6 +433,8 @@ def main():
                     help="ablation: disable the throttle-correction factor (ours_full)")
     ap.add_argument("--no-phase", action="store_true",
                     help="ablation: disable phase buckets, marginal-only gate (ours_full)")
+    ap.add_argument("--quota-pct", type=float, default=None,
+                    help="apply cpu.max = pct%% of one core to admitted tenants (censoring arm)")
     args = ap.parse_args()
 
     LOGF = open("/root/tb/admit_%s.log" % args.round, "a", encoding="utf-8")
@@ -458,6 +466,84 @@ def main():
         last_p5 = None
         last_svc = None
         pause_clean = 3
+        pause_rounds = 0
+
+        def measure_and_record(n_val, reason_tag, extra=None):
+            nonlocal last_p5, last_svc
+            time.sleep(args.settle)
+            if args.mode == "sync":
+                wait_for_phase(2.0)
+            # rate series FIRST so burst windows are captured before probes push us out
+            rates_series = read_rates_series(admitted, n=args.series, gap=args.series_gap)
+            bseries = busy_series(pool, n=args.series, gap=args.series_gap)
+            probes = {}
+            for svc in ("http", "redis"):
+                probes[svc] = run_probe(args.round, n_val, svc, args.probe_seconds)
+            per_vm = {}
+            for vmid, samples in rates_series.items():
+                rs = [r for r, s in samples if r is not None]
+                if rs:
+                    per_vm[vmid] = {"max_rate": max(rs),
+                                    "min_rate": min(rs),
+                                    "med_rate": sorted(rs)[len(rs) // 2],
+                                    "max_state": max((s for _, s in samples), default=0),
+                                    "series": rs}
+            actives = [(v, d) for v, d in per_vm.items()
+                       if d["max_state"] == 1 and d["max_rate"]]
+            active_max = sorted(d["max_rate"] for _, d in actives)
+            active_min = sorted(d["min_rate"] for _, d in actives)
+            active_med = sorted(d["med_rate"] for _, d in actives)
+
+            def xp5(vals):
+                return (vals[int(0.05 * (len(vals) - 1))] / BASE_RATE * 100.0) if vals else None
+
+            p5_max, p5_min, p5_med = xp5(active_max), xp5(active_min), xp5(active_med)
+            if p5_max is not None:
+                last_p5 = p5_max
+            slow = sum(1 for r in active_max if r < VIOL_FRAC * BASE_RATE)
+            http, redis = probes.get("http"), probes.get("redis")
+            svc_viol = bool(http and http.get("p99_ms") and http["p99_ms"] > SLO) or \
+                       bool(redis and redis.get("p99_ms") and redis["p99_ms"] > SLO)
+            svc_vals = [x.get("p99_ms") for x in (http, redis)
+                        if x and x.get("p99_ms") is not None]
+            if svc_vals:
+                last_svc = max(svc_vals)
+            tv = []
+            for vmid in admitted:
+                tv.extend(x for (t, x) in sampler.thist.get(vmid, [])
+                          if t >= time.time() - 60.0)
+            thr_mean = round(statistics.mean(tv), 3) if tv else None
+            rec = {"round": args.round, "mode": args.mode, "policy": args.policy,
+                   "n": n_val, "reason": reason_tag,
+                   "busy_samples": bseries,
+                   "busy_mean": round(statistics.mean([b for b in bseries if b is not None]), 1)
+                                if any(b is not None for b in bseries) else None,
+                   "busy_max": max([b for b in bseries if b is not None], default=None),
+                   "http_p99": (http or {}).get("p99_ms"),
+                   "redis_p99": (redis or {}).get("p99_ms"),
+                   "rates": [{"vmid": vmid, "max_rate": d["max_rate"],
+                              "min_rate": d["min_rate"], "med_rate": d["med_rate"],
+                              "state": d["max_state"], "series": d["series"]}
+                             for vmid, d in sorted(per_vm.items())],
+                   "rate_series_phase": int(time.time()) % 60,
+                   "cust_active": len(active_max), "cust_slow": slow,
+                   "svc_viol": svc_viol, "cust_viol": slow > 0,
+                   "cust_slow_main": (sum(1 for v in [p5_max] if v is not None and v < 70.0)),
+                   "cust_viol_main": (p5_max is not None and p5_max < MAIN_FRAC * 100.0),
+                   "p5_max": round(p5_max, 1) if p5_max is not None else None,
+                   "p5_med": round(p5_med, 1) if p5_med is not None else None,
+                   "p5_min": round(p5_min, 1) if p5_min is not None else None,
+                   "thr_mean": thr_mean, "quota_pct": args.quota_pct,
+                   "timestamp_utc": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")}
+            if extra:
+                rec.update(extra)
+            sink.write(json.dumps(rec) + "\n")
+            sink.flush()
+            log("   n=%d busy_mean=%s busy_max=%s http=%s redis=%s active=%d slow=%d svc_viol=%s p5=%s/%s/%s thr=%s" % (
+                n_val, rec["busy_mean"], rec["busy_max"], rec["http_p99"], rec["redis_p99"],
+                len(active_max), slow, svc_viol, rec["p5_max"], rec["p5_med"], rec["p5_min"],
+                rec["thr_mean"]))
+
         while n + args.step <= min(args.max, len(vmids_sorted)):
             base_policy = "ours" if args.policy == "ours_p" else args.policy
             try:
@@ -483,63 +569,28 @@ def main():
                 allow, reason = False, "error:see log"
             log("n=%d -> %s (%s)" % (n + args.step, "allow" if allow else "defer", reason))
             if not allow:
-                break
+                if args.policy == "ours_full" and reason.startswith("pause") and pause_rounds < 6:
+                    # PAUSE state: keep admitted tenants running, monitor for recovery
+                    pause_rounds += 1
+                    measure_and_record(n + args.step, "pause-monitor %d/6" % pause_rounds,
+                                       extra={"pause_monitor": True})
+                    continue
+                break  # STOP (capacity) or pause budget exhausted
             new = vmids_sorted[n:n + args.step]
             n += args.step
             sampler.admitted = list(admitted + new)
             start_burners(new, args.mode)
             admitted.extend(new)
-            time.sleep(args.settle)
-            if args.mode == "sync":
-                wait_for_phase(2.0)
-            # rate series FIRST so burst windows are captured before probes push us out
-            rates_series = read_rates_series(admitted, n=args.series, gap=args.series_gap)
-            bseries = busy_series(pool, n=args.series, gap=args.series_gap)
-            probes = {}
-            for svc in ("http", "redis"):
-                probes[svc] = run_probe(args.round, n, svc, args.probe_seconds)
-            per_vm = {}
-            for vmid, samples in rates_series.items():
-                rs = [r for r, s in samples if r is not None]
-                if rs:
-                    per_vm[vmid] = {"max_rate": max(rs),
-                                    "max_state": max((s for _, s in samples), default=0)}
-            active_max = sorted(v["max_rate"] for v in per_vm.values() if v["max_state"] == 1 and v["max_rate"])
-            last_p5 = ((active_max[int(0.05 * (len(active_max) - 1))] / BASE_RATE * 100.0)
-                       if active_max else last_p5)
-            slow = sum(1 for r in active_max if r < VIOL_FRAC * BASE_RATE)
-            slow_main = sum(1 for r in active_max if r < MAIN_FRAC * BASE_RATE)
-            http, redis = probes.get("http"), probes.get("redis")
-            svc_viol = bool(http and http.get("p99_ms") and http["p99_ms"] > SLO) or \
-                       bool(redis and redis.get("p99_ms") and redis["p99_ms"] > SLO)
-            svc_vals = [x.get("p99_ms") for x in (http, redis)
-                        if x and x.get("p99_ms") is not None]
-            if svc_vals:
-                last_svc = max(svc_vals)
-            rec = {"round": args.round, "mode": args.mode, "policy": args.policy,
-                   "n": n, "reason": reason,
-                   "busy_samples": bseries,
-                   "busy_mean": round(statistics.mean([b for b in bseries if b is not None]), 1)
-                                if any(b is not None for b in bseries) else None,
-                   "busy_max": max([b for b in bseries if b is not None], default=None),
-                   "http_p99": (http or {}).get("p99_ms"),
-                   "redis_p99": (redis or {}).get("p99_ms"),
-                   "rates": [{"vmid": vmid, "max_rate": v["max_rate"], "state": v["max_state"]}
-                             for vmid, v in sorted(per_vm.items())],
-                   "rate_series_phase": int(time.time()) % 60,
-                   "cust_active": len(active_max), "cust_slow": slow,
-                   "svc_viol": svc_viol, "cust_viol": slow > 0,
-                   "cust_slow_main": slow_main, "cust_viol_main": slow_main > 0,
-                   "timestamp_utc": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")}
-            sink.write(json.dumps(rec) + "\n")
-            sink.flush()
-            log("   n=%d busy_mean=%s busy_max=%s http=%s redis=%s active=%d slow=%d svc_viol=%s" % (
-                n, rec["busy_mean"], rec["busy_max"], rec["http_p99"], rec["redis_p99"],
-                len(active_max), slow, svc_viol))
+            if args.quota_pct is not None:
+                for vmid in new:
+                    set_quota(vmid, args.quota_pct)
+            measure_and_record(n, reason)
     except Exception:
         log("main loop raised:\n" + traceback.format_exc())
     finally:
         kill_burners_all()
+        for vmid in CUSTOMERS:
+            set_quota(vmid, None)
         sampler.stop.set()
         sink.close()
         log("ADMIT %s DONE" % args.round)
