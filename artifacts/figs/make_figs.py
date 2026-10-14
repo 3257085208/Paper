@@ -160,7 +160,7 @@ def fig5_censoring():
     ax.set_xticks([0, 1])
     ax.set_xticklabels(["naive\n(usage only)", "censoring-aware\n(+throttle evidence)"])
     ax.set_ylabel("estimated demand (cores)")
-    ax.set_title("Estimation bias (5/5 rounds: 1.50 vs 5.00)", fontsize=9)
+    ax.set_title("Estimation bias (n=%d cycles: 1.50 vs 5.00)" % len(recs), fontsize=9)
     ax.grid(axis="y", alpha=0.3)
 
     ax = axes[1]
@@ -172,7 +172,7 @@ def fig5_censoring():
     ax.axhline(SLO, color="k", linestyle=":", linewidth=1)
     ax.set_xlabel("cycle")
     ax.set_ylabel("HTTP P99 (ms)")
-    ax.set_title("Naive release action vs. quota kept (5 cycles)", fontsize=9)
+    ax.set_title("Naive release action vs. quota kept (n=%d cycles)" % len(recs), fontsize=9)
     ax.legend(fontsize=8)
     ax.grid(axis="y", alpha=0.3)
     fig.tight_layout()
@@ -305,7 +305,7 @@ def fig9_quotapulse():
     ax.set_xticks(range(len(entries)))
     ax.set_xticklabels([e[0] for e in entries], fontsize=8)
     ax.set_ylabel("HTTP P99 (ms)")
-    ax.set_title("Quota-pulse remedies: none reach the SLO; priorities are the worst")
+    ax.set_title("Quota-pulse remedies: HTTP P99 under different CPU control configurations (SLO 10 ms)")
     ax.grid(axis="y", alpha=0.3)
     fig.tight_layout()
     fig.savefig(os.path.join(OUT, "fig9_quotapulse.png"), dpi=200)

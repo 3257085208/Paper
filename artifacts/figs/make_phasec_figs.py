@@ -219,7 +219,7 @@ def fig30_capacity_risk():
     ax.axvline(0.0, color="gray", linewidth=0.8, linestyle=":")
     ax.set_xlabel("risk budget eps  (allowed fraction of rounds with customer P5 < 70%)")
     ax.set_ylabel("safe capacity N*(eps)  (largest tested step)")
-    ax.set_title("Capacity-risk curves from the sell ladders (round-level violation frequency);\n"
+    ax.set_title("Capacity-risk curves from the sell ladders (empirical round-level violation frequency; n = rounds per level);\n"
                  "online policy stops (ours/ours_p: sync 8, rand 16-20) sit on the eps=0 edge",
                  fontsize=9.5)
     ax.grid(alpha=0.3)

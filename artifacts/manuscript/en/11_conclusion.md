@@ -13,7 +13,7 @@ family (the policy with all three is the only one in the 14-round comparison com
 
 **Identify.** Quota censoring makes demand unobservable in aggregate counters: the point estimate equals the
 running-stretch mean (exact iff the two stretch means agree; constant demand is sufficient but not necessary),
-the floor q(1+t) is conditional (and, since the reviewer counterexample, explicitly an empirical conservative
+the floor q(1+t) is conditional (and, following the counterexample above, explicitly an empirical conservative
 heuristic rather than a certified bound), and aggregate non-identifiability is constructed. Validation across
 90 cycles (30 independent rounds, clustered) shows throttle-corrected estimates match the truth while naive
 release decisions violate in 90/90; the mixed-occupancy ablation quantifies all five estimators (naive -2.31,
@@ -38,7 +38,7 @@ RAM; free-page reporting reclaiming 303 MB; zram absorbing 176.8 GB of overflow)
 shrinking tenant-visible resources under the **domain-scoped** no-regression definition; micro-period quotas,
 IO storms and the QoE canary each carry a gain / hidden-cost / visible-regression ledger.
 
-**Honest boundaries.** Two testbeds, one bare-metal host; synthetic duty-cycle loads dominate until the
+**Limitations.** Two testbeds, one bare-metal host; synthetic duty-cycle loads dominate until the
 production-schedule replay completes; round-level intervals, boundary fine scans, show4/show5 repeats and
 Phase C modules are labeled in progress rather than concluded; "jointly sufficient" remains an empirical
 statement until the anti-aliasing runs and show5 land. We hope this provides small VPS providers with a

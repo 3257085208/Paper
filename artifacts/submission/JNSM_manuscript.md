@@ -21,7 +21,7 @@ artifacts.
 
 ## Keywords
 
-oversubscription; admission control; censored demand; phase structure; tail latency; observation design; cloud resource management
+oversubscription; admission control; censored demand; phase structure; tail latency; cloud resource management
 
 
 ---
@@ -388,7 +388,7 @@ Both layers share one set of monitors (service tail latency, host pressure, per-
 
 **Demand estimation (empirical censoring correction).** For each admitted tenant: if censoring evidence is present, compute $\hat d_i = \min(\text{vCPU},\, u_i/(1-t_i))$ from the observable throttle fraction $t_i$ ($\Delta$`throttled_usec` / window) — an **empirical estimator**: near-unbiased for saturated demand (≤9% on the three cells of Section 7.3c), over-estimating bursty demand and possibly under-estimating intermittent saturation (assumptions and boundaries in Section 3.3); "at least full vCPU" remains the fallback. Without censoring evidence, use a windowed history quantile (P95 over per-window $u/(1-t)$). An optional **staggered relaxation probe** (bounded 2 s quota release, one tenant at a time) provides direct demand samples. For an arriving tenant ($T_{\text{hist}} = 0$), use the censoring-corrected estimate of same-configuration tenants as prior; when the cohort is too small, degrade to "full vCPU" — cold-start risk is priced at worst case first and relaxed after an observation window.
 
-**Decision rule (time-aligned aggregation).** Maintain 1 s per-VM history; for the admitted set, predict the aggregate demand over the decision horizon from **wall-clock phase profiles** (per-second demand envelopes preserving synchronization) and reserve capacity at a quantile of the measured aggregate demand; charge each candidate at its **quota consumption cap** (under `cpu.max`, a tenant's maximum instantaneous consumption is its quota, not its uncensored demand). Admit only if reserve + candidate caps ≤ effective tenant-core capacity (× utilization budget). Batch arrivals first reserve capacity; the same spare must not be promised twice.
+**Decision rule (time-aligned aggregation).** Maintain 1 s per-VM history; for the admitted set, predict the aggregate demand over the decision horizon from **wall-clock phase profiles** (per-second demand envelopes preserving synchronization) and reserve capacity at a quantile of the measured aggregate demand; charge each candidate at its **measured one-second peak prior** (the quota is only a *period-average* bound: `cpu.max` limits the CPU-time budget per quota period, not the instantaneous rate — a throttled tenant can still reach a full vCPU until its period budget exhausts). Admit only if reserve + candidate caps ≤ effective tenant-core capacity (× utilization budget). Batch arrivals first reserve capacity; the same spare must not be promised twice.
 
 **Calibration and pausing.** The safety margin is calibrated on independent validation windows against a measured violation budget (empirical calibration; report measured coverage rather than distribution-free guarantees). The following trigger pauses new admission (with hysteresis on resume): service-tail monitor breach; customer-side canary (wakeup stall / work rate) breach; excessive estimation uncertainty (history too short / interval too wide); data-quality events (missing data, counter resets, refresh-period changes); drift (distribution shift, new configuration classes); sustained host pressure. Resumption requires consecutive stable windows, and thresholds are fixed on training/validation sets only.
 
@@ -1027,7 +1027,7 @@ family (the policy with all three is the only one in the 14-round comparison com
 
 **Identify.** Quota censoring makes demand unobservable in aggregate counters: the point estimate equals the
 running-stretch mean (exact iff the two stretch means agree; constant demand is sufficient but not necessary),
-the floor q(1+t) is conditional (and, since the reviewer counterexample, explicitly an empirical conservative
+the floor q(1+t) is conditional (and, following the counterexample above, explicitly an empirical conservative
 heuristic rather than a certified bound), and aggregate non-identifiability is constructed. Validation across
 90 cycles (30 independent rounds, clustered) shows throttle-corrected estimates match the truth while naive
 release decisions violate in 90/90; the mixed-occupancy ablation quantifies all five estimators (naive -2.31,
@@ -1052,7 +1052,7 @@ RAM; free-page reporting reclaiming 303 MB; zram absorbing 176.8 GB of overflow)
 shrinking tenant-visible resources under the **domain-scoped** no-regression definition; micro-period quotas,
 IO storms and the QoE canary each carry a gain / hidden-cost / visible-regression ledger.
 
-**Honest boundaries.** Two testbeds, one bare-metal host; synthetic duty-cycle loads dominate until the
+**Limitations.** Two testbeds, one bare-metal host; synthetic duty-cycle loads dominate until the
 production-schedule replay completes; round-level intervals, boundary fine scans, show4/show5 repeats and
 Phase C modules are labeled in progress rather than concluded; "jointly sufficient" remains an empirical
 statement until the anti-aliasing runs and show5 land. We hope this provides small VPS providers with a

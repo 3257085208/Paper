@@ -56,7 +56,7 @@
 \f0\b\fs34\fsmilli17333 \cf2 Keywords\
 \pard\pardeftab720\sa160\qj\partightenfactor0
 
-\f1\b0\fs30\fsmilli15333 \cf2 oversubscription; admission control; censored demand; phase structure; tail latency; observation design; cloud resource management\
+\f1\b0\fs30\fsmilli15333 \cf2 oversubscription; admission control; censored demand; phase structure; tail latency; cloud resource management\
 \pard\pardeftab720\sa213\partightenfactor0
 
 \f0\b\fs40 \cf2 1 Introduction\
@@ -1130,7 +1130,7 @@ Figure 4 Phase-clustering experiment\
 \f1\b0\fs30\fsmilli15333 \cf2 \pard\pardeftab720\qc\partightenfactor0
 
 \fs25\fsmilli12667 \cf3 \strokec3 \
-Figure 5 Censoring: usage panel vs true demand\
+Figure 5 Censoring: usage panel vs true demand (both panels n=7 cycles)\
 \pard\pardeftab720\sa160\qj\partightenfactor0
 
 \f0\b\fs30\fsmilli15333 \cf2 \strokec2 Setup.
@@ -1265,7 +1265,7 @@ Figure 18 Censoring 90-cycle repeat: 2x under-report, 90/90 release violations\
 \f1\b0\fs30\fsmilli15333 \cf2 \pard\pardeftab720\qc\partightenfactor0
 
 \fs25\fsmilli12667 \cf3 \strokec3 \
-Figure 6 CPU quota vs the safe knee\
+Figure 6 CPU quota vs the safe knee (isolated arm tested to 5 neighbors, others 4 - a different-load-intensity comparison)\
 \pard\pardeftab720\sa160\qj\partightenfactor0
 
 \fs30\fsmilli15333 \cf2 \strokec2 Re-running the neighbor sweep with newcomers capped at 0.75 and 0.50 cores: 
@@ -1453,10 +1453,12 @@ Figure 8 Block-IO cap (io.max)\
 \f1\b0  Maintain 1 s per-VM history; for the admitted set, predict the aggregate demand over the decision horizon from 
 \f0\b wall-clock phase profiles
 \f1\b0  (per-second demand envelopes preserving synchronization) and reserve capacity at a quantile of the measured aggregate demand; charge each candidate at its 
-\f0\b quota consumption cap
-\f1\b0  (under 
+\f0\b measured one-second peak prior
+\f1\b0  (the quota is only a 
+\f2\i period-average
+\f1\i0  bound: 
 \f3\fs28\fsmilli14107 cpu.max
-\f1\fs30\fsmilli15333 , a tenant's maximum instantaneous consumption is its quota, not its uncensored demand). Admit only if reserve + candidate caps \uc0\u8804  effective tenant-core capacity (\'d7 utilization budget). Batch arrivals first reserve capacity; the same spare must not be promised twice.\
+\f1\fs30\fsmilli15333  limits the CPU-time budget per quota period, not the instantaneous rate \'97 a throttled tenant can still reach a full vCPU until its period budget exhausts). Admit only if reserve + candidate caps \uc0\u8804  effective tenant-core capacity (\'d7 utilization budget). Batch arrivals first reserve capacity; the same spare must not be promised twice.\
 
 \f0\b Calibration and pausing.
 \f1\b0  The safety margin is calibrated on independent validation windows against a measured violation budget (empirical calibration; report measured coverage rather than distribution-free guarantees). The following trigger pauses new admission (with hysteresis on resume): service-tail monitor breach; customer-side canary (wakeup stall / work rate) breach; excessive estimation uncertainty (history too short / interval too wide); data-quality events (missing data, counter resets, refresh-period changes); drift (distribution shift, new configuration classes); sustained host pressure. Resumption requires consecutive stable windows, and thresholds are fixed on training/validation sets only.\
@@ -3085,7 +3087,7 @@ Round-level ranges of the per-round P5: sync N=8 98.6\'96101.8% (4 rounds), N=10
 \cf2 \pard\pardeftab720\qc\partightenfactor0
 
 \fs25\fsmilli12667 \cf3 \strokec3 \
-Figure 30 Capacity-risk curves (workload side): policy stops on the eps=0 edge\
+Figure 30 Capacity-risk curves (workload side; empirical risk: per-round violation frequency, n = rounds per level)\
 \pard\pardeftab720\sa160\qj\partightenfactor0
 
 \f0\b\fs30\fsmilli15333 \cf2 \strokec2 Four conclusions.
@@ -3683,7 +3685,7 @@ Figure 25 Swap arms: zram absorbs 176.8 GB (P99 flat) vs the disk swapfile exhau
 \pard\pardeftab720\sa160\qj\partightenfactor0
 
 \f0\b \cf2 Identify.
-\f1\b0  Quota censoring makes demand unobservable in aggregate counters: the point estimate equals the running-stretch mean (exact iff the two stretch means agree; constant demand is sufficient but not necessary), the floor q(1+t) is conditional (and, since the reviewer counterexample, explicitly an empirical conservative heuristic rather than a certified bound), and aggregate non-identifiability is constructed. Validation across 90 cycles (30 independent rounds, clustered) shows throttle-corrected estimates match the truth while naive release decisions violate in 90/90; the mixed-occupancy ablation quantifies all five estimators (naive -2.31, quota-scaling +0.01 by coincidence, throttle correction -0.20, full-vCPU +2.70, uncapped -0.16) and isolates the window-dilution effect that multi-resolution throttle sequences will fix.\
+\f1\b0  Quota censoring makes demand unobservable in aggregate counters: the point estimate equals the running-stretch mean (exact iff the two stretch means agree; constant demand is sufficient but not necessary), the floor q(1+t) is conditional (and, following the counterexample above, explicitly an empirical conservative heuristic rather than a certified bound), and aggregate non-identifiability is constructed. Validation across 90 cycles (30 independent rounds, clustered) shows throttle-corrected estimates match the truth while naive release decisions violate in 90/90; the mixed-occupancy ablation quantifies all five estimators (naive -2.31, quota-scaling +0.01 by coincidence, throttle correction -0.20, full-vCPU +2.70, uncapped -0.16) and isolates the window-dilution effect that multi-resolution throttle sequences will fix.\
 
 \f0\b Predict.
 \f1\b0  Capacity is set by phase structure, not average utilization: random vs aligned safe capacity 28 vs 8 (primary bar P5 \uc0\u8805  70%; 3.5x\'964x across bars), with the utilization-impossibility counterexample \'97 and the measured inversion (safe fleet reports 66.4-68.0% busy, the collapsing fleet 30.4%). The safe-capacity approximation N* = C/(phi + (1-phi) rho) is stated with explicit assumptions and measured error directions. The Phase-Profile Convolution (PPC) has three artifact-backed modes (parametric simulation, strict three-way joint block bootstrap with a held-out test third, online peak-envelope approximation); iid convolution is provably blind to exactly the axis that decides safety (the marginal illusion), and the C5 intervention shows the axis is controllable (capacity x2/x4 by phase arrangement alone).\
@@ -3693,7 +3695,7 @@ Figure 25 Swap arms: zram absorbs 176.8 GB (P99 flat) vs the disk swapfile exhau
 \f0\b domain-scoped
 \f1\b0  no-regression definition; micro-period quotas, IO storms and the QoE canary each carry a gain / hidden-cost / visible-regression ledger.\
 
-\f0\b Honest boundaries.
+\f0\b Limitations.
 \f1\b0  Two testbeds, one bare-metal host; synthetic duty-cycle loads dominate until the production-schedule replay completes; round-level intervals, boundary fine scans, show4/show5 repeats and Phase C modules are labeled in progress rather than concluded; "jointly sufficient" remains an empirical statement until the anti-aliasing runs and show5 land. We hope this provides small VPS providers with a reproducible "observation design + capacity model + controller" starting point, and adds "identifiability boundaries and phase structure" to the oversubscription research agenda.\
 \pard\pardeftab720\partightenfactor0
 \cf4 \strokec4 \
