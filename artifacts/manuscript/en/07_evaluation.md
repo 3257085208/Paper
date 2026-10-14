@@ -205,8 +205,8 @@ load range. 1-minute granularity cannot resolve sub-minute synchrony.
 
 ## 7.7 Gap List (Pre-Submission Plan)
 
-1. An AUDIBLE-adapted baseline: preliminary evaluation complete (Section 7.3b, Figure 11); a full implementation remains.
-2. Cold start / short history: preliminary evaluation complete (Section 7.3b); more arrival populations and replicates remain.
-3. Key conclusions now carry mass repeats: v2 Phase 1 complete (knee 50 rounds, censoring 90 cycles, triple storm 24 rounds — Sections 4.1b/4.3b/6.5, Figures 17–19); the rework batch (v3knee 50 + v3cen 30 + v3syn 26) and Phase 2 (53 rounds, incl. admission showdown and memory-gate A/B) are queued; round-level bootstrap intervals refresh after they land.
-4. Ablations: preliminary evaluation complete (naive / AUDIBLE-style / aware / aware+cal in Section 7.3b); the isolation ablation is in Section 4.4.3.
-5. Figure scripts and data cross-check for Figures 2–19 (skeleton list; pilot 2–13, physical host 14–16, v2 repeats 17–19 all reproduce with one command).
+1. AUDIBLE-adapted baseline: preliminary evaluation in Section 7.3b (Figure 11); the full four-policy comparison (incl. the AUDIBLE-style MC and time-aligned taligned) runs in the second-testbed batch; results merge as supplementary material.
+2. Cold start / short history: preliminary evaluation in Section 7.3b; the full batch runs on the second testbed.
+3. Key conclusions now carry mass repeats: knee 100 rounds (v2/v3), censoring 180 cycles (two batches), triple storm 30 rounds (4+26), all merged (Figures 17-19, 29); the v3 rework (v3knee/v3cen/v3syn) is complete and backfilled; the showdown arrival-order repeats and ablation arms (show6-show11) are queued on the physical host and merge as they land.
+4. Ablations: preliminary evaluation in Section 7.3b; the full ablations (censoring correction, phase resolution, quota arm) are queued on the physical host.
+5. Figures and scripts: all regenerate with one command (figure scripts plus artifacts data), numbered through Figure 31.

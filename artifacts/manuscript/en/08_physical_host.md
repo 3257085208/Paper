@@ -141,7 +141,7 @@ $Q_p(\varphi N + \mathrm{Bin}((1-\varphi)N, \rho)) \le C/\theta$; numerically th
 bar. In practice the safe value is taken directly from the **measured** bar-qualified capacity (§8.4), and
 the model is used only for cross-configuration extrapolation and as the admission prior.
 
-**First-round validation (Figure 21; 8-core pool, $\rho$ = 0.20, one round per configuration):**
+**Validation (Figure 21; 8-core pool, $\rho$ = 0.20, capmix pools of 3 rounds each):**
 
 | Configuration | Model prediction N*_mid | Measured (primary P5 ≥ 70% bar) | Deviation |
 |---|---|---|---|
@@ -202,7 +202,7 @@ policy *is* the PPC actuator and stops on the synchronized oracle).
 | Sync → periodic spikes | 60 s period (6 tenants) | 60 s period (64 tenants, 3 rounds, gaps exactly 60 s) |
 | Soft levers fail / hard caps work | verified | (runs on the physical host planned) |
 | Safe sell capacity | qualitative (3 seats in budget) | quantified: 3.5x primary bar (28 vs 8), 3.5x–4x across bars |
-| Density law predicts N*(φ) | — (single-scale bed) | three points hit (Figure 21) |
+| Density law predicts N*(φ) | — (nested bed) | three points hit (Figure 21) |
 
 ## 8.8 Chapter Data and Artifacts
 
