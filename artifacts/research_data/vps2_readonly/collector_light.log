@@ -24377,3 +24377,10 @@ samples=96
 samples=108
 samples=120
 samples=132
+Read from remote host 117.55.225.227: Connection reset by peer
+client_loop: send disconnect: Broken pipe
+Connection to 2401:b60:e017:1a::2 closed by remote host.
+client_loop: send disconnect: Broken pipe
+session ended after 139 samples; reconnecting in 20s
+samples=1
+samples=12
