@@ -32,7 +32,13 @@ for virtualized and cloud infrastructure.
 The manuscript is original, has not been published elsewhere, and is not under consideration by
 another journal. The author declares no competing interests. All production telemetry was collected
 read-only on infrastructure we operate, anonymized, and is released only in aggregate form; no
-user-identifying data is included. [Suggested reviewers to be added at submission.]
+user-identifying data is included. Suggested reviewers:
+1. Prof. Thomas Ledoux, IMT Atlantique (France) — Thomas.Ledoux@imt-atlantique.fr — cloud resource
+   management and VM oversubscription.
+2. Dr. Pierre Jacquet, Inria (France) — pierre.jacquet@inria.fr — oversubscribed cloud infrastructures.
+3. Prof. Romain Rouvoy, Universite de Lille / Inria (France) — romain.rouvoy@univ-lille.fr —
+   adaptive cloud systems and resource management.
+(The author is not aware of any conflicts of interest with the suggested reviewers.)
 
 Thank you for your consideration.
 

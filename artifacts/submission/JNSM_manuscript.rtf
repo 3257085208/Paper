@@ -44,7 +44,7 @@
 \fs29\fsmilli14667 \cf3 \strokec3 Fujian Chuanzheng Communications College\
 \pard\pardeftab720\qc\partightenfactor0
 
-\fs28 \cf3 Corresponding author: Kaixiang Nie \'b7 email: [corresponding email to be filled]\
+\fs28 \cf3 Corresponding author: Kaixiang Nie \'b7 email: me@niekaixiang.com\
 \pard\pardeftab720\sa160\partightenfactor0
 
 \f0\b\fs34\fsmilli17333 \cf2 \strokec2 Abstract\
@@ -2767,25 +2767,25 @@ Figure 27 Production portrait: 72% near-idle, 4268 short bursts, 5.76x oversubsc
 \f2\i weakly positive, not independent
 \f1\i0 : phase structure is not an artifact of synthetic loads, while the random-end assumption of the capacity model is only an approximation; sub-minute synchrony stays invisible at this granularity. (v) 
 \f0\b Two-window representativeness:
-\f1\b0  the 3-h dense excerpt is a night-time quiet segment (busy 30.1%), while the 39-h light window covers day and night (busy 37.7%, peak 66.1%) - the "mostly idle" portrait is a per-VM statement; host-level load follows a day/night rhythm, and capacity-model anchors taken from the quiet segment are labeled as such (the controlled experiments here align with that segment; day/night peak regimes are future work).\
+\f1\b0  the 3-h dense excerpt is a night-time quiet segment (busy 30.1%), while the 42-h light window covers day and night (busy 37.3%, peak 66.1%) - the "mostly idle" portrait is a per-VM statement; host-level load follows a day/night rhythm, and capacity-model anchors taken from the quiet segment are labeled as such (the controlled experiments here align with that segment; day/night peak regimes are future work).\
 
 \f0\b Boundaries and the two-state anchor (Figure 31).
 \f1\b0  The dense window is only 170 minutes and is a
 \f0\b night-time quiet segment
 \f1\b0  (host busy 30.1%, peak 47.2%); the light stream has accumulated 
-\f0\b 39 hours of day/night coverage
-\f1\b0  (274 points at 5-minute intervals; ~40% of samples missing to relay jitter): host busy mean 
-\f0\b 37.7%
-\f1\b0 , P95 55.5%, peak 
+\f0\b 42 hours of day/night coverage
+\f1\b0  (as of 2026-10-14; 305 points at 5-minute intervals, ~39% of samples missing to relay jitter): host busy mean 
+\f0\b 37.3%
+\f1\b0 , P95 55.3%, peak 
 \f0\b 66.1%
 \f1\b0 ; guests consume 14.8%of host CPU on average; memory available never drops below 
-\f0\b 87.8 GB
-\f1\b0 ; CPU PSI avg300 mean 5.3, peak 14.0; no reboot in the window. The two-state anchor holds: the quiet/night dense segment (to which the controlled testbed experiments align) and the full day/night light segment together bracket the real load range. 1-minute granularity cannot resolve sub-minute synchrony.\
+\f0\b 63.7 GB
+\f1\b0 ; CPU PSI avg300 mean 5.2, peak 14.0; no reboot in the window. The two-state anchor holds: the quiet/night dense segment (to which the controlled testbed experiments align) and the full day/night light segment together bracket the real load range. 1-minute granularity cannot resolve sub-minute synchrony.\
 \pard\pardeftab720\qc\partightenfactor0
 \cf2 \pard\pardeftab720\qc\partightenfactor0
 
 \fs25\fsmilli12667 \cf3 \strokec3 \
-Figure 31 Production two-state anchor: 39-h light window vs the 3-h night excerpt\
+Figure 31 Production two-state anchor: 42-h light window vs the 3-h night excerpt\
 \pard\pardeftab720\sa213\partightenfactor0
 
 \f0\b\fs40 \cf2 \strokec2 8 Physical-Host Validation and the Density Law\
@@ -3696,7 +3696,7 @@ Figure 25 Swap arms: zram absorbs 176.8 GB (P99 flat) vs the disk swapfile exhau
 \f1\b0  no-regression definition; micro-period quotas, IO storms and the QoE canary each carry a gain / hidden-cost / visible-regression ledger.\
 
 \f0\b Limitations.
-\f1\b0  Two testbeds, one bare-metal host; synthetic duty-cycle loads dominate until the production-schedule replay completes; round-level intervals, boundary fine scans, show4/show5 repeats and Phase C modules are labeled in progress rather than concluded; "jointly sufficient" remains an empirical statement until the anti-aliasing runs and show5 land. We hope this provides small VPS providers with a reproducible "observation design + capacity model + controller" starting point, and adds "identifiability boundaries and phase structure" to the oversubscription research agenda.\
+\f1\b0  Two testbeds, one bare-metal host; synthetic duty-cycle loads dominate, with the production-schedule replay (30-minute real schedule plus five-window forward validation) as a scenario anchor; real mixed application workloads and more arrival-order repeats remain future work; round-level ranges are reported throughout, and the formal bootstrap intervals will be refreshed on the frozen data set. "Jointly sufficient" remains an empirical statement for our target workload family. We hope this provides small VPS providers with a reproducible "observation design + capacity model + controller" starting point, and adds "identifiability boundaries and phase structure" to the oversubscription research agenda.\
 \pard\pardeftab720\partightenfactor0
 \cf4 \strokec4 \
 \pard\pardeftab720\sa213\partightenfactor0
