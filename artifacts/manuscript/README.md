@@ -3,7 +3,8 @@
 This repository hosts the rendered paper site **and the full research artifacts**.
 
 ## Read the paper
-- `index.html` — the paper (Chinese draft with figures)
+- `index.html` — the paper, Chinese edition (with figures)
+- `index-en` — the paper, English edition (same figures, English captions; linked from both pages)
 - `changelog` / `changelog.html` — version history (current: v1.0)
 - `report.html`, `report.pptx`, `paper.pptx` — talk slides (HTML / PPT)
 
