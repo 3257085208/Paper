@@ -38,7 +38,7 @@ untested (future work).
 
 ## 9.2 Memory: Balloon-Free Reclaim Trio (Figures 23–25) — partial
 
-**Done so far.** (i) **KSM fleet dedup (ksm1)**: 64 same-image VMs share **21.9 GB = 33.4% of fleet RAM**;
+**Done so far.** (i) **KSM fleet dedup (ksm1; see the kernel documentation [21])**: 64 same-image VMs share **21.9 GB = 33.4% of fleet RAM**;
 ksmd ≈ 0.16 core; service P99 0.73→0.76 ms (zero regression). Cost boundaries: write-CoW latency untested;
 cross-tenant dedup carries known side-channel concerns — enable per trust domain in production.
 (ii) **Free-page reporting (manual verification, 300 MB)**: host `memory.current` 315→629 MB with the guest

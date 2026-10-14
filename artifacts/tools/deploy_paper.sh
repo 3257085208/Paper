@@ -11,6 +11,7 @@ rsync -a --delete --exclude ".DS_Store" tools/ site/artifacts/tools/
 rsync -a --delete --exclude ".DS_Store" research_data/ site/artifacts/research_data/
 mkdir -p site/artifacts/figs
 rsync -a --include='*.py' --exclude='*' manuscript/figs/ site/artifacts/figs/
+rsync -a --delete --exclude ".DS_Store" manuscript/submission/ site/artifacts/submission/
 cp manuscript/REPRODUCE.md site/REPRODUCE.md
 cp manuscript/README.md site/README.md
 # publish the manuscript sources (zh chapters + en submission chapters + appendices)

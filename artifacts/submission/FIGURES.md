@@ -1,0 +1,32 @@
+# Figure manifest (separate upload files)
+
+- `figures/fig2_knee.png` — Figure 2 Knee curve: service latency vs pegged co-tenants (nested bed)
+- `figures/fig3_sync_timeline.png` — Figure 3 Synchronized burst timeline
+- `figures/fig4_packing.png` — Figure 4 Phase-clustering experiment
+- `figures/fig5_censoring.png` — Figure 5 Censoring: usage panel vs true demand
+- `figures/fig6_shaping.png` — Figure 6 CPU quota vs the safe knee
+- `figures/fig7_memory.png` — Figure 7 Memory double gate
+- `figures/fig8_disk.png` — Figure 8 Block-IO cap (io.max)
+- `figures/fig9_quotapulse.png` — Figure 9 Quota pulse: service P99
+- `figures/fig10_synthesis.png` — Figure 10 Triple-storm synthesis (4 runs)
+- `figures/fig11_method.png` — Figure 11 Method evaluation: policy ablation and cold start
+- `figures/fig12_bounds.png` — Figure 12 Demand-recovery validation (b2)
+- `figures/fig13_joint.png` — Figure 13 Joint admission + shaping validation (j1)
+- `figures/fig14_phys_knee.png` — Figure 14 Physical host multi-scale knee: isolation vs shared (4 rounds)
+- `figures/fig15_phys_sync.png` — Figure 15 64-tenant fleet: synchronized vs random (timeline + 3-round repeat)
+- `figures/fig16_phys_sell.png` — Figure 16 Sell capacity on the physical host: customer experience and service side
+- `figures/fig17_knee_repeat.png` — Figure 17 50-round knee repeat (v2 reconstruction); v3 rework in Figure 29
+- `figures/fig18_censor_repeat.png` — Figure 18 Censoring 90-cycle repeat: 2x under-report, 90/90 release violations
+- `figures/fig19_syn_repeat.png` — Figure 19 Triple-storm rework, 26 rounds: 25/26 pass, one degraded round at 25.3 ms
+- `figures/fig20_showdown.png` — Figure 20 Online admission showdown: policy stops vs measured capacity brackets (14 rounds)
+- `figures/fig21_density_law.png` — Figure 21 Safe-capacity approximation: mixed-phase validation (3 rounds)
+- `figures/fig22_microperiod.png` — Figure 22 Micro-period self-audit: 2 ms and 1 s deliver identically (+35% withdrawn)
+- `figures/fig23_ksm.png` — Figure 23 KSM fleet dedup: 21.9 GB shared (33.4%), ksmd ~0.16 core
+- `figures/fig24_fpr.png` — Figure 24 Free-page reporting: 300 MB allocated, 303 MB reclaimed, guest memory unchanged
+- `figures/fig25_zram.png` — Figure 25 Swap arms: zram absorbs 176.8 GB (P99 flat) vs the disk swapfile exhausting
+- `figures/fig26_ioctl.png` — Figure 26 Tenant 4K random storm: ~66k IOPS, service untouched (P99 0.74-0.76 ms)
+- `figures/fig27_production.png` — Figure 27 Production portrait: 72% near-idle, 4268 short bursts, 5.76x oversubscription anchor
+- `figures/fig28_ppc.png` — Figure 28 Phase-Profile Convolution: iid blind vs PPC varying with phase structure
+- `figures/fig29_knee_v3.png` — Figure 29 Knee v3 rework (all neighbors online): L2 clean, L3 45/50, L4 100% collapse
+- `figures/fig30_capacity_risk.png` — Figure 30 Capacity-risk curves (workload side): policy stops on the eps=0 edge
+- `figures/fig31_light_window.png` — Figure 31 Production two-state anchor: 39-h light window vs the 3-h night excerpt

@@ -9,7 +9,7 @@ Consider a single multi-tenant host (the typical small-provider setup) with $C$ 
 - **Sensitive services**: $s$ lightweight service VMs , e.g., status monitoring, gateway, static serving whose end-to-end latency must meet a service-level objective. We instrument one HTTP and one Redis service.
 - **Customer VMs (tenants)**: $n$ oversubscribed customer machines (typically 1 vCPU, a few GiB of memory) — the revenue source. Tenant load is characterized by a class: duty cycle $\rho$ (fraction of time working), period $P$, phase $\phi$ (aligned or randomized), resident memory, and IO intensity. We cover four classes: pegged ($\rho{=}1$), bursty ($\rho{\approx}1/3$), idle ($\rho{\approx}1/10$), and synchronized (aligned phase).
 
-Each tenant VM $i$ can be constrained by a control vector $a_i = (\mathrm{pin}_i, q_i, w_i, g_i, b_i, \mathrm{swapmax}_i)$: core set, CPU quota (`cpu.max`), CPU weight (`cpu.weight`), memory soft limit (`memory.high`), block-IO cap (`io.max`), and per-cgroup swap limit (`memory.swap.max`). Controls never change the sold configuration (no migration, no down-sizing), matching the operational envelope of small providers.
+Each tenant VM $i$ can be constrained by a control vector $a_i = (\mathrm{pin}_i, q_i, w_i, g_i, b_i, \mathrm{swapmax}_i)$, all through the cgroup v2 interface [15]: core set, CPU quota (`cpu.max`), CPU weight (`cpu.weight`), memory soft limit (`memory.high`), block-IO cap (`io.max`), and per-cgroup swap limit (`memory.swap.max`). Controls never change the sold configuration (no migration, no down-sizing), matching the operational envelope of small providers.
 
 ## 3.2 Service-Level Objective and Metrics
 
@@ -17,7 +17,7 @@ Each tenant VM $i$ can be constrained by a control vector $a_i = (\mathrm{pin}_i
 
 **Customer-side experience.** The work rate of a tenant is its measurable busy-loop iteration rate (it/s), compared against the unconstrained full-speed baseline (roughly 55–75 M it/s depending on load shape); this metric expresses **where the cost lands**.
 
-**Host-side evidence.** Per-cgroup `cpu.stat` (`usage_usec`, `nr_throttled`, `throttled_usec`), `memory.current`/`memory.events`, `io.stat`, plus host-level `MemAvailable`/swap and 3-second CPU busy fraction.
+**Host-side evidence.** Per-cgroup `cpu.stat` (`usage_usec`, `nr_throttled`, `throttled_usec`), `memory.current`/`memory.events`, `io.stat`, plus host-level `MemAvailable`/swap, 3-second CPU busy fraction and PSI pressure counters [16].
 
 ## 3.3 Demand, Censoring, and the Observation Model
 
