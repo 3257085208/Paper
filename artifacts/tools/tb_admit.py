@@ -36,6 +36,9 @@ SSH = ["-n", "-i", KEY, "-o", "IdentitiesOnly=yes", "-o", "BatchMode=yes",
        "-o", "StrictHostKeyChecking=accept-new", "-o", "ConnectTimeout=8",
        "-o", "LogLevel=ERROR"]
 BASE_RATE = 25.9e6
+# Guard conventions: the online pause guard uses p5_max (the paper's primary bar,
+# identical to the ladder/showdown convention); p5_med/p5_min are recorded for audit
+# and reported as time-domain sensitivity (see P5_CONVENTION_CHECK.md).
 VIOL_FRAC = 0.50          # floor bar (legacy field cust_slow/cust_viol)
 MAIN_FRAC = 0.70          # primary bar (paper): customer P5 >= 70%
 SLO = 10.0
@@ -176,6 +179,7 @@ def p95(vals):
 
 
 _RESID = []
+_LASTP5 = {"max": None, "med": None, "min": None}
 _BUSY_PREV = None
 _POOL_CPUS = set()
 _NO_CENSOR = False
@@ -342,6 +346,10 @@ def set_quota(vmid, pct):
     val = "max 100000" if pct is None else "%d 100000" % int(pct / 100.0 * 100000)
     subprocess.run('echo "%s" > /sys/fs/cgroup/qemu.slice/%d.scope/cpu.max' % (val, vmid),
                    shell=True, capture_output=True)
+    # read back to verify the write took effect
+    rb = subprocess.run('cat /sys/fs/cgroup/qemu.slice/%d.scope/cpu.max' % vmid,
+                        shell=True, capture_output=True, text=True).stdout.strip()
+    return rb == val
 
 
 def kill_burners_all():
@@ -435,6 +443,9 @@ def main():
                     help="ablation: disable phase buckets, marginal-only gate (ours_full)")
     ap.add_argument("--quota-pct", type=float, default=None,
                     help="apply cpu.max = pct%% of one core to admitted tenants (censoring arm)")
+    ap.add_argument("--guard-metric", choices=["max", "med", "min"], default="max",
+                    help="which per-customer aggregation the ours_full pause guard reads "
+                         "(max = paper convention; med/min = stricter time-domain)")
     args = ap.parse_args()
 
     LOGF = open("/root/tb/admit_%s.log" % args.round, "a", encoding="utf-8")
@@ -498,6 +509,7 @@ def main():
                 return (vals[int(0.05 * (len(vals) - 1))] / BASE_RATE * 100.0) if vals else None
 
             p5_max, p5_min, p5_med = xp5(active_max), xp5(active_min), xp5(active_med)
+            _LASTP5.update({"max": p5_max, "med": p5_med, "min": p5_min})
             if p5_max is not None:
                 last_p5 = p5_max
             slow = sum(1 for r in active_max if r < VIOL_FRAC * BASE_RATE)
@@ -534,6 +546,7 @@ def main():
                    "p5_med": round(p5_med, 1) if p5_med is not None else None,
                    "p5_min": round(p5_min, 1) if p5_min is not None else None,
                    "thr_mean": thr_mean, "quota_pct": args.quota_pct,
+                   "guard_metric": args.guard_metric,
                    "timestamp_utc": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")}
             if extra:
                 rec.update(extra)
@@ -550,13 +563,15 @@ def main():
                 if args.policy == "ours_p" and last_p5 is not None and last_p5 < 70.0:
                     allow, reason = False, "pause p5=%.0f%%<70%%" % last_p5
                 elif args.policy == "ours_full":
-                    breach = (last_p5 is not None and last_p5 < 70.0) or \
+                    guard_val = _LASTP5.get(args.guard_metric)
+                    breach = (guard_val is not None and guard_val < 70.0) or \
                              (last_svc is not None and last_svc > SLO)
                     cb, cseen = canary_check()
                     if breach or (cseen and cb):
                         pause_clean = 0
-                        allow, reason = False, ("pause p5=%.0f%% svc=%.2f canary=%s"
-                                                % (last_p5 or 0.0, last_svc or 0.0, cb))
+                        allow, reason = False, ("pause %s=%.1f svc=%.2f canary=%s"
+                                                % (args.guard_metric, guard_val or 0.0,
+                                                   last_svc or 0.0, cb))
                     elif pause_clean < 3:
                         pause_clean += 1
                         allow, reason = False, "pause recovering %d/3" % pause_clean
@@ -572,8 +587,10 @@ def main():
                 if args.policy == "ours_full" and reason.startswith("pause") and pause_rounds < 6:
                     # PAUSE state: keep admitted tenants running, monitor for recovery
                     pause_rounds += 1
-                    measure_and_record(n + args.step, "pause-monitor %d/6" % pause_rounds,
-                                       extra={"pause_monitor": True})
+                    measure_and_record(n, "pause-monitor %d/6" % pause_rounds,
+                                       extra={"pause_monitor": True,
+                                              "admitted_n": n,
+                                              "candidate_n": n + args.step})
                     continue
                 break  # STOP (capacity) or pause budget exhausted
             new = vmids_sorted[n:n + args.step]
@@ -581,10 +598,14 @@ def main():
             sampler.admitted = list(admitted + new)
             start_burners(new, args.mode)
             admitted.extend(new)
+            quota_ok = None
             if args.quota_pct is not None:
-                for vmid in new:
-                    set_quota(vmid, args.quota_pct)
-            measure_and_record(n, reason)
+                quota_ok = all(set_quota(vmid, args.quota_pct) for vmid in new)
+                if not quota_ok:
+                    log("WARN: quota read-back failed for some of %s" % new)
+            measure_and_record(n, reason,
+                               extra={"admitted_n": n, "candidate_n": n,
+                                      "quota_applied_ok": quota_ok})
     except Exception:
         log("main loop raised:\n" + traceback.format_exc())
     finally:
