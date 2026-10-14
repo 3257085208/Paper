@@ -57,7 +57,7 @@ ax3.tick_params(axis="y", labelcolor="tab:red")
 ax2.grid(alpha=0.25)
 # fig.suptitle("Production anchor (LEC-HK-1): 42-h light window vs the 3-h dense excerpt", fontsize=10)
 fig.tight_layout()
-fig.savefig(OUT, dpi=200)
+fig.savefig(OUT, dpi=400)
 print("fig31 ok; busy mean %.1f p95 %.1f max %.1f | mem min %.1f | psi mean %.1f max %.1f" % (
     statistics.mean([x for x in busy if x is not None]), sorted([x for x in busy if x is not None])[int(0.95*(len([x for x in busy if x is not None])-1))], max([x for x in busy if x is not None]),
     min([x for x in mem if x is not None]), statistics.mean([x for x in psi if x is not None]), max([x for x in psi if x is not None])))

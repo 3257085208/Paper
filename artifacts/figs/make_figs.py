@@ -71,7 +71,7 @@ def fig2_knee():
     axes[0].legend(fontsize=7)
 #     fig.suptitle("Knee curve: service latency vs. number of pegged co-tenants (4 vCPU host)", fontsize=10)
     fig.tight_layout()
-    fig.savefig(os.path.join(OUT, "fig2_knee.png"), dpi=200)
+    fig.savefig(os.path.join(OUT, "fig2_knee.png"), dpi=400)
     plt.close(fig)
 
 
@@ -97,7 +97,7 @@ def fig3_sync_timeline():
         ax.grid(alpha=0.3)
     axes[1].set_xlabel("time since probe start (s)")
     fig.tight_layout()
-    fig.savefig(os.path.join(OUT, "fig3_sync_timeline.png"), dpi=200)
+    fig.savefig(os.path.join(OUT, "fig3_sync_timeline.png"), dpi=400)
     plt.close(fig)
 
 
@@ -142,7 +142,7 @@ def fig4_packing():
     ax.legend()
     ax.grid(axis="y", alpha=0.3)
     fig.tight_layout()
-    fig.savefig(os.path.join(OUT, "fig4_packing.png"), dpi=200)
+    fig.savefig(os.path.join(OUT, "fig4_packing.png"), dpi=400)
     plt.close(fig)
 
 
@@ -176,7 +176,7 @@ def fig5_censoring():
     ax.legend(fontsize=8)
     ax.grid(axis="y", alpha=0.3)
     fig.tight_layout()
-    fig.savefig(os.path.join(OUT, "fig5_censoring.png"), dpi=200)
+    fig.savefig(os.path.join(OUT, "fig5_censoring.png"), dpi=400)
     plt.close(fig)
 
 
@@ -223,7 +223,7 @@ def fig6_shaping():
     ax.set_title("Where the cost lands (customer side)", fontsize=9)
     ax.grid(axis="y", alpha=0.3)
     fig.tight_layout()
-    fig.savefig(os.path.join(OUT, "fig6_shaping.png"), dpi=200)
+    fig.savefig(os.path.join(OUT, "fig6_shaping.png"), dpi=400)
     plt.close(fig)
 
 
@@ -254,7 +254,7 @@ def fig7_memory():
     ax.legend(fontsize=8)
     ax.grid(alpha=0.3)
     fig.tight_layout()
-    fig.savefig(os.path.join(OUT, "fig7_memory.png"), dpi=200)
+    fig.savefig(os.path.join(OUT, "fig7_memory.png"), dpi=400)
     plt.close(fig)
 
 
@@ -284,7 +284,7 @@ def fig8_disk():
     for ax in axes:
         ax.grid(axis="y", alpha=0.3)
     fig.tight_layout()
-    fig.savefig(os.path.join(OUT, "fig8_disk.png"), dpi=200)
+    fig.savefig(os.path.join(OUT, "fig8_disk.png"), dpi=400)
     plt.close(fig)
 
 
@@ -308,7 +308,7 @@ def fig9_quotapulse():
 #     ax.set_title("Quota-pulse remedies: HTTP P99 under different CPU control configurations (SLO 10 ms)")
     ax.grid(axis="y", alpha=0.3)
     fig.tight_layout()
-    fig.savefig(os.path.join(OUT, "fig9_quotapulse.png"), dpi=200)
+    fig.savefig(os.path.join(OUT, "fig9_quotapulse.png"), dpi=400)
     plt.close(fig)
 
 
@@ -333,7 +333,7 @@ def fig10_synthesis():
     ax.legend()
     ax.grid(axis="y", alpha=0.3)
     fig.tight_layout()
-    fig.savefig(os.path.join(OUT, "fig10_synthesis.png"), dpi=200)
+    fig.savefig(os.path.join(OUT, "fig10_synthesis.png"), dpi=400)
     plt.close(fig)
 
 
@@ -387,7 +387,7 @@ def fig11_method():
     ax.set_title("Cold start: arrival population x prior", fontsize=9)
     ax.grid(axis="y", alpha=0.3)
     fig.tight_layout()
-    fig.savefig(os.path.join(OUT, "fig11_method.png"), dpi=200)
+    fig.savefig(os.path.join(OUT, "fig11_method.png"), dpi=400)
     plt.close(fig)
 
 
@@ -409,7 +409,7 @@ def fig12_bounds():
     ax.legend(fontsize=8)
     ax.grid(axis="y", alpha=0.3)
     fig.tight_layout()
-    fig.savefig(os.path.join(OUT, "fig12_bounds.png"), dpi=200)
+    fig.savefig(os.path.join(OUT, "fig12_bounds.png"), dpi=400)
     plt.close(fig)
 
 
@@ -446,7 +446,7 @@ def fig13_joint():
     ax.legend(fontsize=8)
     ax.grid(alpha=0.3)
     fig.tight_layout()
-    fig.savefig(os.path.join(OUT, "fig13_joint.png"), dpi=200)
+    fig.savefig(os.path.join(OUT, "fig13_joint.png"), dpi=400)
     plt.close(fig)
 
 

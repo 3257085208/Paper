@@ -44,5 +44,5 @@ ax.text(5.0, 0.625, "failures if missing:  wrong demand -> bad release (90/90 vi
         "phase-blind -> oversell 40 in sync (P5 16%)   |   coarse sampling -> stop drift 28<->40",
         ha="center", fontsize=8.4, color="#333")
 fig.tight_layout()
-fig.savefig(OUT, dpi=200)
+fig.savefig(OUT, dpi=400)
 print("fig1 ok")

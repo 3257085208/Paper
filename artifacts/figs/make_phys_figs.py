@@ -84,7 +84,7 @@ def fig14_knee():
 #     fig.suptitle("Physical host (2x 8259CL, 64-VM fleet): service P99 vs peak-neighbor "
 #                  "oversubscription, isolated vs shared", fontsize=10)
     fig.tight_layout()
-    fig.savefig(os.path.join(OUT, "fig14_phys_knee.png"), dpi=200)
+    fig.savefig(os.path.join(OUT, "fig14_phys_knee.png"), dpi=400)
     plt.close(fig)
     print("fig14 ok")
 
@@ -158,7 +158,7 @@ def fig15_sync():
 #     fig.suptitle("Physical host: synchronized vs randomized bursts, all 64 tenants "
 #                  "sharing one 16-core pool (busy-loop duty 20% / 60 s)", fontsize=10)
     fig.tight_layout()
-    fig.savefig(os.path.join(OUT, "fig15_phys_sync.png"), dpi=200)
+    fig.savefig(os.path.join(OUT, "fig15_phys_sync.png"), dpi=400)
     plt.close(fig)
     print("fig15 ok")
 
@@ -238,7 +238,7 @@ def fig16_sell():
 #     fig.suptitle("Sell capacity on the physical host: same average load, capacity "
 #                  "determined by burst phase structure", fontsize=10)
     fig.tight_layout()
-    fig.savefig(os.path.join(OUT, "fig16_phys_sell.png"), dpi=200)
+    fig.savefig(os.path.join(OUT, "fig16_phys_sell.png"), dpi=400)
     plt.close(fig)
     print("fig16 ok")
 

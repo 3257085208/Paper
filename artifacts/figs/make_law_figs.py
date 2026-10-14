@@ -135,7 +135,7 @@ def main():
 #     fig.suptitle("Density law on the physical host: same duty, arrangement sets capacity "
 #                  "(mixed-phase ladders + anchors)", fontsize=10)
     fig.tight_layout()
-    fig.savefig(os.path.join(OUT, "fig21_density_law.png"), dpi=200)
+    fig.savefig(os.path.join(OUT, "fig21_density_law.png"), dpi=400)
     plt.close(fig)
     print("fig21 ok; phis measured:", sorted(merged))
 

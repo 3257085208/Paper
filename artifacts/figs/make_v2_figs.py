@@ -80,7 +80,7 @@ def fig17_knee_repeat():
 #     fig.suptitle("BeroHost v2: 50-round knee repeat — every 4-neighbor round violates "
 #                  "(P99 > 20 ms), 3-neighbor stays at ~7 ms", fontsize=10)
     fig.tight_layout()
-    fig.savefig(os.path.join(OUT, "fig17_knee_repeat.png"), dpi=200)
+    fig.savefig(os.path.join(OUT, "fig17_knee_repeat.png"), dpi=400)
     plt.close(fig)
     print("fig17 ok")
 
@@ -130,7 +130,7 @@ def fig18_censor_repeat():
 #     fig.suptitle("BeroHost v2: censoring repeat, 30 rounds x 3 cycles = 90 (identical "
 #                  "verdict every cycle)", fontsize=10)
     fig.tight_layout()
-    fig.savefig(os.path.join(OUT, "fig18_censor_repeat.png"), dpi=200)
+    fig.savefig(os.path.join(OUT, "fig18_censor_repeat.png"), dpi=400)
     plt.close(fig)
     print("fig18 ok")
 
@@ -175,7 +175,7 @@ def fig19_syn_repeat():
     ax.grid(alpha=0.3)
     ax.legend(fontsize=8)
     fig.tight_layout()
-    fig.savefig(os.path.join(OUT, "fig19_syn_repeat.png"), dpi=200)
+    fig.savefig(os.path.join(OUT, "fig19_syn_repeat.png"), dpi=400)
     plt.close(fig)
     print("fig19 ok")
 
@@ -216,7 +216,7 @@ def fig29_knee_v3():
 #     fig.suptitle("BeroHost v3 knee rework (all neighbors online): L2 clean (<=8.0 ms), "
 #                  "L3 already violates in 45/50 rounds", fontsize=10)
     fig.tight_layout()
-    fig.savefig(os.path.join(OUT, "fig29_knee_v3.png"), dpi=200)
+    fig.savefig(os.path.join(OUT, "fig29_knee_v3.png"), dpi=400)
     plt.close(fig)
     print("fig29 ok")
 

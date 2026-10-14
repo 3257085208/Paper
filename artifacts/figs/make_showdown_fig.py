@@ -63,7 +63,7 @@ def main():
 #     fig.suptitle("Online admission comparison: seats sold vs measured safe-capacity bracket "
 #                  "(green = clean run; gray = zram-contaminated, archived)", fontsize=10)
     fig.tight_layout()
-    fig.savefig(os.path.join(OUT, "fig20_showdown.png"), dpi=200)
+    fig.savefig(os.path.join(OUT, "fig20_showdown.png"), dpi=400)
     plt.close(fig)
     print("fig20 ok")
 

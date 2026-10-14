@@ -58,7 +58,7 @@ def fig22():
 #                  fontsize=9.5)
     ax.grid(alpha=0.25, axis="y")
     fig.tight_layout()
-    fig.savefig(os.path.join(OUT, "fig22_microperiod.png"), dpi=200)
+    fig.savefig(os.path.join(OUT, "fig22_microperiod.png"), dpi=400)
     plt.close(fig)
     print("fig22 ok")
 
@@ -96,7 +96,7 @@ def fig23():
 #                  "service P99 0.73 -> 0.76 ms" % peak, fontsize=9.5)
     ax.grid(alpha=0.25)
     fig.tight_layout()
-    fig.savefig(os.path.join(OUT, "fig23_ksm.png"), dpi=200)
+    fig.savefig(os.path.join(OUT, "fig23_ksm.png"), dpi=400)
     plt.close(fig)
     print("fig23 ok")
 
@@ -120,7 +120,7 @@ def fig24():
     ax.grid(alpha=0.25)
     ax.legend(fontsize=7.5, loc="center right")
     fig.tight_layout()
-    fig.savefig(os.path.join(OUT, "fig24_fpr.png"), dpi=200)
+    fig.savefig(os.path.join(OUT, "fig24_fpr.png"), dpi=400)
     plt.close(fig)
     print("fig24 ok")
 
@@ -159,7 +159,7 @@ def fig25():
 #     fig.suptitle("Swap arms: zram absorbs the overflow (P99 flat 0.745 ms); "
 #                  "disk swapfile insufficient (abort at 1044 GB)", fontsize=10)
     fig.tight_layout()
-    fig.savefig(os.path.join(OUT, "fig25_zram.png"), dpi=200)
+    fig.savefig(os.path.join(OUT, "fig25_zram.png"), dpi=400)
     plt.close(fig)
     print("fig25 ok")
 
@@ -190,7 +190,7 @@ def fig26():
     ax.grid(alpha=0.25, axis="y")
     ax.legend(fontsize=8, loc="upper right")
     fig.tight_layout()
-    fig.savefig(os.path.join(OUT, "fig26_ioctl.png"), dpi=200)
+    fig.savefig(os.path.join(OUT, "fig26_ioctl.png"), dpi=400)
     plt.close(fig)
     print("fig26 ok")
 
@@ -226,7 +226,7 @@ def fig30_capacity_risk():
     ax.legend(fontsize=8.5)
     ax.set_xticks([0, 0.2, 0.4, 0.6, 0.8, 1.0])
     fig.tight_layout()
-    fig.savefig(os.path.join(OUT, "fig30_capacity_risk.png"), dpi=200)
+    fig.savefig(os.path.join(OUT, "fig30_capacity_risk.png"), dpi=400)
     plt.close(fig)
     print("fig30 ok")
 
