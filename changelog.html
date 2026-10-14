@@ -67,15 +67,17 @@ window.MathJax = {
 <div class="page">
 <header class="paper">
 <h1 class="title">识别、预测、行动：截断需求、相位结构与分域无回归约束下的 VPS 安全密度最大化</h1>
-<div class="subtitle">技术报告 · 初稿 v0.9.8</div>
+<div class="subtitle">技术报告 · 初稿 v0.9.9</div>
 <div class="authors">Kaixiang Nie</div>
 <div class="affil">Fujian Chuanzheng Communications College</div>
-<div class="meta">2026-10-13 · <a href="https://github.com/3257085208/Paper">GitHub</a> · <a href="changelog.html">修订记录</a> · <a href="report.html">汇报版</a> · <a href="report.pptx">汇报 PPT</a> · <a href="paper.pptx">论文 PPT 通读版</a> · 数据快照 v0.9.8</div>
+<div class="meta">2026-10-13 · <a href="https://github.com/3257085208/Paper">GitHub</a> · <a href="changelog.html">修订记录</a> · <a href="report.html">汇报版</a> · <a href="report.pptx">汇报 PPT</a> · <a href="paper.pptx">论文 PPT 通读版</a> · 数据快照 v0.9.9</div>
 </header>
 
 
 <main>
 <blockquote>面向"审稿意见 → 处置"的可追溯记录。版本号随重大修改递增；每版标注对应评审轮次。</blockquote>
+<h2 id="s-v0-9-9-2026-10-14-容量-风险曲线-润色第二批">v0.9.9 — 2026-10-14（容量—风险曲线 + 润色第二批）</h2>
+<ul><li><strong>容量—风险曲线（图 30，评审 P1）</strong>：以轮级违约频率为风险度量，从阶梯数据构建 N*(ε)——ε=0：rand 28 / sync 8 / mix25 20 / mix50 13 / mix75 10；ε=0.5：rand 40；ε=1：rand 64 / sync 32；对决策略停点全部位于 ε=0 一侧，util80/audible 的同步 40 超出任何预算上限——§8.4 中英同步。</li><li><strong>润色第二批</strong>：en/07/08/11 措辞与符号（both-bar 句重构、数字范围 en-dash 统一、3.5× 等）。</li><li>版本 v0.9.9。</li></ul>
 <h2 id="s-v0-9-8-2026-10-14-自查更正-撤回-qp2c-35-测量伪影">v0.9.8 — 2026-10-14（自查更正：撤回 qp2c "+35%" 测量伪影）</h2>
 <ul><li><strong>P0 核查与撤回</strong>：评审质疑"50% 配额下 80% 吞吐"。干净复测（<code>tb_qp2v.py</code>：每配置重启 burner + 同步 60s 窗 + guest <code>cpu.stat</code> 交付量）：<strong>2ms 与 1s 交付完全相同</strong>（各 0.500 核、≈52% 基线）；原 +35% 系 burner 累计速率窗口被前序配置污染的伪影，<strong>主张已撤回</strong>。</li><li>同步更正：00/01 速览表⑤（zh+en）、09 §9.1 全文重写（zh+en）、图 22 用干净数据重生成、01 结构行与贡献行同步。</li><li><strong>命题 A 措辞精确化</strong>（zh+en）："不可能无偏" → <strong>可辨识性不可能</strong>（相同观测、不同需求；对任意确定性函数成立，强于统计无偏性）。</li><li>11 结论陈旧数字清理（3×/5× → 3.5×/4×；多窗复验已完成）。</li><li>英文润色第一批：摘要“唯一”句重构、vetoed→blocked、prose 文件符号规范化（&gt;= → ≥、-&gt; → →）。</li><li>版本 v0.9.8。</li></ul>
 <h2 id="s-v0-9-7-2026-10-14-投稿就绪收尾-清扫-Cover-Letter">v0.9.7 — 2026-10-14（投稿就绪收尾：清扫 + Cover Letter）</h2>
