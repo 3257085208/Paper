@@ -2450,7 +2450,7 @@ Figure 20 Online admission comparison: policy stops vs measured capacity bracket
 \f3\fs28\fsmilli14107 ours_full
 \f1\fs30\fsmilli15333  (
 \f3\fs28\fsmilli14107 tb_admit.py
-\f1\fs30\fsmilli15333 ); the table's conclusions correspond to the gate; the full-chain end-to-end ablation is reported as future work.\
+\f1\fs30\fsmilli15333 ); the table's conclusions correspond to the gate; the full-chain end-to-end run and the component ablations are reported in Section 7.4c.\
 
 \f0\b Observation-axis attribution (measured counterparts of Section 3.6):
 \f1\b0 \
@@ -2531,6 +2531,103 @@ Figure 20 Online admission comparison: policy stops vs measured capacity bracket
 
 \f0\b Sampling caveat:
 \f1\b0  the earlier sync rounds have a probe-before-rates ordering defect that pushed rate sampling out of the burst window (audible/util80 happen to have valid violation evidence via phase drift; fixed etc. lack the p5 column); the corrected seven-round rerun (show5) was completed and the sync customer columns are reported via the four-round ladder.\
+\pard\pardeftab720\sa160\partightenfactor0
+
+\f0\b\fs34\fsmilli17333 \cf2 7.4c Repeat, Ablation, and Sensitivity Checks (show6-show10)\
+\pard\pardeftab720\sa160\qj\partightenfactor0
+
+\fs30\fsmilli15333 \cf2 Arrival-order repeat (show6, order-seed 42, 12 runs).
+\f1\b0  Re-running the comparison under a different arrival order reproduces the aligned-phase stop column exactly (audible-style 32, first violation 34; fixed 16; ours 8; ours_p 8; quantile 8; util80 32, first violation 34; worstcase 8), and the random-phase stops stay within a narrow band (ours 18 vs 16; ours_p 20; audible-style 16; util80 32 vs 28; worstcase 8). The stop structure is a property of the policies under this workload family, not of a single arrival sequence.\
+
+\f0\b Full-chain end-to-end (show7).
+\f1\b0  The complete Algorithm A chain (
+\f3\fs28\fsmilli14107 ours_full
+\f1\fs30\fsmilli15333 : censoring correction + background-residual Q95 reserve + dual pause guards) stops at 
+\f0\b 8 (aligned)
+\f1\b0  and 
+\f0\b 16 (random; customer P5 = 100.2% at stop)
+\f1\b0 , matching the gate-only profiles: on this workload the corrections preserve the operating point and close the chain end-to-end.\
+
+\f0\b Component ablations (show8, one round per cell).
+\f1\b0 \
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \tamart213 \tamarb213 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth3186\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx2160
+\clvertalt \clshdrawnil \clwWidth1236\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth1105\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx6480
+\clvertalt \clshdrawnil \clwWidth9357\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+
+\f0\b\fs25\fsmilli12667 \cf2 arm\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 aligned stop\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 random stop\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 evidence\cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \tamart213 \tamarb213 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth3186\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx2160
+\clvertalt \clshdrawnil \clwWidth1236\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth1105\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx6480
+\clvertalt \clshdrawnil \clwWidth9357\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+
+\f1\b0 \cf2 admission under an 80% quota cap\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 10\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 18\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 mild aligned oversell (10 = first-fail level of the fine scan); random P5 = 79.3% at stop\cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \tamart213 \tamarb213 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth3186\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx2160
+\clvertalt \clshdrawnil \clwWidth1236\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth1105\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx6480
+\clvertalt \clshdrawnil \clwWidth9357\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 80% cap without censoring correction\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 10\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 14\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 uncorrected peak is a lower bound -> reserve gate closes early (random P5 = 79.4% at stop)\cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \tamart213 \tamarb213 \trbrdrl\brdrnil \trbrdrt\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth3186\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx2160
+\clvertalt \clshdrawnil \clwWidth1236\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth1105\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx6480
+\clvertalt \clshdrawnil \clwWidth9357\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 phase gate removed (full quota)\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 32 -> 34 VIOL\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 28\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 phase blindness reproduces the aligned failure of audible/util80; random phases forgive it (P5 = 99.0% at stop)\cell \lastrow\row
+\pard\pardeftab720\sa160\qj\partightenfactor0
+
+\f0\b\fs30\fsmilli15333 \cf2 Reading.
+\f1\b0  The phase gate is the aligned-phase safety-critical component (removing it re-creates the 32-seat failure); the censoring correction is worth about four random-phase seats at this granularity (14 -> 18); capping admitted tenants at 80% mildly oversells the aligned bracket (8 -> 10, the first failing level). The no-censor conservatism under the cap is reported as measured.\
+
+\f0\b Dense-sampling confirmation of the boundary (show9, 1 s sampling).
+\f1\b0  Re-running the sell ladders at one-second resolution confirms the aligned boundary: level 8 holds customer P5 at 
+\f0\b 97.3%
+\f1\b0  (per-customer time-P5, median convention) while level 10 collapses to 
+\f0\b 47.8%
+\f1\b0 ; random 28 holds 
+\f0\b 75.7%
+\f1\b0  and 30 falls to 
+\f0\b 58.3%
+\f1\b0 , tightening the dense random boundary to [28,30) (the max-rate convention still reads 90.6% at 32 - the convention sensitivity quantified in Section 8.4). Service P99 stays at 0.70-0.75 ms at every level: the binding constraint is the customer rate, not the service tail.\
+
+\f0\b Guard-metric sensitivity (show10).
+\f1\b0  Switching the guard metric from max to median keeps the aligned stop at 8 but pulls the random stop down to 
+\f0\b 4
+\f1\b0  (pause-monitor triggers on 6/6 checks; P5 = 101.9% at stop): the metric trades random-phase efficiency for conservatism, and max is the balanced default used throughout.\
 \pard\pardeftab720\sa160\partightenfactor0
 
 \f0\b\fs34\fsmilli17333 \cf2 7.5 Triple-Storm Synthesis (Figure 10)\

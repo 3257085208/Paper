@@ -2,6 +2,12 @@
 
 > 面向"审稿意见 → 处置"的可追溯记录。版本号随重大修改递增；每版标注对应评审轮次。
 
+## v1.1（进行中）— 2026-10-14 晚（show6–10 并入）
+
+**新增 §7.4c 重复、消融与敏感性复核（zh+en）**：到达顺序复测（show6：对齐停点全复现、随机窄带）；完整链端到端（show7：ours_full 对齐 8/随机 16，P5=100.2%）；组件消融三臂（show8：80% 配额帽 10/18、无截断校正 10/14、无相位门 32→34 违约/28）；稠密采样确认边界（show9：对齐 8 档 97.3%→10 档 47.8%；随机收紧到 [28,30)，max 口径 32 档 90.6% 的口径敏感性）；护栏指标敏感性（show10：median 对齐 8/随机 4）。§7.4b "未来工作"措辞更新；zh §7.7 清单同步。数据工件：`tools/analyze_show6_10.py` + `SHOW6_10_SUMMARY.md`。待并入：show11（ours_sel）、show12（核心对照多轮重复）。
+
+---
+
 ## v1.0-review-fix — 2026-10-14（第二轮终审修复批）
 
 **语言与主张收紧**：§2.5 "In one line" 叙事句中性化；§3.6 瓶颈主张限定到本文决策场景（"For the decision problems studied..."）；§4.3 标题改 "Demand Censoring under CPU Quotas"（zh 同步）；§5.5 改 "Assumptions and Limitations"（zh "假设与局限"）；§10.5 "dashboard lies" 中性化；§11 "We hope" 结尾改客观陈述（zh 同步）。

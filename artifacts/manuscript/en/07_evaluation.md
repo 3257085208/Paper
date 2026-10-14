@@ -109,7 +109,7 @@ AUDIBLE system**).
 | ours_p | 20 OK | 8 OK (both bars: same as above) | same |
 | util80 | 28 OK (P5=78%) | 40 (cap) VIOL | P5=16% from n=18; show5 rerun: 8/8 active customers <70% at 40 |
 
-**Implementation scope.** The `ours` policy in this table implements the **phase-resolution gate** of Algorithm A (one-second history -> 60 phase buckets, peak counting, fixed 10% margin, plus the `ours_p` customer-P5 pause). The full Algorithm A chain (**censoring-aware demand correction + background-residual Q95 reserve + dual service/customer pause guards**) is implemented as `ours_full` (`tb_admit.py`); the table's conclusions correspond to the gate; the full-chain end-to-end ablation is reported as future work.
+**Implementation scope.** The `ours` policy in this table implements the **phase-resolution gate** of Algorithm A (one-second history -> 60 phase buckets, peak counting, fixed 10% margin, plus the `ours_p` customer-P5 pause). The full Algorithm A chain (**censoring-aware demand correction + background-residual Q95 reserve + dual service/customer pause guards**) is implemented as `ours_full` (`tb_admit.py`); the table's conclusions correspond to the gate; the full-chain end-to-end run and the component ablations are reported in Section 7.4c.
 
 **Observation-axis attribution (measured counterparts of Section 3.6):**
 
@@ -132,6 +132,26 @@ repeats are reported above where available.
 **Sampling caveat:** the earlier sync rounds have a probe-before-rates ordering defect that pushed rate
 sampling out of the burst window (audible/util80 happen to have valid violation evidence via phase drift;
 fixed etc. lack the p5 column); the corrected seven-round rerun (show5) was completed and the sync customer columns are reported via the four-round ladder.
+
+## 7.4c Repeat, Ablation, and Sensitivity Checks (show6-show10)
+
+**Arrival-order repeat (show6, order-seed 42, 12 runs).** Re-running the comparison under a different arrival order reproduces the aligned-phase stop column exactly (audible-style 32, first violation 34; fixed 16; ours 8; ours_p 8; quantile 8; util80 32, first violation 34; worstcase 8), and the random-phase stops stay within a narrow band (ours 18 vs 16; ours_p 20; audible-style 16; util80 32 vs 28; worstcase 8). The stop structure is a property of the policies under this workload family, not of a single arrival sequence.
+
+**Full-chain end-to-end (show7).** The complete Algorithm A chain (`ours_full`: censoring correction + background-residual Q95 reserve + dual pause guards) stops at **8 (aligned)** and **16 (random; customer P5 = 100.2% at stop)**, matching the gate-only profiles: on this workload the corrections preserve the operating point and close the chain end-to-end.
+
+**Component ablations (show8, one round per cell).**
+
+| arm | aligned stop | random stop | evidence |
+|---|---|---|---|
+| admission under an 80% quota cap | 10 | 18 | mild aligned oversell (10 = first-fail level of the fine scan); random P5 = 79.3% at stop |
+| 80% cap without censoring correction | 10 | 14 | uncorrected peak is a lower bound -> reserve gate closes early (random P5 = 79.4% at stop) |
+| phase gate removed (full quota) | 32 -> 34 VIOL | 28 | phase blindness reproduces the aligned failure of audible/util80; random phases forgive it (P5 = 99.0% at stop) |
+
+**Reading.** The phase gate is the aligned-phase safety-critical component (removing it re-creates the 32-seat failure); the censoring correction is worth about four random-phase seats at this granularity (14 -> 18); capping admitted tenants at 80% mildly oversells the aligned bracket (8 -> 10, the first failing level). The no-censor conservatism under the cap is reported as measured.
+
+**Dense-sampling confirmation of the boundary (show9, 1 s sampling).** Re-running the sell ladders at one-second resolution confirms the aligned boundary: level 8 holds customer P5 at **97.3%** (per-customer time-P5, median convention) while level 10 collapses to **47.8%**; random 28 holds **75.7%** and 30 falls to **58.3%**, tightening the dense random boundary to [28,30) (the max-rate convention still reads 90.6% at 32 - the convention sensitivity quantified in Section 8.4). Service P99 stays at 0.70-0.75 ms at every level: the binding constraint is the customer rate, not the service tail.
+
+**Guard-metric sensitivity (show10).** Switching the guard metric from max to median keeps the aligned stop at 8 but pulls the random stop down to **4** (pause-monitor triggers on 6/6 checks; P5 = 101.9% at stop): the metric trades random-phase efficiency for conservatism, and max is the balanced default used throughout.
 
 ## 7.5 Triple-Storm Synthesis (Figure 10)
 

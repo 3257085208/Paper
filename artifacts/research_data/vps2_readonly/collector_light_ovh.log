@@ -1,3 +1,10 @@
 samples=1
 samples=12
 samples=24
+samples=36
+Connection to 192.99.100.74 closed by remote host.
+session ended after 44 samples; reconnecting in 20s
+Connection closed by 192.99.100.74 port 22
+session ended after 0 samples; reconnecting in 20s
+samples=1
+samples=12

@@ -1,0 +1,12 @@
+control-history executable counterexamples (ideal model, P=1 s, a=0.8 CPU-s/period)
+T-CH1 debt invisibility: q=0.20 K=10  delivered A==B: True  hidden debt=6.00 CPU-s  -> PASS
+T-CH2 probe q'=0.20: delivered A=0.20 B=0.20  distinguishable=False
+T-CH2 probe q'=0.50: delivered A=0.50 B=0.50  distinguishable=False
+T-CH2 probe q'=0.79: delivered A=0.79 B=0.79  distinguishable=False
+T-CH2 probe q'=0.90: delivered A=0.80 B=0.90  distinguishable=True
+T-CH2 probe q'=1.00: delivered A=0.80 B=1.00  distinguishable=True
+T-CH2 boundary: no probe with q'<a separates; q'>a separates (min amplitude = a = 0.80)  -> PASS
+T-CH2 safe-margin corollary: if the safe cap is 0.50 < a = 0.80, no allowed probe is informative  -> PASS
+T-CH3 drain: debt=6.0 CPU-s  drain periods B=30 (expected 30 = 3K)  A first released period=0.80  -> PASS
+T-CH4 no-quota traces identical: True; after identical history+release, futures differ in 30/40 periods
+T-CH4 released future: A duty-0.8 periods=40, B saturated periods=30  -> PASS

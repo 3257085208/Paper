@@ -76,6 +76,9 @@ window.MathJax = {
 
 <main>
 <blockquote>面向"审稿意见 → 处置"的可追溯记录。版本号随重大修改递增；每版标注对应评审轮次。</blockquote>
+<h2 id="s-v1-1-进行中-2026-10-14-晚-show6-10-并入">v1.1（进行中）— 2026-10-14 晚（show6–10 并入）</h2>
+<p><strong>新增 §7.4c 重复、消融与敏感性复核（zh+en）</strong>：到达顺序复测（show6：对齐停点全复现、随机窄带）；完整链端到端（show7：ours_full 对齐 8/随机 16，P5=100.2%）；组件消融三臂（show8：80% 配额帽 10/18、无截断校正 10/14、无相位门 32→34 违约/28）；稠密采样确认边界（show9：对齐 8 档 97.3%→10 档 47.8%；随机收紧到 [28,30)，max 口径 32 档 90.6% 的口径敏感性）；护栏指标敏感性（show10：median 对齐 8/随机 4）。§7.4b "未来工作"措辞更新；zh §7.7 清单同步。数据工件：<code>tools/analyze_show6_10.py</code> + <code>SHOW6_10_SUMMARY.md</code>。待并入：show11（ours_sel）、show12（核心对照多轮重复）。</p>
+<hr>
 <h2 id="s-v1-0-review-fix-2026-10-14-第二轮终审修复批">v1.0-review-fix — 2026-10-14（第二轮终审修复批）</h2>
 <p><strong>语言与主张收紧</strong>：§2.5 "In one line" 叙事句中性化；§3.6 瓶颈主张限定到本文决策场景（"For the decision problems studied..."）；§4.3 标题改 "Demand Censoring under CPU Quotas"（zh 同步）；§5.5 改 "Assumptions and Limitations"（zh "假设与局限"）；§10.5 "dashboard lies" 中性化；§11 "We hope" 结尾改客观陈述（zh 同步）。</p>
 <p><strong>因果与统计澄清</strong>：§4.3b 增"因果澄清"段——限速态本身已在 SLO 线附近（11.4 ms、98% cycle 越线），松绑的后果是<strong>恶化既有过载</strong>而非"首次越线"（zh+en）；§8.4 增统计独立性警示——客户级 bootstrap 在共享宿主状态下低估不确定性，轮级范围为主口径，分层/聚类 bootstrap 列入未来工作（zh+en）。</p>

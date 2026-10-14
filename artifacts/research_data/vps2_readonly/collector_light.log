@@ -24373,3 +24373,6 @@ samples=48
 samples=60
 samples=72
 samples=84
+samples=96
+samples=108
+samples=120
