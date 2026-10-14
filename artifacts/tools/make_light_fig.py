@@ -55,7 +55,7 @@ ax3.tick_params(axis="y", labelcolor="tab:red")
 ax2.set_title("memory never stressed (min %.0f GB); CPU PSI mean %.1f%%" % (
     min([x for x in mem if x is not None]), statistics.mean([x for x in psi if x is not None])), fontsize=9.5)
 ax2.grid(alpha=0.25)
-fig.suptitle("Production anchor (LEC-HK-1): 39-h light window vs the 3-h dense excerpt", fontsize=10)
+fig.suptitle("Production anchor (LEC-HK-1): 42-h light window vs the 3-h dense excerpt", fontsize=10)
 fig.tight_layout()
 fig.savefig(OUT, dpi=200)
 print("fig31 ok; busy mean %.1f p95 %.1f max %.1f | mem min %.1f | psi mean %.1f max %.1f" % (
