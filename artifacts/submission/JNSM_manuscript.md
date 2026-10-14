@@ -1,41 +1,22 @@
-# Identify, Predict, Actuate: Safe Density Maximization for Small VPS Hosts under Censored Demand, Phase Structure and Domain-Scoped No-Regression
-
-**Kaixiang Nie** — Fujian Chuanzheng Communications College
-
 ## Abstract
 
 Small VPS providers pack many cheap, mostly-idle, occasionally-bursty tenants onto few physical
 cores; oversubscription is their business model. We recast safe oversubscription as three ordered
-problems. **Identify**: demand behind quota censoring is unobservable, because a usage dashboard shows
-the quota, not the demand. The point estimate equals the mean over the running stretch, exact when the
-running and throttled stretch means agree; a conditional floor q(1+t) holds under continuous
-saturation; and from aggregate counters alone no estimator can be correct for all workloads, since two
-processes can produce identical observations with different demand. Across 180 cycles in two batches,
-throttle-corrected estimates track the truth while naive quota-release decisions violate the SLO in
-all 30 independent rounds. **Predict**: capacity is set by phase structure, not average utilization. At
-the same 20% duty, random-phase and aligned fleets differ 3.5x in safe capacity: 28 versus 8 seats at
-the primary bar of customer P5 >= 70%, with fine-scan boundaries [28,32) and [8,10). The aligned
-boundary is invariant across aggregation conventions, the random end tightens to 26 under the
-strictest, and the median bar gives 40 versus 10. A 35%-busy set collapsing while a 98%-busy set stays
-safe shows that safety cannot be read off utilization. On top of an assumption-explicit approximation
-N* = C/(rho*kappa) we build the Phase-Profile Convolution (PPC): convolving on the joint phase
-structure separates five phase configurations (two edge-exact, two conservative, one optimistic step
-blocked by the online gate), whereas iid convolution returns one prediction for all - a provable blind
-spot we call the marginal illusion. **Organizing thesis**: the bottleneck of safe-capacity decisions is
-observational capability. Censoring identification, phase resolution and time resolution are each
-necessary (three constructive counterexamples, Section 3.6) and jointly sufficient for our target
-workload family, an empirical statement; the admission controller implements that observation set and
-is the only policy in the complete 14-round showdown that combines competitive random-phase capacity
-(16-20 seats) with the conservative aligned-phase stop at 8 seats, whose customer P5 is about 99% over
-four ladder rounds. **Actuate**: domain-scoped no-regression control. The showdown ran seven policies
-under identical arrival streams; the audible-style and busy-threshold baselines sell 40 seats in the
-aligned phase and collapse customer P5 to 16%, while fixed 2x stops at 16 with P5 only 48.6%.
-Isolation is verified at physical-core level against SMT/NUMA topology; on the memory axis,
-balloon-free reclaim (KSM dedup 21.9 GB, 33.4% of fleet RAM; free-page reporting; zram) raises density
-without shrinking tenant-visible resources. All claims rest on mass repeats (100/180/30-round
-campaigns), two testbeds, and read-only telemetry from two production hosts we operate (285 VMs
-configured, 8.3x vCPU oversubscription), with released artifacts and a statistical certification
-protocol.
+problems whose bottleneck is observational capability. First, quota censoring hides demand: the point
+estimate equals the running-stretch mean, exact only when running and throttled stretch means agree; a
+conditional floor holds under continuous saturation; and from aggregate counters alone no estimator
+can be correct for all workloads, since two processes can produce identical observations with
+different demand. Across 180 cycles, throttle-corrected estimates track the truth while naive
+quota-release decisions violate the SLO in all 30 independent rounds. Second, capacity is set by phase
+structure, not average utilization: at the same 20% duty, random-phase and aligned fleets differ 3.5x
+in safe capacity (28 versus 8 seats at customer P5 >= 70%), and a 35%-busy set collapsing while a
+98%-busy set stays safe shows that safety cannot be read off utilization. Third, the sampling rate
+must resolve the bursts it prices. Together these capabilities form an observation set that a
+risk-calibrated admission controller implements: in a complete 14-round showdown it is the only
+policy combining competitive random-phase capacity with a conservative aligned-phase stop, while
+baseline policies oversell (customer P5 collapsing to 16%) or waste 2-3x capacity. All claims rest on
+mass repeats, two testbeds, read-only telemetry from production hosts we operate, and released
+artifacts.
 
 ## Keywords
 
@@ -374,12 +355,6 @@ Ten tenants running 4K 70/30 random read/write (O_DIRECT) push the host to about
 
 ---
 
-### Draft TODO
-
-- Figure scripts are in place (`make_figs.py` / `make_v2_figs.py` / `make_phasec_figs.py`, one-click regeneration).
-- Pre-submission experiments: ≥5 replicates for lever comparisons; mechanism verification of weight failure; a dedicated cold-start experiment.
-- v3 rework merged: knee 50 rounds (Figure 29), censoring 90 cycles, triple storm 26 rounds — all backfilled into Sections 4.1/4.3/7.5.
-
 
 ---
 
@@ -610,7 +585,7 @@ AUDIBLE system**).
 | ours_p | 20 OK | 8 OK (both bars: same as above) | same |
 | util80 | 28 OK (P5=78%) | 40 (cap) VIOL | P5=16% from n=18; show5 rerun: 8/8 active customers <70% at 40 |
 
-**Implementation scope.** The `ours` policy in this table implements the **phase-resolution gate** of Algorithm A (one-second history -> 60 phase buckets, peak counting, fixed 10% margin, plus the `ours_p` customer-P5 pause). The full Algorithm A chain (**censoring-aware demand correction + background-residual Q95 reserve + dual service/customer pause guards**) is implemented as `ours_full` (`tb_admit.py`); its online batch (show7) is running and will be merged as supplementary material — the table's conclusions correspond to the gate, and the full-chain end-to-end ablation follows with show7.
+**Implementation scope.** The `ours` policy in this table implements the **phase-resolution gate** of Algorithm A (one-second history -> 60 phase buckets, peak counting, fixed 10% margin, plus the `ours_p` customer-P5 pause). The full Algorithm A chain (**censoring-aware demand correction + background-residual Q95 reserve + dual service/customer pause guards**) is implemented as `ours_full` (`tb_admit.py`); the table's conclusions correspond to the gate; the full-chain end-to-end ablation is reported as future work.
 
 **Observation-axis attribution (measured counterparts of Section 3.6):**
 
@@ -627,12 +602,12 @@ bracket with competitive random-phase capacity (16–20; worstcase/quantile stop
 at 16 in both; the fine scan pins the aligned boundary at [8,10): 10 seats give customer P5=62.2%, first fail); (ii) utilization-based criteria are quantified as
 phase-dependent: util80 sells 28 (safe) under random and 40 (customer P5 collapses to 16%) under aligned —
 same policy, same hardware, opposite risk; audible-style collapses likewise; (iii) fixed and worstcase/
-quantile verify the other two corners. Safe VM-hours and round-level intervals arrive with the show4/show5
-repeats (queued at the chain tail).
+quantile verify the other two corners. Safe VM-hours and round-level intervals from the show4/show5
+repeats are reported above where available.
 
 **Sampling caveat (honest):** v2 sync rounds have a probe-before-rates ordering defect that pushed rate
 sampling out of the burst window (audible/util80 happen to have valid violation evidence via phase drift;
-fixed etc. lack the p5 column); the corrected seven-round rerun (show5) is queued.
+fixed etc. lack the p5 column); the corrected seven-round rerun (show5) was completed and the sync customer columns are reported via the four-round ladder.
 
 ## 7.5 Triple-Storm Synthesis (Figure 10)
 
@@ -704,13 +679,6 @@ of host CPU on average; memory available never drops below **87.8 GB**; CPU PSI 
 controlled testbed experiments align) and the full day/night light segment together bracket the real
 load range. 1-minute granularity cannot resolve sub-minute synchrony.
 
-## 7.7 Gap List (Pre-Submission Plan)
-
-1. AUDIBLE-adapted baseline: preliminary evaluation in Section 7.3b (Figure 11); the full four-policy comparison (incl. the AUDIBLE-style MC and time-aligned taligned) runs in the second-testbed batch; results merge as supplementary material.
-2. Cold start / short history: preliminary evaluation in Section 7.3b; the full batch runs on the second testbed.
-3. Key conclusions now carry mass repeats: knee 100 rounds (v2/v3), censoring 180 cycles (two batches), triple storm 30 rounds (4+26), all merged (Figures 17-19, 29); the v3 rework (v3knee/v3cen/v3syn) is complete and backfilled; the showdown arrival-order repeats and ablation arms (show6-show11) are queued on the physical host and merge as they land.
-4. Ablations: preliminary evaluation in Section 7.3b; the full ablations (censoring correction, phase resolution, quota arm) are queued on the physical host.
-5. Figures and scripts: all regenerate with one command (figure scripts plus artifacts data), numbered through Figure 31.
 
 ---
 
@@ -1166,27 +1134,25 @@ anti-aliasing experiment listed as future work.
 
 # References
 
-
-
 1. S. J. Jandaghi, K. Mahdaviani, A. Mirhosseini, S. Elnikety, C. Amza, B. Schroeder. **AUDIBLE: A Convolution-Based Resource Allocator for Oversubscribing Burstable Virtual Machines.** ASPLOS '24, Vol. 3, 14 pages. DOI 10.1145/3620666.3651376.
 2. B. Reidys, P. Zardoshti, Í. Goiri, C. Irvene, D. S. Berger, H. Ma, K. Arya, E. Cortez, T. Stark, E. Bak, M. Iyigun, S. Novaković, L. Hsu, K. Trueba, A. Pan, C. Bansal, S. Rajmohan, J. Huang, R. Bianchini. **Coach: Exploiting Temporal Patterns for All-Resource Oversubscription in Cloud Platforms.** ASPLOS '25, Vol. 1, 18 pages. DOI 10.1145/3669940.3707226.
-3. B. Wang, G. Zhao, H. Xu, S. Wu, Z. Yu, J. Liu, J. Lu, S. Xu, F. Meng. **Rethinking Cloud Optimization: Volatility-Driven for Better Outcomes**（Hestia 框架；MCV 波动度指标）. SIGCOMM '26, pp. 491–504. DOI 10.1145/3789240.3829141.
+3. B. Wang, G. Zhao, H. Xu, S. Wu, Z. Yu, J. Liu, J. Lu, S. Xu, F. Meng. **Rethinking Cloud Optimization: Volatility-Driven for Better Outcomes** (the Hestia framework; MCV volatility metric). SIGCOMM '26, pp. 491–504. DOI 10.1145/3789240.3829141.
 4. S. M. Sajal, L. Marshall, B. Li, S. Zhou, A. Pan, K. Mellou, D. Narayanan, T. Zhu, D. Dion, T. Moscibroda, I. Menache. **Kerveros: Efficient and Scalable Cloud Admission Control.** OSDI '23, pp. 227–245, USENIX.
-5. L. Wang, M. Das, F. Yang, J. Sheng, B. Qiao, H. Dong, S. Qin, V. Rühle, C. Bansal, E. Cortez, Í. Goiri, S. Rajmohan, Q. Lin, D. Zhang. **Risk-aware Adaptive Virtual CPU Oversubscription in Microsoft Cloud via Prototypical Human-in-the-loop Imitation Learning****ProtoRAIL: A Risk-cognizant Imitation Agent for Adaptive vCPU Oversubscription in the Cloud.** Proceedings of Machine Learning and Systems 7 (MLSys 2025). Preprint: ProtoHAIL, arXiv:2401.07033. https://proceedings.mlsys.org/paper_files/paper/2025/hash/42e2b24104bc92d724ce45c0c2f91e1d-Abstract-Conference.html
+5. L. Wang, M. Das, F. Yang, J. Sheng, B. Qiao, H. Dong, S. Qin, V. Rühle, C. Bansal, E. Cortez, Í. Goiri, S. Rajmohan, Q. Lin, D. Zhang. **ProtoRAIL: A Risk-cognizant Imitation Agent for Adaptive vCPU Oversubscription in the Cloud.** Proceedings of Machine Learning and Systems 7 (MLSys 2025). Preprint: ProtoHAIL, arXiv:2401.07033. https://proceedings.mlsys.org/paper_files/paper/2025/hash/42e2b24104bc92d724ce45c0c2f91e1d-Abstract-Conference.html
 6. P. Jacquet, T. Ledoux, R. Rouvoy. **SCROOGEVM: Boosting Cloud Resource Utilization With Dynamic Oversubscription.** IEEE Trans. Sustainable Computing 9(5):754–765, 2024.
 7. S. Chen, S. He, E. Sun. **Risk-Bounded GPU Resource Oversubscription via Conformal Demand Envelopes in Production AI Clusters.** Journal of Advanced Computing Systems 4(5):119–134, 2024.
-8. M. Majd, F. Cheng, A. Pahlevan. **Right-sizing Recommendations (RSR): Cloud Workload Conformal Prediction for Virtual Machines in Data Center Operations.** WI-IAT 2025（作者承稿）；arXiv:2607.24773.
-9. S. He, T. Liu, P. Lama, J. Lee, I. K. Kim, W. Wang. **Performance Testing for Cloud Computing with Dependent Data Bootstrapping**（Metior 方法论）. ASE 2021, pp. 666–678, IEEE.
-10. InditexTech. **k8s-overcommit-operator**（Kubernetes 超售类别运算符，Apache-2.0，v1.3.4）. https://github.com/InditexTech/k8s-overcommit-operator
-11. Red Hat. **ClusterResourceOverride**（OpenShift Container Platform 准入插件，按 request/limit 比例控制节点密度）. OpenShift Container Platform documentation, https://docs.openshift.com/
-12. KubeVirt. **Per-VM CPU Overcommitment Configuration in KubeVirt**（issue #15710；2025-09 提出，2026-02 关闭——每 VM 自定义超售比尚未支持）；全局 `cpuAllocationRatio` 配置文档. https://github.com/kubevirt/kubevirt/issues/15710
-13. P. Jacquet, T. Ledoux, R. Rouvoy. **SweetSpotVM: Oversubscribing CPU without Sacrificing VM Performance.** CCGrid 2024, pp. 148–157, IEEE；以及 **SlackVM: Packing Virtual Machines in Oversubscribed Cloud Infrastructures**（同作者）. HAL hal-04636648 / IEEE Xplore 10740881
-14. Calabi（工程文档）. **Host Resource Management / Host Memory Oversubscription**（Gold/Silver/Bronze 分层 slice、zram/KSM/THP 组合、CPU 超售 1.72:1 实锚）. https://gprocunier.github.io/calabi/
+8. M. Majd, F. Cheng, A. Pahlevan. **Right-sizing Recommendations (RSR): Cloud Workload Conformal Prediction for Virtual Machines in Data Center Operations.** WI-IAT 2025; arXiv:2607.24773.
+9. S. He, T. Liu, P. Lama, J. Lee, I. K. Kim, W. Wang. **Performance Testing for Cloud Computing with Dependent Data Bootstrapping** (the Metior methodology). ASE 2021, pp. 666–678, IEEE.
+10. InditexTech. **k8s-overcommit-operator** (Kubernetes oversubscription-class operator, Apache-2.0, v1.3.4). https://github.com/InditexTech/k8s-overcommit-operator
+11. Red Hat. **ClusterResourceOverride** (OpenShift admission plug-in controlling node density via request/limit ratios). OpenShift Container Platform documentation, https://docs.openshift.com/
+12. KubeVirt. **Per-VM CPU Overcommitment Configuration in KubeVirt** (issue #15710; opened 2025-09, closed 2026-02: per-VM oversubscription ratios remain unsupported); global `cpuAllocationRatio` documentation. https://github.com/kubevirt/kubevirt/issues/15710
+13. P. Jacquet, T. Ledoux, R. Rouvoy. **SweetSpotVM: Oversubscribing CPU without Sacrificing VM Performance.** CCGrid 2024, pp. 148–157, IEEE; and **SlackVM: Packing Virtual Machines in Oversubscribed Cloud Infrastructures** (same authors). HAL hal-04636648 / IEEE Xplore 10740881.
+14. Calabi (engineering documentation). **Host Resource Management / Host Memory Oversubscription** (Gold/Silver/Bronze slices, zram/KSM/THP combination, measured CPU oversubscription of 1.72:1). https://gprocunier.github.io/calabi/
 15. Linux kernel documentation. **Control Group v2.** https://docs.kernel.org/admin-guide/cgroup-v2.html
 16. Linux kernel documentation. **Pressure Stall Information (PSI).** https://docs.kernel.org/accounting/psi.html
-17. Linux kernel documentation. **cgroup v2 IO controller**（`io.max` / `io.weight` / `io.cost` / `io.latency`；见 [15] 的 IO 章节）. https://docs.kernel.org/admin-guide/cgroup-v2.html#io
-18. **KVM 超售调度**：KVM Forum 2021（锁持有者抢占与 vCPU 自旋）；以及内核补丁系列 "[PATCH v2 0/9] sched/kvm: Semantics-aware vCPU scheduling for oversubscribed KVM"（vCPU debooster、IPI-aware directed yield；LKML，2026）. https://lore.kernel.org/all/?q=%22Semantics-aware+vCPU+scheduling%22
-19. Proxmox Server Solutions. **Proxmox VE 文档**（QEMU/KVM 配置与外部指标服务器接口）. https://pve.proxmox.com/pve-docs/
-20. QEMU Project. **Virtio-Balloon Free Page Reporting.** https://wiki.qemu.org/Features/FreePageReporting（抓取时受反爬保护，链接为官方 wiki 页）
-21. Linux kernel documentation. **Kernel Samepage Merging (KSM)** https://docs.kernel.org/admin-guide/mm/ksm.html ；**zram: Compressed RAM-based block devices** https://docs.kernel.org/admin-guide/blockdev/zram.html
-22. S. Lambert, E. Caron, L. Lefèvre, R. Grivel. **Consolidation of virtual machines to reduce energy consumption of data centers by using ballooning, sharing and swapping mechanisms**（ORCA）. Future Generation Computer Systems 174:107968, 2026. DOI 10.1016/j.future.2025.107968.
+17. Linux kernel documentation. **cgroup v2 IO controller** (`io.max` / `io.weight` / `io.cost` / `io.latency`; see the IO chapter of [15]). https://docs.kernel.org/admin-guide/cgroup-v2.html#io
+18. KVM scheduling under oversubscription: KVM Forum 2021 (lock-holder preemption and vCPU spinning); and the kernel patch series "[PATCH v2 0/9] sched/kvm: Semantics-aware vCPU scheduling for oversubscribed KVM" (vCPU debooster, IPI-aware directed yield; LKML, 2026). https://lore.kernel.org/all/?q=%22Semantics-aware+vCPU+scheduling%22
+19. Proxmox Server Solutions. **Proxmox VE documentation** (QEMU/KVM configuration and external metric server interface). https://pve.proxmox.com/pve-docs/
+20. QEMU Project. **Virtio-Balloon Free Page Reporting.** https://wiki.qemu.org/Features/FreePageReporting
+21. Linux kernel documentation. **Kernel Samepage Merging (KSM).** https://docs.kernel.org/admin-guide/mm/ksm.html ; **zram: Compressed RAM-based block devices.** https://docs.kernel.org/admin-guide/blockdev/zram.html
+22. S. Lambert, E. Caron, L. Lefèvre, R. Grivel. **Consolidation of virtual machines to reduce energy consumption of data centers by using ballooning, sharing and swapping mechanisms** (ORCA). Future Generation Computer Systems 174:107968, 2026. DOI 10.1016/j.future.2025.107968.

@@ -129,9 +129,3 @@ Ten tenants running 4K 70/30 random read/write (O_DIRECT) push the host to about
 **Section boundaries.** Service VMs being lightweight is a precondition of "isolation works"; the mechanism behind weight failure (host-side packet path / scheduling-credit dynamics) is left as an open question; memory numbers are tied to the 1 GB swap environment.
 
 ---
-
-### Draft TODO
-
-- Figure scripts are in place (`make_figs.py` / `make_v2_figs.py` / `make_phasec_figs.py`, one-click regeneration).
-- Pre-submission experiments: ≥5 replicates for lever comparisons; mechanism verification of weight failure; a dedicated cold-start experiment.
-- v3 rework merged: knee 50 rounds (Figure 29), censoring 90 cycles, triple storm 26 rounds — all backfilled into Sections 4.1/4.3/7.5.

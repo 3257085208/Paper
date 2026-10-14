@@ -14,36 +14,21 @@ Kaixiang Nie — Fujian Chuanzheng Communications College
 
 Small VPS providers pack many cheap, mostly-idle, occasionally-bursty tenants onto few physical
 cores; oversubscription is their business model. We recast safe oversubscription as three ordered
-problems. **Identify**: demand behind quota censoring is unobservable, because a usage dashboard shows
-the quota, not the demand. The point estimate equals the mean over the running stretch, exact when the
-running and throttled stretch means agree; a conditional floor q(1+t) holds under continuous
-saturation; and from aggregate counters alone no estimator can be correct for all workloads, since two
-processes can produce identical observations with different demand. Across 180 cycles in two batches,
-throttle-corrected estimates track the truth while naive quota-release decisions violate the SLO in
-all 30 independent rounds. **Predict**: capacity is set by phase structure, not average utilization. At
-the same 20% duty, random-phase and aligned fleets differ 3.5x in safe capacity: 28 versus 8 seats at
-the primary bar of customer P5 >= 70%, with fine-scan boundaries [28,32) and [8,10). The aligned
-boundary is invariant across aggregation conventions, the random end tightens to 26 under the
-strictest, and the median bar gives 40 versus 10. A 35%-busy set collapsing while a 98%-busy set stays
-safe shows that safety cannot be read off utilization. On top of an assumption-explicit approximation
-N* = C/(rho*kappa) we build the Phase-Profile Convolution (PPC): convolving on the joint phase
-structure separates five phase configurations (two edge-exact, two conservative, one optimistic step
-blocked by the online gate), whereas iid convolution returns one prediction for all - a provable blind
-spot we call the marginal illusion. **Organizing thesis**: the bottleneck of safe-capacity decisions is
-observational capability. Censoring identification, phase resolution and time resolution are each
-necessary (three constructive counterexamples, Section 3.6) and jointly sufficient for our target
-workload family, an empirical statement; the admission controller implements that observation set and
-is the only policy in the complete 14-round showdown that combines competitive random-phase capacity
-(16-20 seats) with the conservative aligned-phase stop at 8 seats, whose customer P5 is about 99% over
-four ladder rounds. **Actuate**: domain-scoped no-regression control. The showdown ran seven policies
-under identical arrival streams; the audible-style and busy-threshold baselines sell 40 seats in the
-aligned phase and collapse customer P5 to 16%, while fixed 2x stops at 16 with P5 only 48.6%.
-Isolation is verified at physical-core level against SMT/NUMA topology; on the memory axis,
-balloon-free reclaim (KSM dedup 21.9 GB, 33.4% of fleet RAM; free-page reporting; zram) raises density
-without shrinking tenant-visible resources. All claims rest on mass repeats (100/180/30-round
-campaigns), two testbeds, and read-only telemetry from two production hosts we operate (285 VMs
-configured, 8.3x vCPU oversubscription), with released artifacts and a statistical certification
-protocol.
+problems whose bottleneck is observational capability. First, quota censoring hides demand: the point
+estimate equals the running-stretch mean, exact only when running and throttled stretch means agree; a
+conditional floor holds under continuous saturation; and from aggregate counters alone no estimator
+can be correct for all workloads, since two processes can produce identical observations with
+different demand. Across 180 cycles, throttle-corrected estimates track the truth while naive
+quota-release decisions violate the SLO in all 30 independent rounds. Second, capacity is set by phase
+structure, not average utilization: at the same 20% duty, random-phase and aligned fleets differ 3.5x
+in safe capacity (28 versus 8 seats at customer P5 >= 70%), and a 35%-busy set collapsing while a
+98%-busy set stays safe shows that safety cannot be read off utilization. Third, the sampling rate
+must resolve the bursts it prices. Together these capabilities form an observation set that a
+risk-calibrated admission controller implements: in a complete 14-round showdown it is the only
+policy combining competitive random-phase capacity with a conservative aligned-phase stop, while
+baseline policies oversell (customer P5 collapsing to 16%) or waste 2-3x capacity. All claims rest on
+mass repeats, two testbeds, read-only telemetry from production hosts we operate, and released
+artifacts.
 
 ## What This Paper Solves (problem → approach → quantified result)
 

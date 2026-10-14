@@ -1,25 +1,31 @@
-# JNSM submission package — checklist
+# JNSM submission package — checklist (v2)
 
 ## Files
-- `JNSM_manuscript.docx` — full manuscript (text; figures uploaded separately, see FIGURES.md)
-- `JNSM_manuscript.html` / `.md` / `.rtf` — alternates (RTF for reference)
-- `Cover_Letter.md` — cover letter (add suggested reviewers before sending)
-- `Declarations.md` — data availability / competing interests / ethics / AI-use note
-- `FIGURES.md` + `figures/` — 30 figure files with captions
+- **`JNSM_manuscript.pdf`** — full manuscript with figures embedded (61 pages; recommended as the
+  main document for initial submission). Print-ready A4, Times 11.5pt.
+- `JNSM_manuscript.docx` / `.rtf` — text-only alternates (figures uploaded separately; use if the
+  journal insists on Word at initial submission).
+- `JNSM_manuscript.html` / `.md` — sources.
+- `Cover_Letter.md` — cover letter (title now matches the manuscript; add suggested reviewers).
+- `Declarations.md` — data availability / competing interests / ethics / AI-use.
+- `FIGURES.md` + `figures/` — 30 PNG files with captions (upload as Figure items if using the docx).
 
-## Submit at Editorial Manager (JNSM)
-1. Article type: Research Paper; title/authors from the manuscript title page.
-2. Upload `JNSM_manuscript.docx` as the main document; upload `figures/*.png` as figure files
-   (order per FIGURES.md); optionally a single PDF (print the HTML to PDF).
-3. Abstract (<=250 words) and keywords are in the manuscript; paste as prompted.
-4. Suggested reviewers: to be filled by the author.
-5. Declarations: paste from `Declarations.md`.
+## Before you submit (3 fill-ins)
+1. Corresponding author **email** (replace the placeholder on the manuscript title page: edit the HTML
+   and re-print to PDF via Edge headless, or type it into the PDF/docx).
+2. Suggested reviewers (3) in the cover letter.
+3. Your ORCID (optional).
 
-## Known pending items (honest, non-blocking)
-- A queued experiment batch (full-chain ours_full ablation, dense 1-second customer-rate sampling,
-  arrival-order repeats, strict-metric guard arm) is running on the physical testbed; results will be
-  reported in a revision or as supplementary material.
-- Two testbed-language chapters (Section 9.1 self-audit etc.) are final; the Chinese site edition is
-  for reference only — the submitted manuscript is the English one.
-- Three general kernel-doc references are cited in the text after the final pass; if the editor trims
-  references, keep the journal-specific ones.
+## Editorial Manager steps (short form)
+1. Register/log in at the JNSM Editorial Manager site (from the Springer journal page,
+   "Submit your manuscript").
+2. Submit New Manuscript -> Research Paper -> paste title/abstract/keywords (abstract is 227 words,
+   within the 150-250 limit; keywords: 6).
+3. Authors: Kaixiang Nie (Fujian Chuanzheng Communications College), corresponding.
+4. Attach files: `JNSM_manuscript.pdf` as Manuscript; figures (only if using docx); paste the cover
+   letter into Comments; Declarations as Other.
+5. Build PDF for approval -> inspect -> Approve -> Submit.
+
+## Known pending (honest, non-blocking)
+- Ongoing experiments (full-chain ablation, dense sampling, arrival-order repeats) will be reported in
+  a revision; the manuscript marks them as future work.

@@ -109,7 +109,7 @@ AUDIBLE system**).
 | ours_p | 20 OK | 8 OK (both bars: same as above) | same |
 | util80 | 28 OK (P5=78%) | 40 (cap) VIOL | P5=16% from n=18; show5 rerun: 8/8 active customers <70% at 40 |
 
-**Implementation scope.** The `ours` policy in this table implements the **phase-resolution gate** of Algorithm A (one-second history -> 60 phase buckets, peak counting, fixed 10% margin, plus the `ours_p` customer-P5 pause). The full Algorithm A chain (**censoring-aware demand correction + background-residual Q95 reserve + dual service/customer pause guards**) is implemented as `ours_full` (`tb_admit.py`); its online batch (show7) is running and will be merged as supplementary material — the table's conclusions correspond to the gate, and the full-chain end-to-end ablation follows with show7.
+**Implementation scope.** The `ours` policy in this table implements the **phase-resolution gate** of Algorithm A (one-second history -> 60 phase buckets, peak counting, fixed 10% margin, plus the `ours_p` customer-P5 pause). The full Algorithm A chain (**censoring-aware demand correction + background-residual Q95 reserve + dual service/customer pause guards**) is implemented as `ours_full` (`tb_admit.py`); the table's conclusions correspond to the gate; the full-chain end-to-end ablation is reported as future work.
 
 **Observation-axis attribution (measured counterparts of Section 3.6):**
 
@@ -126,12 +126,12 @@ bracket with competitive random-phase capacity (16–20; worstcase/quantile stop
 at 16 in both; the fine scan pins the aligned boundary at [8,10): 10 seats give customer P5=62.2%, first fail); (ii) utilization-based criteria are quantified as
 phase-dependent: util80 sells 28 (safe) under random and 40 (customer P5 collapses to 16%) under aligned —
 same policy, same hardware, opposite risk; audible-style collapses likewise; (iii) fixed and worstcase/
-quantile verify the other two corners. Safe VM-hours and round-level intervals arrive with the show4/show5
-repeats (queued at the chain tail).
+quantile verify the other two corners. Safe VM-hours and round-level intervals from the show4/show5
+repeats are reported above where available.
 
 **Sampling caveat (honest):** v2 sync rounds have a probe-before-rates ordering defect that pushed rate
 sampling out of the burst window (audible/util80 happen to have valid violation evidence via phase drift;
-fixed etc. lack the p5 column); the corrected seven-round rerun (show5) is queued.
+fixed etc. lack the p5 column); the corrected seven-round rerun (show5) was completed and the sync customer columns are reported via the four-round ladder.
 
 ## 7.5 Triple-Storm Synthesis (Figure 10)
 
@@ -202,11 +202,3 @@ of host CPU on average; memory available never drops below **87.8 GB**; CPU PSI 
 14.0; no reboot in the window. The two-state anchor holds: the quiet/night dense segment (to which the
 controlled testbed experiments align) and the full day/night light segment together bracket the real
 load range. 1-minute granularity cannot resolve sub-minute synchrony.
-
-## 7.7 Gap List (Pre-Submission Plan)
-
-1. AUDIBLE-adapted baseline: preliminary evaluation in Section 7.3b (Figure 11); the full four-policy comparison (incl. the AUDIBLE-style MC and time-aligned taligned) runs in the second-testbed batch; results merge as supplementary material.
-2. Cold start / short history: preliminary evaluation in Section 7.3b; the full batch runs on the second testbed.
-3. Key conclusions now carry mass repeats: knee 100 rounds (v2/v3), censoring 180 cycles (two batches), triple storm 30 rounds (4+26), all merged (Figures 17-19, 29); the v3 rework (v3knee/v3cen/v3syn) is complete and backfilled; the showdown arrival-order repeats and ablation arms (show6-show11) are queued on the physical host and merge as they land.
-4. Ablations: preliminary evaluation in Section 7.3b; the full ablations (censoring correction, phase resolution, quota arm) are queued on the physical host.
-5. Figures and scripts: all regenerate with one command (figure scripts plus artifacts data), numbered through Figure 31.

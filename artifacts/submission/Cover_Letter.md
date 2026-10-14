@@ -3,8 +3,8 @@
 Dear Editor-in-Chief,
 
 We submit for consideration in the *Journal of Network and Systems Management* the manuscript
-"Observation Necessity for Safe Oversubscription: Censoring, Phase Structure and Time Resolution on
-Small VPS Hosts" by Kaixiang Nie.
+"Identify, Predict, Actuate: Safe Density Maximization for Small VPS Hosts under Censored Demand, Phase
+Structure and Domain-Scoped No-Regression" by Kaixiang Nie.
 
 Small VPS providers oversubscribe by necessity: many cheap, mostly-idle tenants on a few physical
 cores. Yet the prevailing capacity practices — usage panels, average-utilization thresholds,
