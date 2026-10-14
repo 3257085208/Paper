@@ -3801,6 +3801,13 @@ Figure 25 Swap arms: zram absorbs 176.8 GB (P99 flat) vs the disk swapfile exhau
 \f1\b0  Nested virtualization adds a scheduling layer; randomized orders and replicates suppress noise, and service-side metrics are stable across synthesis passes. The weight-failure mechanism is not yet localized (a host-side packet-path hypothesis is unverified) and is kept as an open question. The joint validation exposed a further issue: instant sampling of bursty background load carries a phase bias, the full controller (phase profiles + censoring correction + pause guardrail) is implemented and evaluated in the online comparison (Section 7.4b; the j1 joint pilot is kept as a historical design\'96implementation gap record); the customer-side canary shows that a tight 
 \f3\fs28\fsmilli14107 memory.high
 \f1\fs30\fsmilli15333  gate can cause multi-second stalls, so gate sizing must be an explicitly calibrated product parameter.
+\f0\b Control-history boundary (preliminary pilot).
+\f1\b0  The observation set validated in this paper is sufficient for capacity decisions under the tested workload family, but it does not identify work-preservation semantics. In a controlled paired pilot (one replaceable/latest-state tenant vs one persistent-queue tenant, matched baseline telemetry of 0.80 vs 0.83 cores, identical 20% quota for 3 min, then release), the throttled-phase host telemetry of the two tenants is indistinguishable (0.200 vs 0.200 cores; throttled 143.2 vs 143.2 s), yet the released futures differ sharply: the replaceable tenant returns to baseline immediately with a recovery ratio kappa = E/D = 0.004 (discarded work never returns), while the persistent tenant stays saturated for about 12 min draining the accumulated debt, kappa = 0.975. Host-side history collected before a control action therefore cannot predict the post-action load for both semantics; evidence validity after control actions is an open boundary of the observation-necessity thesis, and a multi-workload, multi-run study is future work (artifacts: 
+\f3\fs28\fsmilli14107 research_data/debt_pilot/
+\f1\fs30\fsmilli15333 ; model-level executable counterexamples in 
+\f3\fs28\fsmilli14107 tools/control_history_tests.py
+\f1\fs30\fsmilli15333 ).\
+
 \f0\b External validity.
 \f1\b0  Two testbeds (a 4-vCPU nested bed and a 96-thread bare-metal host) with production telemetry as a realistic anchor; the production-schedule replay (64 real per-minute duty traces; 30-min excerpt plus five-window forward validation) has been run (Section 8.6); production telemetry is minute-level, so the multi-window PPC validation uses 
 \f2\i reconstructed

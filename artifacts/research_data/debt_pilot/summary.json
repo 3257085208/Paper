@@ -1,0 +1,41 @@
+{
+  "vm_a": 311,
+  "vm_b": 312,
+  "t0": 1791984073.6782417,
+  "t_match": 1791984313.6782417,
+  "t_thr": 1791984493.6782417,
+  "t_rel": 1791985213.6782417,
+  "quota_pct": 20.0,
+  "A_replaceable": {
+    "host_baseline_cores": 0.799,
+    "host_throttle_cores": 0.2,
+    "host_release_cores": 0.799,
+    "guest_throttle_delivered": 0.248,
+    "guest_release_delivered": 0.787,
+    "D_cpu_s": 106.63,
+    "E_cpu_s": 0.41,
+    "kappa": 0.004,
+    "drain_s": 0.0,
+    "final_backlog": 0.0
+  },
+  "B_persistent": {
+    "host_baseline_cores": 0.829,
+    "host_throttle_cores": 0.2,
+    "host_release_cores": 0.956,
+    "guest_throttle_delivered": 0.246,
+    "guest_release_delivered": 0.938,
+    "D_cpu_s": 111.95,
+    "E_cpu_s": 109.18,
+    "kappa": 0.975,
+    "drain_s": 719.3,
+    "final_backlog": 0.0067
+  },
+  "host_throttle_usage_cpu_s": {
+    "A": 35.613,
+    "B": 35.615
+  },
+  "host_throttle_throttled_s": {
+    "A": 143.201,
+    "B": 143.185
+  }
+}
