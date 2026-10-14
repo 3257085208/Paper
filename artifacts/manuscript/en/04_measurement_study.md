@@ -8,6 +8,8 @@
 
 **Results.** Cross-round means (ms):
 
+**Table 2.** Knee curve: service latency vs number of pegged co-tenants (5 rounds)
+
 | Neighbors | HTTP P50 | HTTP P99 | HTTP P999 | Redis P99 | Host busy |
 |---|---|---|---|---|---|
 | 0 | 1.39 | 2.57 | 4.0 | 2.40 | ~3% |
@@ -29,6 +31,8 @@
 
 **Results (HTTP P99, ms; Figure 17 left).**
 
+**Table 3.** Per-neighbor breakdown of the first knee sweep
+
 | Neighbors running | n | mean | median | range | > 10 ms |
 |---|---|---|---|---|---|
 | 0 | 50 | 2.92 | 2.84 | 2.45–4.17 | 0 |
@@ -40,6 +44,8 @@
 Redis mirrors this (6.8 ms → 21.4 ms). The round-1 L4 sample (when the fourth neighbor was still up, i.e. exactly 4 running) reads 22.99 ms — inside the four-neighbor band.
 
 **Rework batch (all five neighbors online throughout, 50 rounds; Figure 29).**
+
+**Table 4.** Repeat of the knee sweep (second batch)
 
 | Neighbors running | n | mean | median | range | > 10 ms |
 |---|---|---|---|---|---|
@@ -79,6 +85,8 @@ Four replicates (p3, p3b, p3c, p3d): aggregate P99 13.1–22.6 ms, all violating
 
 **Results.** (i) Estimation: the observed combined usage under quota is **1.50 cores** (0.30 each), while throttle evidence (`nr_throttled` growing by ~440–450 per 63 s window; throttled time fraction ≈ 0.3–0.7) reveals a true demand of **5.00 cores** — a **3.3× underestimate, identical in 7/7 runs**. (ii) Services (ms):
 
+**Table 5.** Random vs aligned phase: service tails over 5 runs
+
 | Phase | HTTP P99 (range over 5 runs) | Redis P99 | Host busy |
 |---|---|---|---|
 | quota | 9.2 – 14.0 | 8.8 – 13.8 | ~57% |
@@ -86,7 +94,7 @@ Four replicates (p3, p3b, p3c, p3d): aggregate P99 13.1–22.6 ms, all violating
 
 After release, customer rates fall to about 27–32 M it/s (about half of full speed), the host is instantaneously saturated, and service P99 violates in 7/7 runs, degrading 5–10 ms beyond the quota phase. (iii) The quota phase itself is not "gentle": quotas slice load into pulses and hold service P99 near, sometimes across, the SLO line (9–14 ms).
 
-**Interpretation.** Censoring has two stacked consequences. First, **estimation bias**: the dashboard shows "2.5 cores of headroom" while the host is already 25% over capacity; decisions based on it (release, expand, sell more) turn the hidden gap into a public incident. Second, a **pulse tax**: quotas protect averages while manufacturing periodic bursts that hurt tails by themselves (consistent with the quota comparisons in Section 4.4). The censoring-aware estimate (throttle evidence plus the throttle fraction → the empirical estimate u/(1−t) (near-exact for saturated demand, ≤9% in Section 7.3c; known bias for bursty patterns — see Section 3.3)) yields 5.00 cores and correctly reports "no headroom; capacity action required", avoiding the self-inflicted release.
+**Interpretation.** Censoring has two stacked consequences. First, **estimation bias**: the dashboard shows "2.5 cores of headroom" while the host is already 25% over capacity; decisions based on it (release, expand, sell more) turn the hidden gap into a public incident. Second, a **pulse tax**: quotas protect averages while manufacturing periodic bursts that hurt tails by themselves (consistent with the quota comparisons in Section 4.4). The censoring-aware estimate (throttle evidence plus the throttle fraction → the empirical estimate u/(1−t) (near-exact for saturated demand, ≤9% in Section 7.3.2; known bias for bursty patterns — see Section 3.3)) yields 5.00 cores and correctly reports "no headroom; capacity action required", avoiding the self-inflicted release.
 
 **Rework (v3cen, 30 rounds x 3 cycles = 90 cycles, five tenants @30%).** Naive mean 1.54 cores vs truth 5.59 cores (**3.6x under-report**); throttle-corrected |error| median 0.55 cores, **88/90 cycles within +-20%**; naive below 70% of truth in **90/90 cycles** — direction and magnitude replicate in an independent batch; the correction is not exact (which is why Section 3.3.1 frames it as an empirical heuristic).
 

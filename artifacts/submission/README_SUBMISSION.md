@@ -29,7 +29,9 @@
 6. Inspect the generated PDF -> Approve -> Submit.
 
 ## Known pending (honest, non-blocking)
-- Ongoing experiments (full-chain ablation, dense sampling, arrival-order repeats, phase-selective
-  admission) will be reported in a revision; the manuscript marks them as future work.
-- Word equation-editor formatting of the ~20 display equations can be added at revision if the
-  editors request it (PDF shows them typeset correctly).
+- The full-chain ablation, arrival-order repeats (show6/show12), dense sampling, guard-metric
+  sensitivity and phase-selective admission are **reported in Section 7.4.2 of this version**.
+- Word equation-editor formatting of the display equations can be added at revision if the editors
+  request it (the PDF shows them typeset; the DOCX carries them as editable text).
+- A faithful re-implementation of the full AUDIBLE system, and integration of the probation variant
+  into the full chain, are marked as future work in the manuscript.

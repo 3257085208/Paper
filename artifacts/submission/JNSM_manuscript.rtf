@@ -3,9 +3,9 @@
 \f3\fnil\fcharset0 Menlo-Regular;\f4\froman\fcharset0 TimesNewRomanPS-BoldItalicMT;\f5\fnil\fcharset0 Menlo-Bold;
 }
 {\colortbl;\red255\green255\blue255;\red14\green14\blue14;\red38\green38\blue38;\red109\green109\blue109;
-\red52\green52\blue52;}
+\red52\green52\blue52;\red241\green241\blue241;}
 {\*\expandedcolortbl;;\cssrgb\c6667\c6667\c6667;\cssrgb\c20000\c20000\c20000;\cssrgb\c50196\c50196\c50196;
-\cssrgb\c26667\c26667\c26667;}
+\cssrgb\c26667\c26667\c26667;\cssrgb\c95686\c95686\c95686;}
 {\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat0\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid1\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid1}
 {\list\listtemplateid2\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\}}{\leveltext\leveltemplateid101\'01\'00;}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listname ;}\listid2}
 {\list\listtemplateid3\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat0\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid201\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid3}
@@ -362,7 +362,7 @@ i.e., the tenant was actually throttled in the window. Two estimators follow:\
 \outl0\strokewidth0 \strokec2 censoring-aware (empirical estimator)
 \f1\b0 : if $\\text\{censored\}_i = 1$, with throttle fraction $t_i$ over the window, take $\\hat d_i = \\min(\\text\{vCPU\},\\, u_i/(1-t_i))$. This formula assumes the tenant would keep burning at its unthrottled rate during throttled time: it is near-unbiased for 
 \f0\b saturated
-\f1\b0  demand (our primary workload family; ground-truth error \uc0\u8804 9% in Section 7.3c), 
+\f1\b0  demand (our primary workload family; ground-truth error \uc0\u8804 9% in Section 7.3.2), 
 \f0\b over-estimates bursty demand
 \f1\b0  (counterexample in the unit tests: true demand 0.3, quota 0.2 \uc0\u8594  estimate 1.0), and may under-estimate intermittent saturation. It is therefore an 
 \f0\b empirical estimator to be characterized per workload family, not a distribution-free bound
@@ -502,14 +502,14 @@ i.e., the tenant was actually throttled in the window. Two estimators follow:\
 \f2\i floor(L/P) + min(L mod P, w), so delivery is at most C times that overlap. Special cases: for L <= P, U(L) = min(w,L)/L (the 30-s rolling window of the sync experiments: 12/30 = 40%); for L an integer multiple of P, U = rho; for L = kP + r with r > 0, U can slightly exceed rho (e.g. L = 90 s: 24/90 = 26.7%). 
 \f4\b Hence any rule "admit while windowed utilization < theta" with theta > U(L) admits unbounded N
 \f2\b0  on aligned fleets whose safe capacity is only C. 
-\f1\i0 Measured counterpart:* util80 (L=30 s, theta=80% > 40%) sells to the experiment cap (40) in the aligned phase while its criterion reads ~20-40% (Section 7.4b); the "35%-busy collapse vs 98%-busy safe" inversion is a field instance of this theorem.\
+\f1\i0 Measured counterpart:* util80 (L=30 s, theta=80% > 40%) sells to the experiment cap (40) in the aligned phase while its criterion reads ~20-40% (Section 7.4.1); the "35%-busy collapse vs 98%-busy safe" inversion is a field instance of this theorem.\
 
 \f0\b Proposition C (sampling insufficiency).
 \f1\b0  Let a monitor sample utilization at fixed interval Delta with burst width w < Delta. There exist benign and dangerous fleets whose 
 \f0\b sample sequences are identical
 \f1\b0  , e.g., all zeros while safe capacities differ \'97 place the bursts between samples. 
 \f2\i Evidence level:
-\f1\i0  formal construction plus indirect measurement (util80's stop alternates 28 vs 40 across identical runs \'97 sampling-moment sensitive, Section 7.4b); the 
+\f1\i0  formal construction plus indirect measurement (util80's stop alternates 28 vs 40 across identical runs \'97 sampling-moment sensitive, Section 7.4.1); the 
 \f0\b direct experiment
 \f1\b0  (fixed phases, sampling interval varied) is listed as future work; this proposition is cited as a construction with indirect evidence only. 
 \f2\i Corollary:
@@ -519,6 +519,9 @@ i.e., the tenant was actually throttled in the window. Two estimators follow:\
 
 \f0\b Minimal sufficient observation set (this paper's design implements it):
 \f1\b0 \
+
+\f0\b Table 1.
+\f1\b0  Observation capabilities: the failure axis each covers, mechanism, and measured consequence when missing\
 
 \itap1\trowd \taflags1 \trgaph108\trleft-108 \tamart213 \tamarb213 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrr\brdrnil 
 \clvertalt \clshdrawnil \clwWidth4778\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx2160
@@ -613,6 +616,9 @@ Figure 2 Knee curve: service latency vs pegged co-tenants (nested bed)\
 
 \f0\b Results.
 \f1\b0  Cross-round means (ms):\
+
+\f0\b Table 2.
+\f1\b0  Knee curve: service latency vs number of pegged co-tenants (5 rounds)\
 
 \itap1\trowd \taflags1 \trgaph108\trleft-108 \tamart213 \tamarb213 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrr\brdrnil 
 \clvertalt \clshdrawnil \clwWidth2338\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx1440
@@ -794,6 +800,9 @@ Figure 29 Knee v3 rework (all neighbors online): L2 clean, L3 45/50, L4 100% col
 \f0\b Results (HTTP P99, ms; Figure 17 left).
 \f1\b0 \
 
+\f0\b Table 3.
+\f1\b0  Per-neighbor breakdown of the first knee sweep\
+
 \itap1\trowd \taflags1 \trgaph108\trleft-108 \tamart213 \tamarb213 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrr\brdrnil 
 \clvertalt \clshdrawnil \clwWidth3873\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx1440
 \clvertalt \clshdrawnil \clwWidth669\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx2880
@@ -922,6 +931,9 @@ Figure 29 Knee v3 rework (all neighbors online): L2 clean, L3 45/50, L4 100% col
 
 \f0\b \cf2 Rework batch (all five neighbors online throughout, 50 rounds; Figure 29).
 \f1\b0 \
+
+\f0\b Table 4.
+\f1\b0  Repeat of the knee sweep (second batch)\
 
 \itap1\trowd \taflags1 \trgaph108\trleft-108 \tamart213 \tamarb213 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrr\brdrnil 
 \clvertalt \clshdrawnil \clwWidth4718\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx1440
@@ -1098,12 +1110,15 @@ Figure 29 Knee v3 rework (all neighbors online): L2 clean, L3 45/50, L4 100% col
 
 \fs25\fsmilli12667 \cf3 \strokec3 \
 Figure 3 Synchronized burst timeline\
+\pard\pardeftab720\partightenfactor0
+
+\f3\fs22 \cf2 \cb6 \strokec2 quiet:    P99 \uc0\u8776  2\'963 ms\
+burst:    P50 rises to 4\'968 ms, P99 14\'9622 ms (max 33 ms)\
+after:    back to 2\'963 ms; repeats every 60 s
+\fs24 \
 \pard\pardeftab720\sa160\qj\partightenfactor0
 
-\fs30\fsmilli15333 \cf2 \strokec2 ``
-\f3\fs28\fsmilli14107 quiet: P99 \uc0\u8776  2\'963 ms burst: P50 rises to 4\'968 ms, P99 14\'9622 ms (max 33 ms) after: back to 2\'963 ms; repeats every 60 s
-\f1\fs30\fsmilli15333 ``\
-Four replicates (p3, p3b, p3c, p3d): aggregate P99 13.1\'9622.6 ms, all violating. (ii) Phase control (Figure 4): ten idle tenants cluster-phased \uc0\u8594  P99 10.2\'9617.3 ms (violating); fully randomized \u8594  2.7\'963.8 ms (two clean rounds). (iii) Randomized phases plus one pegged tenant: P99 14.0\'9620.8 ms (four rounds p6/p6b/p6c/p6d, all violating).\
+\f1\fs30\fsmilli15333 \cf2 \cb1 Four replicates (p3, p3b, p3c, p3d): aggregate P99 13.1\'9622.6 ms, all violating. (ii) Phase control (Figure 4): ten idle tenants cluster-phased \uc0\u8594  P99 10.2\'9617.3 ms (violating); fully randomized \u8594  2.7\'963.8 ms (two clean rounds). (iii) Randomized phases plus one pegged tenant: P99 14.0\'9620.8 ms (four rounds p6/p6b/p6c/p6d, all violating).\
 \pard\pardeftab720\qc\partightenfactor0
 \cf2 \pard\pardeftab720\qc\partightenfactor0
 
@@ -1150,6 +1165,9 @@ Figure 5 Censoring: usage panel vs true demand (both panels n=7 cycles)\
 \f1\b0  \'97 a 
 \f0\b 3.3\'d7 underestimate, identical in 7/7 runs
 \f1\b0 . (ii) Services (ms):\
+
+\f0\b Table 5.
+\f1\b0  Random vs aligned phase: service tails over 5 runs\
 
 \itap1\trowd \taflags1 \trgaph108\trleft-108 \tamart213 \tamarb213 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrr\brdrnil 
 \clvertalt \clshdrawnil \clwWidth2103\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx2160
@@ -1204,7 +1222,7 @@ Figure 5 Censoring: usage panel vs true demand (both panels n=7 cycles)\
 \f0\b estimation bias
 \f1\b0 : the dashboard shows "2.5 cores of headroom" while the host is already 25% over capacity; decisions based on it (release, expand, sell more) turn the hidden gap into a public incident. Second, a 
 \f0\b pulse tax
-\f1\b0 : quotas protect averages while manufacturing periodic bursts that hurt tails by themselves (consistent with the quota comparisons in Section 4.4). The censoring-aware estimate (throttle evidence plus the throttle fraction \uc0\u8594  the empirical estimate u/(1\u8722 t) (near-exact for saturated demand, \u8804 9% in Section 7.3c; known bias for bursty patterns \'97 see Section 3.3)) yields 5.00 cores and correctly reports "no headroom; capacity action required", avoiding the self-inflicted release.\
+\f1\b0 : quotas protect averages while manufacturing periodic bursts that hurt tails by themselves (consistent with the quota comparisons in Section 4.4). The censoring-aware estimate (throttle evidence plus the throttle fraction \uc0\u8594  the empirical estimate u/(1\u8722 t) (near-exact for saturated demand, \u8804 9% in Section 7.3.2; known bias for bursty patterns \'97 see Section 3.3)) yields 5.00 cores and correctly reports "no headroom; capacity action required", avoiding the self-inflicted release.\
 
 \f0\b Rework (v3cen, 30 rounds x 3 cycles = 90 cycles, five tenants @30%).
 \f1\b0  Naive mean 1.54 cores vs truth 5.59 cores (
@@ -1447,20 +1465,20 @@ Figure 8 Block-IO cap (io.max)\
 \f3\fs28\fsmilli14107 throttled_usec
 \f1\fs30\fsmilli15333  / window) \'97 an 
 \f0\b empirical estimator
-\f1\b0 : near-unbiased for saturated demand (\uc0\u8804 9% on the three cells of Section 7.3c), over-estimating bursty demand and possibly under-estimating intermittent saturation (assumptions and boundaries in Section 3.3); "at least full vCPU" remains the fallback. Without censoring evidence, use a windowed history quantile (P95 over per-window $u/(1-t)$). An optional 
+\f1\b0 : near-unbiased for saturated demand (\uc0\u8804 9% on the three cells of Section 7.3.2), over-estimating bursty demand and possibly under-estimating intermittent saturation (assumptions and boundaries in Section 3.3); "at least full vCPU" remains the fallback. Without censoring evidence, use a windowed history quantile (P95 over per-window $u/(1-t)$). An optional 
 \f0\b staggered relaxation probe
 \f1\b0  (bounded 2 s quota release, one tenant at a time) provides direct demand samples. For an arriving tenant ($T_\{\\text\{hist\}\} = 0$), use the censoring-corrected estimate of same-configuration tenants as prior; when the cohort is too small, degrade to "full vCPU" \'97 cold-start risk is priced at worst case first and relaxed after an observation window.\
 
 \f0\b Decision rule (time-aligned aggregation).
 \f1\b0  Maintain 1 s per-VM history; for the admitted set, predict the aggregate demand over the decision horizon from 
 \f0\b wall-clock phase profiles
-\f1\b0  (per-second demand envelopes preserving synchronization) and reserve capacity at a quantile of the measured aggregate demand; charge each candidate at its 
-\f0\b measured one-second peak prior
-\f1\b0  (the quota is only a 
+\f1\b0  (per-second demand envelopes preserving synchronization) and reserve capacity at a quantile of the measured aggregate demand; charge each new candidate the 
+\f0\b class prior pi
+\f1\b0  (median of the admitted tenants' mean rates; 0.2 when no history). The quota is only a 
 \f2\i period-average
 \f1\i0  bound: 
 \f3\fs28\fsmilli14107 cpu.max
-\f1\fs30\fsmilli15333  limits the CPU-time budget per quota period, not the instantaneous rate \'97 a throttled tenant can still reach a full vCPU until its period budget exhausts). Admit only if reserve + candidate caps \uc0\u8804  effective tenant-core capacity (\'d7 utilization budget). Batch arrivals first reserve capacity; the same spare must not be promised twice.\
+\f1\fs30\fsmilli15333  limits the CPU-time budget per quota period, not the instantaneous rate \'97 a throttled tenant can still reach a full vCPU until its period budget exhausts, so the per-second envelopes are built from measured usage and capped at one full vCPU (min(vCPU, u*f)), which doubles as the full-vCPU fallback for continuously saturated tenants (Section 3.3.1). Admit only if reserve + candidate caps \uc0\u8804  effective tenant-core capacity (\'d7 utilization budget). Batch arrivals first reserve capacity; the same spare must not be promised twice.\
 
 \f0\b Calibration and pausing.
 \f1\b0  The safety margin is calibrated on independent validation windows against a measured violation budget (empirical calibration; report measured coverage rather than distribution-free guarantees). The following trigger pauses new admission (with hysteresis on resume): service-tail monitor breach; customer-side canary (wakeup stall / work rate) breach; excessive estimation uncertainty (history too short / interval too wide); data-quality events (missing data, counter resets, refresh-period changes); drift (distribution shift, new configuration classes); sustained host pressure. Resumption requires consecutive stable windows, and thresholds are fixed on training/validation sets only.\
@@ -1470,22 +1488,105 @@ Figure 8 Block-IO cap (io.max)\
 \pard\pardeftab720\sa133\partightenfactor0
 
 \f0\b\fs32 \cf2 5.3.1 Admission Algorithm: Pseudocode and Parameters\
+\pard\pardeftab720\partightenfactor0
+
+\f3\b0\fs22 \cf2 \cb6 Algorithm A (risk-calibrated admission; runs on arrival or every Delta minutes)\
+Input: admitted set S with 1-s usage history u_s(t) (last 120 s), throttle evidence t_s,\
+       host busy counters, capacity C (tenant cores), utilization budget 0.9\
+1  for each s in S:\
+     f_s <- min(2.5, 1/(1 - t_s)) if t_s > 0.02 else 1.0   # censoring correction (no-censor arm: f_s = 1)\
+     p_s[b] <- max over the last 120 s of min(vCPU_s, u_s(t) * f_s), bucket b = t mod 60\
+2  peak <- max_b sum_\{s in S\} p_s[b]                       # phase-profile aggregate peak\
+   residual <- host-busy cores (independent counter) - sum_s mean30(u_s)\
+   bg <- max(0, Q95(last 20 residuals) - 0.2)              # measured background reserve (no double counting)\
+3  pi <- median of admitted tenants' mean rates (0.2 if no history)   # class prior for new candidates\
+   low-history guard: if more than a third of the admitted tenants (minimum 2) have < 30 samples: defer\
+4  if peak + |B| * pi + bg <= 0.9 * C: allow; else defer (log which term binds)\
+Guardrail (parallel): service P99 window violation OR canary wakeup stall > 250 ms OR customer P5 < 70%\
+   => pause admission; hysteretic recovery after 3 stable windows\
+Calibration: 0.9 and the hysteresis are fixed on a validation split; report one-sided Clopper-Pearson\
+bounds and the trials required for a target bound (zero-failure: <=10% needs >=29 trials, <=1% needs\
+>=299); present as an "empirical safety envelope", never as a 1% guarantee.
+\fs24 \
 \pard\pardeftab720\sa160\qj\partightenfactor0
 
-\f1\b0\fs30\fsmilli15333 \cf2 ``
-\f3\fs28\fsmilli14107 Algorithm A (risk-calibrated admission; on arrival or every Delta minutes) Input: admitted set S (1-s demand history h_s, throttle evidence u_s/t_s/q_s), capacity C, budget u 1 for each s in S: d_s &lt;- u_s / (1 - t_s) # running-stretch point estimate (Prop. 1, 3.3.1) if no throttle evidence: d_s &lt;- u_s if throttle evidence is continuous: d_s &lt;- max(d_s, q_s * (1 + t_s)) # empirical conservative heuristic (not certified; over-estimation direction; certification per 3.3.1 Prop. 2) # conditional floor, only for continuously throttled tenants p_s[0..59] &lt;- per-second demand envelope (last 120 s) 2 peak &lt;- max_b sum_s p_s[b] # phase-profile aggregate peak bg &lt;- Q95(residual) = Q95(measured aggregate - profile prediction) # residual reserve (no double counting) 3 cand &lt;- sum_\{c in B\} min(1-s peak prior_c, q_c) # candidates priced at the 1-s ceiling (quota != instant peak) 4 if peak + bg + cand &lt;= u*C: allow; else defer (report which term binds) Guardrail (parallel): service P99 window violation OR canary wakeup stall &gt; 250 ms OR customer P5 &lt; 70%=&gt; pause admission; hysteretic recovery after 3 stable windows Calibration: choose u and hysteresis on a fixed validation split; report one-sided Clopper-Pearson bounds and the trial counts required for a target bound (zero-failure: &lt;=10% needs &gt;=29 trials, &lt;=1% needs &gt;=299); present as an "empirical safety envelope", never as a 1% guarantee.
-\f1\fs30\fsmilli15333 ``\
-\pard\pardeftab720\sa160\qj\partightenfactor0
-
-\f0\b \cf2 Accounting scale and residual risk.
+\f0\b\fs30\fsmilli15333 \cf2 \cb1 Accounting scale and residual risk.
 \f1\b0  Capacity reservation works at the 
 \f0\b 1-second scale
 \f1\b0  (per-second envelopes, quota bounds the 1-s mean); 
 \f0\b sub-second quota pulses
 \f1\b0  are outside the accounting and are covered by isolation plus the service-side guardrail, which triggers independently of prediction error. The two layers make no stacked promises.\
+\pard\pardeftab720\sa133\partightenfactor0
+
+\f0\b\fs32 \cf2 5.3.2 Certification Protocol for Safety Statements (statistical scope)\
+\pard\pardeftab720\sa160\qj\partightenfactor0
+
+\fs30\fsmilli15333 \cf2 Goal.
+\f1\b0  For any configuration/workload family, report a one-sided 95% Clopper-Pearson upper bound on the round-level violation rate and the minimum number of independent rounds required for the claimed bound.\
+
+\f0\b Table 6.
+\f1\b0  Zero-failure budget: Clopper-Pearson upper bound vs independent rounds.\
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \tamart213 \tamarb213 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth6932\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth8505\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+
+\f0\b\fs25\fsmilli12667 \cf2 Independent rounds n\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 Violation-rate upper bound\cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \tamart213 \tamarb213 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth6932\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth8505\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+
+\f1\b0 \cf2 10\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 25.9%\cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \tamart213 \tamarb213 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth6932\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth8505\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 30\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 9.5%\cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \tamart213 \tamarb213 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth6932\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth8505\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 50\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 5.8%\cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \tamart213 \tamarb213 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth6932\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth8505\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 90\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 3.3%\cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \tamart213 \tamarb213 \trbrdrl\brdrnil \trbrdrt\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth6932\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth8505\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 299\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 1.0%\cell \lastrow\row
+\pard\pardeftab720\sa160\qj\partightenfactor0
+
+\f0\b\fs30\fsmilli15333 \cf2 Correlation correction.
+\f1\b0  Rounds share host state (long-run drift, caches, same-batch VM state), so independence is an optimistic bound; the protocol requires (i) effective sample size computed by time-block/round clustering, reporting effective < nominal rounds; (ii) block-level worst-window sensitivity; (iii) every "zero-violation" statement carries its round count and bound.\
 \pard\pardeftab720\sa160\partightenfactor0
 
 \f0\b\fs34\fsmilli17333 \cf2 5.4 Contrast with Naive Policies\
+\pard\pardeftab720\sa160\qj\partightenfactor0
+
+\fs30\fsmilli15333 \cf2 Table 7.
+\f1\b0  Naive policies: what each cannot see and the measured consequence\
 
 \itap1\trowd \taflags1 \trgaph108\trleft-108 \tamart213 \tamarb213 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrr\brdrnil 
 \clvertalt \clshdrawnil \clwWidth3086\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx2880
@@ -1493,7 +1594,7 @@ Figure 8 Block-IO cap (io.max)\
 \clvertalt \clshdrawnil \clwWidth6922\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx8640
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 
-\fs25\fsmilli12667 \cf2 Policy\cell 
+\f0\b\fs25\fsmilli12667 \cf2 Policy\cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 \cf2 What it cannot see\cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
@@ -1579,13 +1680,17 @@ Load topology: 2 service VMs (HTTP/nginx, Redis; 1 vCPU / 1 GiB each), 1 probe V
 \pard\pardeftab720\sa160\partightenfactor0
 
 \f0\b\fs34\fsmilli17333 \cf2 6.2 Toolchain (all scripts submitted with the paper)\
+\pard\pardeftab720\sa160\qj\partightenfactor0
+
+\fs30\fsmilli15333 \cf2 Table 8.
+\f1\b0  Experiment drivers and analysis scripts shipped with the paper\
 
 \itap1\trowd \taflags1 \trgaph108\trleft-108 \tamart213 \tamarb213 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrr\brdrnil 
 \clvertalt \clshdrawnil \clwWidth6973\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx4320
 \clvertalt \clshdrawnil \clwWidth8464\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx8640
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 
-\fs25\fsmilli12667 \cf2 Script\cell 
+\f0\b\fs25\fsmilli12667 \cf2 Script\cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 \cf2 Purpose\cell \row
 
@@ -1779,7 +1884,7 @@ Load topology: 2 service VMs (HTTP/nginx, Redis; 1 vCPU / 1 GiB each), 1 probe V
 \f1\fs30\fsmilli15333  provide CPU service volume, throttle counters, pressure signals, memory, and lifecycle events at 60-second granularity for a 7-day target. The remote collector HMAC-pseudonymizes VM/node IDs in memory; it never collects VM names, IPs, business content, or disk data; it installs nothing, changes no customer quota, and applies no stress. Credentials are used once for key exchange and discarded; keys live only on the researcher's workstation.\
 \pard\pardeftab720\sa160\partightenfactor0
 
-\f0\b\fs34\fsmilli17333 \cf2 6.4 Reproducibility\
+\f0\b\fs34\fsmilli17333 \cf2 6.5 Reproducibility\
 \pard\pardeftab720\sa160\qj\partightenfactor0
 
 \f1\b0\fs30\fsmilli15333 \cf2 Testbed scripts, all raw data (219 raw files, 34 JSONL logs, analysis scripts), and the experimental protocol are archived with the paper; the data dictionary (fields, units, semantics, quality flags) and an execution log (every environment change and anomaly) are included. All violation determinations use the pre-registered SLO and window definitions; rejected candidates are never started, and evaluation inputs retain their planned demand \'97 there is no post-hoc selection of runs.\
@@ -1803,6 +1908,10 @@ Load topology: 2 service VMs (HTTP/nginx, Redis; 1 vCPU / 1 GiB each), 1 probe V
 \pard\pardeftab720\sa160\qj\partightenfactor0
 
 \f1\b0\fs30\fsmilli15333 \cf2 Four policies run over the same arrival sequence with the same evidence surface (two rounds in different orders):\
+\pard\pardeftab720\sa160\qj\partightenfactor0
+
+\f0\b \cf2 Table 9.
+\f1\b0  Two-round admission pilot: seats admitted and violation windows per policy\
 
 \itap1\trowd \taflags1 \trgaph108\trleft-108 \tamart213 \tamarb213 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrr\brdrnil 
 \clvertalt \clshdrawnil \clwWidth3325\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx1728
@@ -1902,6 +2011,10 @@ Load topology: 2 service VMs (HTTP/nginx, Redis; 1 vCPU / 1 GiB each), 1 probe V
 \pard\pardeftab720\sa160\qj\partightenfactor0
 
 \f1\b0\fs30\fsmilli15333 \cf2 The scenario of Section 4.3 becomes a decision comparison (7 cycles): the same state (5 tenants capped at 30%, true demand 5.0 cores) is handed to two estimators:\
+\pard\pardeftab720\sa160\qj\partightenfactor0
+
+\f0\b \cf2 Table 10.
+\f1\b0  Censoring-corrected decisions: evidence, action, outcome\
 
 \itap1\trowd \taflags1 \trgaph108\trleft-108 \tamart213 \tamarb213 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrr\brdrnil 
 \clvertalt \clshdrawnil \clwWidth1406\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx2160
@@ -1954,7 +2067,7 @@ Load topology: 2 service VMs (HTTP/nginx, Redis; 1 vCPU / 1 GiB each), 1 probe V
 \f1\b0 \
 \pard\pardeftab720\sa160\partightenfactor0
 
-\f0\b\fs34\fsmilli17333 \cf2 7.3b Method Ablation and Cold Start (Preliminary, Figure 11)\
+\f0\b\fs34\fsmilli17333 \cf2 7.3.1 Method Ablation and Cold Start (Preliminary, Figure 11)\
 \pard\pardeftab720\qc\partightenfactor0
 
 \f1\b0\fs30\fsmilli15333 \cf2 \pard\pardeftab720\qc\partightenfactor0
@@ -1965,6 +2078,9 @@ Figure 11 Method evaluation: policy ablation and cold start\
 
 \f0\b\fs30\fsmilli15333 \cf2 \strokec2 Ablation (censoring scenario).
 \f1\b0  Six candidates arrive one at a time, each shaped with a 50% cap on admission; four estimators/decisions run the same sequence:\
+
+\f0\b Table 11.
+\f1\b0  Cold-start pilot: seats admitted out of 6 candidates\
 
 \itap1\trowd \taflags1 \trgaph108\trleft-108 \tamart213 \tamarb213 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrr\brdrnil 
 \clvertalt \clshdrawnil \clwWidth3291\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx2160
@@ -2042,6 +2158,9 @@ Figure 11 Method evaluation: policy ablation and cold start\
 \f0\b\fs30\fsmilli15333 \cf2 Cold start (no history).
 \f1\b0  Two arrival populations x three priors:\
 
+\f0\b Table 12.
+\f1\b0  Cold-start estimator: all-heavy vs all-light arrivals\
+
 \itap1\trowd \taflags1 \trgaph108\trleft-108 \tamart213 \tamarb213 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrr\brdrnil 
 \clvertalt \clshdrawnil \clwWidth5448\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx2880
 \clvertalt \clshdrawnil \clwWidth4410\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx5760
@@ -2092,7 +2211,7 @@ Figure 11 Method evaluation: policy ablation and cold start\
 \fs30\fsmilli15333 \cf2 Reading: the optimistic prior is unsafe under heavy arrivals; a static conservative prior is safe but halves the seats; "probe first, relax on evidence" wins both sides. Together the two panels support the design principle of Section 5: priors are evidence-driven and must be cost-aware.\
 \pard\pardeftab720\sa160\partightenfactor0
 
-\f0\b\fs34\fsmilli17333 \cf2 7.3c Empirical Validation of the Censoring-Corrected Estimator (b2, Figure 12)\
+\f0\b\fs34\fsmilli17333 \cf2 7.3.2 Empirical Validation of the Censoring-Corrected Estimator (b2, Figure 12)\
 \pard\pardeftab720\qc\partightenfactor0
 
 \f1\b0\fs30\fsmilli15333 \cf2 \pard\pardeftab720\qc\partightenfactor0
@@ -2102,6 +2221,10 @@ Figure 12 Demand-recovery validation (b2)\
 \pard\pardeftab720\sa160\qj\partightenfactor0
 
 \fs30\fsmilli15333 \cf2 \strokec2 Five pegged tenants are measured at quotas 20/40/60%: the estimate $\\hat d = \\min(1, u/(1-t))$ uses only observable counters (quota + throttled time fraction t); the ground truth is then measured by lifting one tenant's quota at a time (the rest stay capped) so five-way contention cannot pollute the reference:\
+\pard\pardeftab720\sa160\qj\partightenfactor0
+
+\f0\b \cf2 Table 13.
+\f1\b0  Estimator validation (b2): quota, throttled fraction, estimate vs truth, error\
 
 \itap1\trowd \taflags1 \trgaph108\trleft-108 \tamart213 \tamarb213 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrr\brdrnil 
 \clvertalt \clshdrawnil \clwWidth2659\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx1728
@@ -2188,6 +2311,10 @@ Figure 12 Demand-recovery validation (b2)\
 \pard\pardeftab720\sa160\qj\partightenfactor0
 
 \f1\b0\fs30\fsmilli15333 \cf2 Under the same knee protocol and service-SLO criterion:\
+\pard\pardeftab720\sa160\qj\partightenfactor0
+
+\f0\b \cf2 Table 14.
+\f1\b0  Shaping comparison: measured safe limit and customer cost per configuration\
 
 \itap1\trowd \taflags1 \trgaph108\trleft-108 \tamart213 \tamarb213 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrr\brdrnil 
 \clvertalt \clshdrawnil \clwWidth2161\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx2160
@@ -2266,7 +2393,7 @@ Figure 12 Demand-recovery validation (b2)\
 \f1\b0  Only isolation raises the safe limit (to \uc0\u8805 5); quotas change tenant speed, not the limit (Section 4.4.1). The cost relocation is visible: isolation moves the cost from "service SLO" to "economy-tier customers", while quotas satisfy neither side. The remaining defenses \'97 memory double gate and IO caps \'97 do not raise the CPU knee but stop their own storms from dragging the service under (they are necessary parts of the synthesis configuration).\
 \pard\pardeftab720\sa160\partightenfactor0
 
-\f0\b\fs34\fsmilli17333 \cf2 7.4b Online Admission Comparison (Figure 20)\
+\f0\b\fs34\fsmilli17333 \cf2 7.4.1 Online Admission Comparison (Figure 20)\
 \pard\pardeftab720\qc\partightenfactor0
 
 \f1\b0\fs30\fsmilli15333 \cf2 \pard\pardeftab720\qc\partightenfactor0
@@ -2320,7 +2447,10 @@ Figure 20 Online admission comparison: policy stops vs measured capacity bracket
 \f0\b Scope:
 \f1\b0  14 rounds = 7 policies x 2 phases (one round per cell; the show4/show5 repeat batches and the show6 arrival-order repeat are separate); "audible-style"is a simplified Monte-Carlo re-implementation of the independence-convolution core (
 \f0\b not the full AUDIBLE system
-\f1\b0 ).\
+\f1\b0 ); its synchronized failure therefore indicts the independence assumption of that core, not the complete original method - a faithful re-implementation against the full system is future work.\
+
+\f0\b Table 15.
+\f1\b0  Online admission comparison: stops per policy and phase, with violation evidence\
 
 \itap1\trowd \taflags1 \trgaph108\trleft-108 \tamart213 \tamarb213 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrr\brdrnil 
 \clvertalt \clshdrawnil \clwWidth1031\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx2160
@@ -2450,10 +2580,13 @@ Figure 20 Online admission comparison: policy stops vs measured capacity bracket
 \f3\fs28\fsmilli14107 ours_full
 \f1\fs30\fsmilli15333  (
 \f3\fs28\fsmilli14107 tb_admit.py
-\f1\fs30\fsmilli15333 ); the table's conclusions correspond to the gate; the full-chain end-to-end run and the component ablations are reported in Section 7.4c.\
+\f1\fs30\fsmilli15333 ); the table's conclusions correspond to the gate; the full-chain end-to-end run and the component ablations are reported in Section 7.4.2.\
 
 \f0\b Observation-axis attribution (measured counterparts of Section 3.6):
 \f1\b0 \
+
+\f0\b Table 16.
+\f1\b0  Observation-axis attribution: missing capability vs measured failure per policy\
 
 \itap1\trowd \taflags1 \trgaph108\trleft-108 \tamart213 \tamarb213 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrr\brdrnil 
 \clvertalt \clshdrawnil \clwWidth2499\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx2880
@@ -2533,7 +2666,7 @@ Figure 20 Online admission comparison: policy stops vs measured capacity bracket
 \f1\b0  the earlier sync rounds have a probe-before-rates ordering defect that pushed rate sampling out of the burst window (audible/util80 happen to have valid violation evidence via phase drift; fixed etc. lack the p5 column); the corrected seven-round rerun (show5) was completed and the sync customer columns are reported via the four-round ladder.\
 \pard\pardeftab720\sa160\partightenfactor0
 
-\f0\b\fs34\fsmilli17333 \cf2 7.4c Repeat, Ablation, and Sensitivity Checks (show6-show10)\
+\f0\b\fs34\fsmilli17333 \cf2 7.4.2 Repeat, Ablation, and Sensitivity Checks (show6-show12)\
 \pard\pardeftab720\sa160\qj\partightenfactor0
 
 \fs30\fsmilli15333 \cf2 Arrival-order repeat (show6 seed 42 + show12 seeds 101/202; 24 runs).
@@ -2553,11 +2686,14 @@ Figure 20 Online admission comparison: policy stops vs measured capacity bracket
 \f0\b Component ablations (show8, one round per cell).
 \f1\b0 \
 
+\f0\b Table 17.
+\f1\b0  Component ablations: aligned and random stops with evidence per arm\
+
 \itap1\trowd \taflags1 \trgaph108\trleft-108 \tamart213 \tamarb213 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrr\brdrnil 
-\clvertalt \clshdrawnil \clwWidth3186\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx2160
-\clvertalt \clshdrawnil \clwWidth1236\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx4320
-\clvertalt \clshdrawnil \clwWidth1105\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx6480
-\clvertalt \clshdrawnil \clwWidth9357\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx8640
+\clvertalt \clshdrawnil \clwWidth2848\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx2160
+\clvertalt \clshdrawnil \clwWidth1089\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth970\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx6480
+\clvertalt \clshdrawnil \clwWidth9977\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx8640
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 
 \f0\b\fs25\fsmilli12667 \cf2 arm\cell 
@@ -2569,10 +2705,10 @@ Figure 20 Online admission comparison: policy stops vs measured capacity bracket
 \cf2 evidence\cell \row
 
 \itap1\trowd \taflags1 \trgaph108\trleft-108 \tamart213 \tamarb213 \trbrdrl\brdrnil \trbrdrr\brdrnil 
-\clvertalt \clshdrawnil \clwWidth3186\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx2160
-\clvertalt \clshdrawnil \clwWidth1236\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx4320
-\clvertalt \clshdrawnil \clwWidth1105\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx6480
-\clvertalt \clshdrawnil \clwWidth9357\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx8640
+\clvertalt \clshdrawnil \clwWidth2848\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx2160
+\clvertalt \clshdrawnil \clwWidth1089\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth970\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx6480
+\clvertalt \clshdrawnil \clwWidth9977\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx8640
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 
 \f1\b0 \cf2 admission under an 80% quota cap\cell 
@@ -2584,10 +2720,10 @@ Figure 20 Online admission comparison: policy stops vs measured capacity bracket
 \cf2 mild aligned oversell (10 = first-fail level of the fine scan); random P5 = 79.3% at stop\cell \row
 
 \itap1\trowd \taflags1 \trgaph108\trleft-108 \tamart213 \tamarb213 \trbrdrl\brdrnil \trbrdrr\brdrnil 
-\clvertalt \clshdrawnil \clwWidth3186\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx2160
-\clvertalt \clshdrawnil \clwWidth1236\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx4320
-\clvertalt \clshdrawnil \clwWidth1105\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx6480
-\clvertalt \clshdrawnil \clwWidth9357\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx8640
+\clvertalt \clshdrawnil \clwWidth2848\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx2160
+\clvertalt \clshdrawnil \clwWidth1089\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth970\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx6480
+\clvertalt \clshdrawnil \clwWidth9977\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx8640
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 \cf2 80% cap without censoring correction\cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
@@ -2595,13 +2731,13 @@ Figure 20 Online admission comparison: policy stops vs measured capacity bracket
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 \cf2 14\cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
-\cf2 uncorrected peak is a lower bound -> reserve gate closes early (random P5 = 79.4% at stop)\cell \row
+\cf2 capacity bracket binds at n = 16 (peak 5.86 + prior + reserve 1.20 > 7.20); 14-seat stop within the run-to-run phase-placement band\cell \row
 
 \itap1\trowd \taflags1 \trgaph108\trleft-108 \tamart213 \tamarb213 \trbrdrl\brdrnil \trbrdrt\brdrnil \trbrdrr\brdrnil 
-\clvertalt \clshdrawnil \clwWidth3186\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx2160
-\clvertalt \clshdrawnil \clwWidth1236\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx4320
-\clvertalt \clshdrawnil \clwWidth1105\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx6480
-\clvertalt \clshdrawnil \clwWidth9357\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx8640
+\clvertalt \clshdrawnil \clwWidth2848\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx2160
+\clvertalt \clshdrawnil \clwWidth1089\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth970\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx6480
+\clvertalt \clshdrawnil \clwWidth9977\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx8640
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 \cf2 phase gate removed (full quota)\cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
@@ -2613,7 +2749,9 @@ Figure 20 Online admission comparison: policy stops vs measured capacity bracket
 \pard\pardeftab720\sa160\qj\partightenfactor0
 
 \f0\b\fs30\fsmilli15333 \cf2 Reading.
-\f1\b0  The phase gate is the aligned-phase safety-critical component (removing it re-creates the 32-seat failure); the censoring correction is worth about four random-phase seats at this granularity (14 -> 18); capping admitted tenants at 80% mildly oversells the aligned bracket (8 -> 10, the first failing level). The no-censor conservatism under the cap is reported as measured.\
+\f1\b0  The phase gate is the aligned-phase safety-critical component (removing it re-creates the 32-seat failure). The two 80%-cap arms differ by four random-phase seats (18 vs 14); 
+\f0\b both stops were capacity-bracket deferrals, not guard triggers
+\f1\b0  (verified in the decision logs: n = 20 and n = 16 respectively), and each round re-randomizes tenant phases independently, so the difference is dominated by run-to-run phase placement (the show12 band is about +/-25%) - the censoring correction's systematic effect is not separable at one round per arm. Capping admitted tenants at 80% mildly oversells the aligned bracket (8 -> 10, the first failing level).\
 
 \f0\b Dense-sampling confirmation of the boundary (show9, 1 s sampling).
 \f1\b0  Re-running the sell ladders at one-second resolution confirms the aligned boundary: level 8 holds customer P5 at 
@@ -2629,7 +2767,7 @@ Figure 20 Online admission comparison: policy stops vs measured capacity bracket
 \f0\b Guard-metric sensitivity (show10).
 \f1\b0  Switching the guard metric from max to median keeps the aligned stop at 8 but pulls the random stop down to 
 \f0\b 4
-\f1\b0  (pause-monitor triggers on 6/6 checks; P5 = 101.9% at stop): the metric trades random-phase efficiency for conservatism, and max is the balanced default used throughout.\
+\f1\b0  (pause-monitor triggers on 6/6 checks; P5 = 101.9% at stop): the metric trades random-phase efficiency for conservatism. Max is the default because the operator's commitment is the worst short-horizon shortfall a tenant can actually observe, and a median guard can smooth away exactly those bursts; thresholds are fixed on validation splits only, and the sensitivity of the operating point to the guard definition is reported here as measured.\
 
 \f0\b Phase-selective admission (show11, 
 \f5\fs28\fsmilli14107 ours_sel
@@ -2640,7 +2778,9 @@ Figure 20 Online admission comparison: policy stops vs measured capacity bracket
 \f3\fs28\fsmilli14107 ours_full
 \f1\fs30\fsmilli15333  16, 
 \f3\fs28\fsmilli14107 ours_p
-\f1\fs30\fsmilli15333  20), showing that phase evidence acquired before the decision converts into measurable random-phase capacity at equal safety.\
+\f1\fs30\fsmilli15333  20), showing that phase evidence acquired before the decision converts into measurable random-phase capacity at equal safety. The 24-seat figure comes from the probation variant as a 
+\f0\b separate configuration
+\f1\b0 ; integrating probation into the full chain and verifying the combined configuration end-to-end is future work.\
 \pard\pardeftab720\sa160\partightenfactor0
 
 \f0\b\fs34\fsmilli17333 \cf2 7.5 Triple-Storm Synthesis (Figure 10)\
@@ -2662,6 +2802,9 @@ Figure 10 Combined-stress validation (4 runs)\
 \f1\fs30\fsmilli15333  IOPS; admission per censoring-aware rules (this validation focuses on the protection envelope; admission does not intervene). 
 \f0\b Storm composition.
 \f1\b0  CPU mix (8 idle + 6 idle/bursty + 2 pegged), memory ballast, and 4K random-write fio, all simultaneously; service probes at 100 req/s for 60 s each.\
+
+\f0\b Table 18.
+\f1\b0  Triple-storm synthesis: service percentiles, errors and host state per pass\
 
 \itap1\trowd \taflags1 \trgaph108\trleft-108 \tamart213 \tamarb213 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrr\brdrnil 
 \clvertalt \clshdrawnil \clwWidth644\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx1728
@@ -2780,7 +2923,7 @@ Figure 10 Combined-stress validation (4 runs)\
 Figure 19 Combined-stress rework, 26 rounds: 25/26 pass, one degraded round at 25.3 ms\
 \pard\pardeftab720\sa160\partightenfactor0
 
-\f0\b\fs34\fsmilli17333 \cf2 \strokec2 7.5b Joint Admission + Shaping Validation (j1, Figure 13)\
+\f0\b\fs34\fsmilli17333 \cf2 \strokec2 7.5.1 Joint Admission + Shaping Validation (j1, Figure 13)\
 \pard\pardeftab720\qc\partightenfactor0
 
 \f1\b0\fs30\fsmilli15333 \cf2 \pard\pardeftab720\qc\partightenfactor0
@@ -2790,6 +2933,10 @@ Figure 13 Joint admission + shaping validation (j1)\
 \pard\pardeftab720\sa160\qj\partightenfactor0
 
 \fs30\fsmilli15333 \cf2 \strokec2 The protection envelope is fully active (services/probe pinned to cores 0\'961; customers to 2\'963; per-customer memory double gate at 800 MB with swap.max=0; IO caps), with a background load of four tenants (3 idle + 1 bursty); six candidates arrive one at a time, each capped at 50% on admission. Two admission policies decide within the same envelope:\
+\pard\pardeftab720\sa160\qj\partightenfactor0
+
+\f0\b \cf2 Table 19.
+\f1\b0  Joint admission + shaping (j1): committed seats and canary behavior\
 
 \itap1\trowd \taflags1 \trgaph108\trleft-108 \tamart213 \tamarb213 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrr\brdrnil 
 \clvertalt \clshdrawnil \clwWidth3526\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx2160
@@ -3022,6 +3169,9 @@ Figure 15 64-tenant fleet: synchronized vs random (timeline + 3-round repeat)\
 \f0\b \cf2 Results.
 \f1\b0 \
 
+\f0\b Table 20.
+\f1\b0  Production-schedule replay: metrics in random vs aligned phase\
+
 \itap1\trowd \taflags1 \trgaph108\trleft-108 \tamart213 \tamarb213 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrr\brdrnil 
 \clvertalt \clshdrawnil \clwWidth3180\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx2880
 \clvertalt \clshdrawnil \clwWidth4725\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx5760
@@ -3092,7 +3242,9 @@ Figure 16 Sell capacity on the physical host: customer experience and service si
 \f0\b\fs30\fsmilli15333 \cf2 \strokec2 Safety definition (unified, pre-declared, applies to all chapters).
 \f1\b0  Every capacity statement is a triple of resource, quality constraint and risk budget epsilon. (i) Service side: with window W in [30,120] s, a violation is window P99 > 10 ms 
 \f0\b or
-\f1\b0  any timeout/error; failures are not excluded, and statements read "violation-window rate <= epsilon" with independent-round counts and Clopper-Pearson bounds (Section 5.3.2). (ii) Customer side: the primary bar is customer work-rate P5 >= 70% of the solo baseline, a lower-tail quantile, not a "worst decile". (iii) Capacity oracle: the largest step satisfying both at a given epsilon. Knee (mean cliff), zero-violation capacity (epsilon = 0) and risk-budgeted capacity (epsilon > 0) are three distinct notions, and every mention says which. Timeouts and errors always count as violations, never excluded to polish the successful-request P99.\
+\f1\b0  any timeout/error; failures are not excluded, and statements read "violation-window rate <= epsilon" with independent-round counts and Clopper-Pearson bounds (Section 5.3.2). The epsilon budget counts the 
+\f2\i rate
+\f1\i0  of violating rounds across an ensemble; it never weakens the within-round bar - a configuration reported as safe at epsilon must meet the customer P5 >= 70% gate in at least (1 - epsilon) of its rounds, and the epsilon = 1 endpoint of the capacity-risk curve is a terminus, not a safe-admission point. (ii) Customer side: the primary bar is customer work-rate P5 >= 70% of the solo baseline, a lower-tail quantile, not a "worst decile". (iii) Capacity oracle: the largest step satisfying both at a given epsilon. Knee (mean cliff), zero-violation capacity (epsilon = 0) and risk-budgeted capacity (epsilon > 0) are three distinct notions, and every mention says which. Timeouts and errors always count as violations, never excluded to polish the successful-request P99.\
 
 \f0\b Question.
 \f1\b0  On an 8-core tenant pool with isolated services, under "service P99 \uc0\u8804  10 ms AND customer experience not degraded", how many 1-vCPU VPS can be sold?\
@@ -3125,6 +3277,10 @@ Figure 16 Sell capacity on the physical host: customer experience and service si
 \f1\b0 : same load (20% per tenant), same pool; **safe capacity moves with the quality bar\
 \pard\pardeftab720\sa160\qj\partightenfactor0
 \cf2 from 3.5x to 4x**:\
+\pard\pardeftab720\sa160\qj\partightenfactor0
+
+\f0\b \cf2 Table 21.
+\f1\b0  Quality-bar capacities on the physical host: random vs aligned\
 
 \itap1\trowd \taflags1 \trgaph108\trleft-108 \tamart213 \tamarb213 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrr\brdrnil 
 \clvertalt \clshdrawnil \clwWidth5129\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx2160
@@ -3283,6 +3439,9 @@ i.e., the concentration form $N^*_\{\\text\{mid\}\} = C/(\\rho\\kappa)$.
 \f0\b Validation (Figure 21; 8-core pool, $\\rho$ = 0.20, capmix pools of 3 rounds each):
 \f1\b0 \
 
+\f0\b Table 22.
+\f1\b0  Density law: model prediction vs measured primary-bar capacity\
+
 \itap1\trowd \taflags1 \trgaph108\trleft-108 \tamart213 \tamarb213 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrr\brdrnil 
 \clvertalt \clshdrawnil \clwWidth2247\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx2160
 \clvertalt \clshdrawnil \clwWidth3934\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx4320
@@ -3378,7 +3537,7 @@ Figure 28 Phase-Profile Convolution: iid blind vs PPC varying with phase structu
 \f0\b Scope:
 \f1\b0  inputs are one-minute production duties plus an in-period activity model and contain no sub-minute phase structure; this supports a minute-granularity replay model, not measured sub-minute structure. Real-trace measurements over the 64-VM x 30-min replay schedules: joint peak 14 cores (P50=P95=max=14) versus iid peaks 12-15. On this low-correlation drifting fleet the two differ little, and the iid risk grows with phase alignment (extremes in C5 and the synchronized sells). Block-length selection chose B=1 with KS~0.16; the spread across B in \{1,2,5,10,15\} is 0.16-0.21, weakly resolvable. The online replay (replay1) drove the 64-tenant schedule for 30 minutes on the 8-core pool: mean pool busy 42.0% (3.4 cores), peak saturation 100% (>=8 cores concurrent), service P99 0.706-0.729 ms across five probes with one 1.599 ms tail. The predicted over-pool risk materializes at peak while the isolation envelope keeps the service flat. The multi-window recheck sliced the same telemetry into five non-overlapping 30-minute windows, each with an independent forward prediction: direction hit 5/5 (predicted P(peak>8)=98-100% versus observed over-pool 3.5-8.3%), peak magnitudes of the same order (predicted P50 11-19 versus observed 12-16; per-window offsets +5/\'b11/-2/-1/0, variance reported). 
 \f0\b Scope:
-\f1\b0  the second-level series is reconstructed from minute-level duties plus a within-period phase model; this validates model-replay consistency, not independently measured second-level production truth. Both methods predict over-pool on this deliberately low-correlation fleet, so the discrimination evidence lives in the synthetic configurations (iid blind versus PPC separating five structures) and the online comparison (util80/audible collapsing in sync); independent second-level truth, false-positive/negative rates and multi-threshold behavior are future work. The third mode is the online actuator: a Taligned-style peak envelope (60 one-second phase buckets plus a class prior), a low-cost online approximation of PPC rather than a resampler; its comparison behavior (Section 7.4b) is the evidence for that approximation. All three share one principle \'97 accounting on the joint phase structure \'97 at different resolutions and for different purposes, and the paper labels them separately.\
+\f1\b0  the second-level series is reconstructed from minute-level duties plus a within-period phase model; this validates model-replay consistency, not independently measured second-level production truth. Both methods predict over-pool on this deliberately low-correlation fleet, so the discrimination evidence lives in the synthetic configurations (iid blind versus PPC separating five structures) and the online comparison (util80/audible collapsing in sync); independent second-level truth, false-positive/negative rates and multi-threshold behavior are future work. The third mode is the online actuator: a Taligned-style peak envelope (60 one-second phase buckets plus a class prior), a low-cost online approximation of PPC rather than a resampler; its comparison behavior (Section 7.4.1) is the evidence for that approximation. All three share one principle \'97 accounting on the joint phase structure \'97 at different resolutions and for different purposes, and the paper labels them separately.\
 
 \f0\b Results (Figure 28).
 \f1\b0  With identical parameters: iid convolution predicts 
@@ -3415,6 +3574,10 @@ Figure 28 Phase-Profile Convolution: iid blind vs PPC varying with phase structu
 \pard\pardeftab720\sa160\partightenfactor0
 
 \f0\b\fs34\fsmilli17333 \cf2 8.7 Consistency with BeroHost\
+\pard\pardeftab720\sa160\qj\partightenfactor0
+
+\fs30\fsmilli15333 \cf2 Table 23.
+\f1\b0  Cross-testbed summary: nested bed vs physical host\
 
 \itap1\trowd \taflags1 \trgaph108\trleft-108 \tamart213 \tamarb213 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrr\brdrnil 
 \clvertalt \clshdrawnil \clwWidth4039\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx2880
@@ -3422,7 +3585,7 @@ Figure 28 Phase-Profile Convolution: iid blind vs PPC varying with phase structu
 \clvertalt \clshdrawnil \clwWidth7376\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx8640
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 
-\fs25\fsmilli12667 \cf2 Result\cell 
+\f0\b\fs25\fsmilli12667 \cf2 Result\cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 \cf2 BeroHost (4-vCPU nested)\cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
@@ -3572,6 +3735,9 @@ Figure 22 Micro-period self-audit: 2 ms and 1 s deliver identically (+35% withdr
 \f1\b0  (the uncapped segment at 25.6M inflated early readings). Clean re-measurement: fresh burner window per config + synchronized 60 s windows + guest 
 \f3\fs28\fsmilli14107 cpu.stat
 \f1\fs30\fsmilli15333  delivery as ground truth:\
+
+\f0\b Table 24.
+\f1\b0  Micro-period self-audit: delivered CPU, throttled time, rate per configuration\
 
 \itap1\trowd \taflags1 \trgaph108\trleft-108 \tamart213 \tamarb213 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrr\brdrnil 
 \clvertalt \clshdrawnil \clwWidth3728\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx1728
@@ -3798,7 +3964,7 @@ Figure 25 Swap arms: zram absorbs 176.8 GB (P99 flat) vs the disk swapfile exhau
 \fs30\fsmilli15333 \cf2 Construct validity.
 \f1\b0  The "business" services are lightweight HTTP/Redis stand-ins; real services (databases, gateways) have longer and more syscall-dependent paths, which change absolute numbers but not the structure of overlap-driven tails. Tenant loads are synthetic duty-cycle loops without real-application slow paths (lock contention, GC); replication with real application images is future work.
 \f0\b Internal validity.
-\f1\b0  Nested virtualization adds a scheduling layer; randomized orders and replicates suppress noise, and service-side metrics are stable across synthesis passes. The weight-failure mechanism is not yet localized (a host-side packet-path hypothesis is unverified) and is kept as an open question. The joint validation exposed a further issue: instant sampling of bursty background load carries a phase bias, the full controller (phase profiles + censoring correction + pause guardrail) is implemented and evaluated in the online comparison (Section 7.4b; the j1 joint pilot is kept as a historical design\'96implementation gap record); the customer-side canary shows that a tight 
+\f1\b0  Nested virtualization adds a scheduling layer; randomized orders and replicates suppress noise, and service-side metrics are stable across synthesis passes. The weight-failure mechanism is not yet localized (a host-side packet-path hypothesis is unverified) and is kept as an open question. The joint validation exposed a further issue: instant sampling of bursty background load carries a phase bias, the full controller (phase profiles + censoring correction + pause guardrail) is implemented and evaluated in the online comparison (Section 7.4.1; the j1 joint pilot is kept as a historical design\'96implementation gap record); the customer-side canary shows that a tight 
 \f3\fs28\fsmilli14107 memory.high
 \f1\fs30\fsmilli15333  gate can cause multi-second stalls, so gate sizing must be an explicitly calibrated product parameter.
 \f0\b Control-history boundary (preliminary pilot).
@@ -3889,7 +4055,11 @@ Figure 25 Swap arms: zram absorbs 176.8 GB (P99 flat) vs the disk swapfile exhau
 \f0\b upper bound
 \f1\b0  (peak constraints only tighten it). Therefore the capacity ratio is 
 \f0\b at most
-\f1\b0  $1/\\rho$ (i.e. 5 at $\\rho = 0.2$). The measured primary-bar capacities are 28 vs 8 (3.5x) \'97 inside that bound (~70% of it); stricter tail bars shrink the ratio further. \uc0\u8718 \
+\f1\b0  $1/\\rho$ (i.e. 5 at $\\rho = 0.2$) for the 
+\f0\b zero-loss
+\f1\b0  notion. 
+\f0\b Scope of the bound.
+\f1\b0  This bound assumes zero performance loss: it requires the time-average delivered demand not to overload the pool ($\\rho N \\le C$). The operational bar used in this paper (customer work-rate P5 $\\ge$ 70% of the solo baseline) explicitly permits QoE degradation, so the measured primary-bar capacities are a different, bar-dependent object; $C/\\rho$ bounds only the zero-loss notion and is cited as such. The measured primary-bar capacities are 28 vs 8 (3.5x) \'97 inside that bound (~70% of it); stricter tail bars shrink the ratio further. \uc0\u8718 \
 \pard\pardeftab720\sa160\partightenfactor0
 
 \f0\b\fs34\fsmilli17333 \cf2 A.3 Proposition B2 (threshold impossibility; theorem, any window length)\
@@ -3902,7 +4072,7 @@ Figure 25 Swap arms: zram absorbs 176.8 GB (P99 flat) vs the disk swapfile exhau
 \f1\b0  The activity set is periodic with period $P$ and $w$ active seconds per period. Any$L$-second window contains $\\lfloor L/P \\rfloor$ full periods (each contributing $w$ seconds of overlap) plus one residual window of length $r = L \\bmod P$ (overlap at most $\\min(r, w)$). Delivery rate is at most $C$, so the window utilization is at most $U(L)$. \uc0\u8718 \
 
 \f0\b Special cases and corollary.
-\f1\b0  For $L \\le P$, $U(L) = \\min(w,L)/L$ (the 30-s rolling window used by util80: $12/30 = 40\\%$); for $L$ an integer multiple of $P$, $U = \\rho$; for $L = kP + r$ with $r > 0$,$U$ can slightly exceed $\\rho$ (e.g. $L = 90$ s: $24/90 = 26.7\\%$). Any rule "admit while windowed utilization $< \\theta$" with $\\theta > U(L)$ admits unbounded $N$ on aligned fleets whose safe capacity is only $C$ (util80: $40\\% < \\theta = 80\\%$; it sold to the experiment cap of 40 \'97 Section 7.4b).\
+\f1\b0  For $L \\le P$, $U(L) = \\min(w,L)/L$ (the 30-s rolling window used by util80: $12/30 = 40\\%$); for $L$ an integer multiple of $P$, $U = \\rho$; for $L = kP + r$ with $r > 0$,$U$ can slightly exceed $\\rho$ (e.g. $L = 90$ s: $24/90 = 26.7\\%$). Any rule "admit while windowed utilization $< \\theta$" with $\\theta > U(L)$ admits unbounded $N$ on aligned fleets whose safe capacity is only $C$ (util80: $40\\% < \\theta = 80\\%$; it sold to the experiment cap of 40 \'97 Section 7.4.1).\
 
 \f0\b Executable checks.
 \f1\b0  T-B3 (single-period caps) and T-B4 (multi-period formula verified numerically by sliding windows; the earlier single-period formula is demonstrably wrong for $L \\in \\\{90, 120, 150\\\}$).\

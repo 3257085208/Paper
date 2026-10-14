@@ -25,9 +25,9 @@ Both layers share one set of monitors (service tail latency, host pressure, per-
 
 **Inputs (visible at decision time).** Per-VM history (usage series); censoring evidence (`nr_throttled`/`throttled_usec` deltas); cohort priors from same-configuration tenants; host state (busy fraction, pressure signals, latest full service-tail window); arrival batch size.
 
-**Demand estimation (empirical censoring correction).** For each admitted tenant: if censoring evidence is present, compute $\hat d_i = \min(\text{vCPU},\, u_i/(1-t_i))$ from the observable throttle fraction $t_i$ ($\Delta$`throttled_usec` / window) — an **empirical estimator**: near-unbiased for saturated demand (≤9% on the three cells of Section 7.3c), over-estimating bursty demand and possibly under-estimating intermittent saturation (assumptions and boundaries in Section 3.3); "at least full vCPU" remains the fallback. Without censoring evidence, use a windowed history quantile (P95 over per-window $u/(1-t)$). An optional **staggered relaxation probe** (bounded 2 s quota release, one tenant at a time) provides direct demand samples. For an arriving tenant ($T_{\text{hist}} = 0$), use the censoring-corrected estimate of same-configuration tenants as prior; when the cohort is too small, degrade to "full vCPU" — cold-start risk is priced at worst case first and relaxed after an observation window.
+**Demand estimation (empirical censoring correction).** For each admitted tenant: if censoring evidence is present, compute $\hat d_i = \min(\text{vCPU},\, u_i/(1-t_i))$ from the observable throttle fraction $t_i$ ($\Delta$`throttled_usec` / window) — an **empirical estimator**: near-unbiased for saturated demand (≤9% on the three cells of Section 7.3.2), over-estimating bursty demand and possibly under-estimating intermittent saturation (assumptions and boundaries in Section 3.3); "at least full vCPU" remains the fallback. Without censoring evidence, use a windowed history quantile (P95 over per-window $u/(1-t)$). An optional **staggered relaxation probe** (bounded 2 s quota release, one tenant at a time) provides direct demand samples. For an arriving tenant ($T_{\text{hist}} = 0$), use the censoring-corrected estimate of same-configuration tenants as prior; when the cohort is too small, degrade to "full vCPU" — cold-start risk is priced at worst case first and relaxed after an observation window.
 
-**Decision rule (time-aligned aggregation).** Maintain 1 s per-VM history; for the admitted set, predict the aggregate demand over the decision horizon from **wall-clock phase profiles** (per-second demand envelopes preserving synchronization) and reserve capacity at a quantile of the measured aggregate demand; charge each candidate at its **measured one-second peak prior** (the quota is only a *period-average* bound: `cpu.max` limits the CPU-time budget per quota period, not the instantaneous rate — a throttled tenant can still reach a full vCPU until its period budget exhausts). Admit only if reserve + candidate caps ≤ effective tenant-core capacity (× utilization budget). Batch arrivals first reserve capacity; the same spare must not be promised twice.
+**Decision rule (time-aligned aggregation).** Maintain 1 s per-VM history; for the admitted set, predict the aggregate demand over the decision horizon from **wall-clock phase profiles** (per-second demand envelopes preserving synchronization) and reserve capacity at a quantile of the measured aggregate demand; charge each new candidate the **class prior pi** (median of the admitted tenants' mean rates; 0.2 when no history). The quota is only a *period-average* bound: `cpu.max` limits the CPU-time budget per quota period, not the instantaneous rate — a throttled tenant can still reach a full vCPU until its period budget exhausts, so the per-second envelopes are built from measured usage and capped at one full vCPU (min(vCPU, u*f)), which doubles as the full-vCPU fallback for continuously saturated tenants (Section 3.3.1). Admit only if reserve + candidate caps ≤ effective tenant-core capacity (× utilization budget). Batch arrivals first reserve capacity; the same spare must not be promised twice.
 
 **Calibration and pausing.** The safety margin is calibrated on independent validation windows against a measured violation budget (empirical calibration; report measured coverage rather than distribution-free guarantees). The following trigger pauses new admission (with hysteresis on resume): service-tail monitor breach; customer-side canary (wakeup stall / work rate) breach; excessive estimation uncertainty (history too short / interval too wide); data-quality events (missing data, counter resets, refresh-period changes); drift (distribution shift, new configuration classes); sustained host pressure. Resumption requires consecutive stable windows, and thresholds are fixed on training/validation sets only.
 
@@ -36,27 +36,46 @@ Both layers share one set of monitors (service tail latency, host pressure, per-
 ### 5.3.1 Admission Algorithm: Pseudocode and Parameters
 
 ```
-Algorithm A (risk-calibrated admission; on arrival or every Delta minutes)
-Input: admitted set S (1-s demand history h_s, throttle evidence u_s/t_s/q_s), capacity C, budget u
+Algorithm A (risk-calibrated admission; runs on arrival or every Delta minutes)
+Input: admitted set S with 1-s usage history u_s(t) (last 120 s), throttle evidence t_s,
+       host busy counters, capacity C (tenant cores), utilization budget 0.9
 1  for each s in S:
-     d_s <- u_s / (1 - t_s)                    # running-stretch point estimate (Prop. 1, 3.3.1)
-     if no throttle evidence: d_s <- u_s
-     if throttle evidence is continuous: d_s <- max(d_s, q_s * (1 + t_s))   # empirical conservative heuristic (not certified; over-estimation direction; certification per 3.3.1 Prop. 2)          # conditional floor, only for continuously throttled tenants
-     p_s[0..59] <- per-second demand envelope (last 120 s)
-2  peak <- max_b sum_s p_s[b]                 # phase-profile aggregate peak
-   bg   <- Q95(residual) = Q95(measured aggregate - profile prediction)   # residual reserve (no double counting)
-3  cand <- sum_{c in B} min(1-s peak prior_c, q_c)   # candidates priced at the 1-s ceiling (quota != instant peak)
-4  if peak + bg + cand <= u*C: allow; else defer (report which term binds)
+     f_s <- min(2.5, 1/(1 - t_s)) if t_s > 0.02 else 1.0   # censoring correction (no-censor arm: f_s = 1)
+     p_s[b] <- max over the last 120 s of min(vCPU_s, u_s(t) * f_s), bucket b = t mod 60
+2  peak <- max_b sum_{s in S} p_s[b]                       # phase-profile aggregate peak
+   residual <- host-busy cores (independent counter) - sum_s mean30(u_s)
+   bg <- max(0, Q95(last 20 residuals) - 0.2)              # measured background reserve (no double counting)
+3  pi <- median of admitted tenants' mean rates (0.2 if no history)   # class prior for new candidates
+   low-history guard: if more than a third of the admitted tenants (minimum 2) have < 30 samples: defer
+4  if peak + |B| * pi + bg <= 0.9 * C: allow; else defer (log which term binds)
 Guardrail (parallel): service P99 window violation OR canary wakeup stall > 250 ms OR customer P5 < 70%
    => pause admission; hysteretic recovery after 3 stable windows
-Calibration: choose u and hysteresis on a fixed validation split; report one-sided Clopper-Pearson bounds
-and the trial counts required for a target bound (zero-failure: <=10% needs >=29 trials, <=1% needs >=299);
-present as an "empirical safety envelope", never as a 1% guarantee.
+Calibration: 0.9 and the hysteresis are fixed on a validation split; report one-sided Clopper-Pearson
+bounds and the trials required for a target bound (zero-failure: <=10% needs >=29 trials, <=1% needs
+>=299); present as an "empirical safety envelope", never as a 1% guarantee.
 ```
 
 **Accounting scale and residual risk.** Capacity reservation works at the **1-second scale** (per-second envelopes, quota bounds the 1-s mean); **sub-second quota pulses** are outside the accounting and are covered by isolation plus the service-side guardrail, which triggers independently of prediction error. The two layers make no stacked promises.
 
+### 5.3.2 Certification Protocol for Safety Statements (statistical scope)
+
+**Goal.** For any configuration/workload family, report a one-sided 95% Clopper-Pearson upper bound on the round-level violation rate and the minimum number of independent rounds required for the claimed bound.
+
+**Table 6.** Zero-failure budget: Clopper-Pearson upper bound vs independent rounds.
+
+| Independent rounds n | Violation-rate upper bound |
+|---|---|
+| 10 | 25.9% |
+| 30 | 9.5% |
+| 50 | 5.8% |
+| 90 | 3.3% |
+| 299 | 1.0% |
+
+**Correlation correction.** Rounds share host state (long-run drift, caches, same-batch VM state), so independence is an optimistic bound; the protocol requires (i) effective sample size computed by time-block/round clustering, reporting effective < nominal rounds; (ii) block-level worst-window sensitivity; (iii) every "zero-violation" statement carries its round count and bound.
+
 ## 5.4 Contrast with Naive Policies
+
+**Table 7.** Naive policies: what each cannot see and the measured consequence
 
 | Policy | What it cannot see | Consequence (measured) |
 |---|---|---|

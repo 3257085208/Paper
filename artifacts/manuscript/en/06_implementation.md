@@ -8,6 +8,8 @@ Load topology: 2 service VMs (HTTP/nginx, Redis; 1 vCPU / 1 GiB each), 1 probe V
 
 ## 6.2 Toolchain (all scripts submitted with the paper)
 
+**Table 8.** Experiment drivers and analysis scripts shipped with the paper
+
 | Script | Purpose |
 |---|---|
 | `tools/probe.py` | Open-loop fixed-rate probe: per-request planned/actual send times, connect and total latency, timeouts/errors; JSON summary + raw CSV |
@@ -34,6 +36,6 @@ AI assistants were used for language editing, code review and manuscript organiz
 
 The two production hosts are monitored read-only and anonymously: PVE read-only interfaces (`pvesh get /nodes`, `/nodes/{node}/status`, `/cluster/resources`) plus `/proc` provide CPU service volume, throttle counters, pressure signals, memory, and lifecycle events at 60-second granularity for a 7-day target. The remote collector HMAC-pseudonymizes VM/node IDs in memory; it never collects VM names, IPs, business content, or disk data; it installs nothing, changes no customer quota, and applies no stress. Credentials are used once for key exchange and discarded; keys live only on the researcher's workstation.
 
-## 6.4 Reproducibility
+## 6.5 Reproducibility
 
 Testbed scripts, all raw data (219 raw files, 34 JSONL logs, analysis scripts), and the experimental protocol are archived with the paper; the data dictionary (fields, units, semantics, quality flags) and an execution log (every environment change and anomaly) are included. All violation determinations use the pre-registered SLO and window definitions; rejected candidates are never started, and evaluation inputs retain their planned demand — there is no post-hoc selection of runs.

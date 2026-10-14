@@ -76,6 +76,9 @@ window.MathJax = {
 
 <main>
 <blockquote>面向"审稿意见 → 处置"的可追溯记录。版本号随重大修改递增；每版标注对应评审轮次。</blockquote>
+<h2 id="s-v1-1-review2-2026-10-14-深夜-模拟评审-P0-P1-修复">v1.1-review2 — 2026-10-14 深夜（模拟评审 P0/P1 修复批）</h2>
+<p><strong>算法/理论</strong>：① Algorithm A 伪代码按实现重写（zh+en）——估计器 min(vCPU, u·f)、f=min(2.5,1/(1−t))、候选按类先验 π（已接入客户平均速率中位数）、低历史护栏、容量括号 defer 与护栏分离；删除与代码不符的 min(peakPrior, q) 与 q(1+t) 行；§5.3 决策句同步。② 附录 A.2 加"零损失"适用范围句（C/ρ 仅界零损失口径，P5≥70% 运行口径另算）。③ §8.4 增 ε 硬/软分离句（ε 不放松轮内 P5≥70% 门槛）。<strong>因果修正</strong>：§7.4.2 show8 改写——两臂停点均为容量括号 defer（日志核验 n=20/n=16），18 vs 14 差异由轮间相位摆放主导（±25% 带），截断校正在单轮/臂不可分离（zh+en）。<strong>格式批</strong>：EN 新增 §5.3.2 认证协议（Clopper–Pearson 预算表）；6.4→6.5 重号修复；章节重编号 7.3b/c→7.3.1/2、7.4b/c→7.4.1/2、7.5b→7.5.1（全稿 14 文件）；<strong>24 张表全部编号表注</strong>（Table 1–24 / 表 1–23，zh 缺 repeat 表与中文专属表按映射对齐）；make_site 支持围栏代码块（Algorithm A 在 PDF 不再压段/无字面 &amp;lt;）；DOCX 页脚自动页码；README_SUBMISSION 待办同步。<strong>P1</strong>：ours_sel 分离句、AUDIBLE 公平性句、guard 选 max 理由句。<strong>核验</strong>：PDF 63 页、0 公式残留、0 残 $、0 旧编号、24 表注齐全。</p>
+<hr>
 <h2 id="s-v1-1-pilot-2026-10-14-晚-控制历史预实验并入">v1.1-pilot — 2026-10-14 晚（控制历史预实验并入）</h2>
 <p><strong>§10.4 新增"控制历史边界（预实验）"段（zh+en）</strong>：成对受控实验（VM311 可替换 vs VM312 持久队列；基线 0.80/0.83 核；20% 配额 3min→释放）——限速段宿主遥测不可区分（0.200/0.200 核、节流 143.2/143.2s），释放后 κ=E/D=0.004 vs 0.975、B 饱和排空 719s。诚实标注：单对单轮、列为未来工作。工件：research_data/debt_pilot/（host_trace+guest+summary+说明）、tools/control_history_tests.py（T-CH1..4 PASS）、tools/burner_debt.py + tb_debt_pilot.py。<strong>测量教训</strong>：guest 内 process_time 在 vCPU 节流下虚报（随墙钟）；已发表指标均为"迭代/墙钟"口径不受影响；pilot 改用迭代数/CAL 标定。部署 016c6b2。</p>
 <hr>

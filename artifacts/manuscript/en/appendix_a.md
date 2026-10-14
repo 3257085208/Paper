@@ -26,9 +26,7 @@ pool $C = 8$, $\rho = w/P$.
 Aligned: peak concurrency $= N$, so the capacity is exactly $C$. Random: the mean concurrency is
 $\rho N$, and any reasonable safety bar requires the time-average not to overload, i.e. $\rho N \le C$;
 hence $N \le C/\rho$ is an **upper bound** (peak constraints only tighten it).
-Therefore the capacity ratio is **at most** $1/\rho$ (i.e. 5 at $\rho = 0.2$). The measured
-primary-bar capacities are 28 vs 8 (3.5x) — inside that bound (~70% of it); stricter tail bars shrink
-the ratio further. ∎
+Therefore the capacity ratio is **at most** $1/\rho$ (i.e. 5 at $\rho = 0.2$) for the **zero-loss** notion. **Scope of the bound.** This bound assumes zero performance loss: it requires the time-average delivered demand not to overload the pool ($\rho N \le C$). The operational bar used in this paper (customer work-rate P5 $\ge$ 70% of the solo baseline) explicitly permits QoE degradation, so the measured primary-bar capacities are a different, bar-dependent object; $C/\rho$ bounds only the zero-loss notion and is cited as such. The measured primary-bar capacities are 28 vs 8 (3.5x) — inside that bound (~70% of it); stricter tail bars shrink the ratio further. ∎
 
 ## A.3 Proposition B2 (threshold impossibility; theorem, any window length)
 
@@ -45,7 +43,7 @@ rate is at most $C$, so the window utilization is at most $U(L)$. ∎
 util80: $12/30 = 40\%$); for $L$ an integer multiple of $P$, $U = \rho$; for $L = kP + r$ with $r > 0$,
 $U$ can slightly exceed $\rho$ (e.g. $L = 90$ s: $24/90 = 26.7\%$). Any rule "admit while windowed
 utilization $< \theta$" with $\theta > U(L)$ admits unbounded $N$ on aligned fleets whose safe capacity
-is only $C$ (util80: $40\% < \theta = 80\%$; it sold to the experiment cap of 40 — Section 7.4b).
+is only $C$ (util80: $40\% < \theta = 80\%$; it sold to the experiment cap of 40 — Section 7.4.1).
 
 **Executable checks.** T-B3 (single-period caps) and T-B4 (multi-period formula verified numerically by
 sliding windows; the earlier single-period formula is demonstrably wrong for $L \in \{90, 120, 150\}$).

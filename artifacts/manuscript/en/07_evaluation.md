@@ -10,6 +10,8 @@ Testbed and metrics: Sections 3–4 and 7. Admission comparisons use a closed lo
 
 Four policies run over the same arrival sequence with the same evidence surface (two rounds in different orders):
 
+**Table 9.** Two-round admission pilot: seats admitted and violation windows per policy
+
 | Policy | Evidence | Admitted (round A / B) | Violation windows | Worst P99 (HTTP/Redis) |
 |---|---|---|---|---|
 | Fixed ratio (2.0×) | Configuration only | 5 / 5 | 4 / 4 | 23.7 / 25.8 |
@@ -23,6 +25,8 @@ Four policies run over the same arrival sequence with the same evidence surface 
 
 The scenario of Section 4.3 becomes a decision comparison (7 cycles): the same state (5 tenants capped at 30%, true demand 5.0 cores) is handed to two estimators:
 
+**Table 10.** Censoring-corrected decisions: evidence, action, outcome
+
 | Decision | Evidence used | Action | Outcome |
 |---|---|---|---|
 | Naive (trust usage) | 1.50 cores used, "2.5 cores spare" | Release the caps (believed to be an optimization) | P99 16.7–25.0 ms, 7/7 violating |
@@ -30,9 +34,11 @@ The scenario of Section 4.3 becomes a decision comparison (7 cycles): the same s
 
 **Reading.** Both decisions consume the same data and differ only in estimation: naive takes censored usage as demand and hallucinates half the host as empty; aware pins the demand lower bound above the quota using throttle evidence. The former action pushes the host into instantaneous saturation (tenants at 27–32 M it/s, host at 100%); the latter avoids the self-inflicted wound and emits the correct capacity signal. We keep the detail that the quota state itself sits near the SLO line: **this host is already at the overload boundary, and the upper action (migrate/upgrade) is out of scope here.**
 
-## 7.3b Method Ablation and Cold Start (Preliminary, Figure 11)
+## 7.3.1 Method Ablation and Cold Start (Preliminary, Figure 11)
 
 **Ablation (censoring scenario).** Six candidates arrive one at a time, each shaped with a 50% cap on admission; four estimators/decisions run the same sequence:
+
+**Table 11.** Cold-start pilot: seats admitted out of 6 candidates
 
 | Policy | Admitted (of 6) | Violation windows | Notes |
 |---|---|---|---|
@@ -43,6 +49,8 @@ The scenario of Section 4.3 becomes a decision comparison (7 cycles): the same s
 
 **Cold start (no history).** Two arrival populations x three priors:
 
+**Table 12.** Cold-start estimator: all-heavy vs all-light arrivals
+
 | Prior | All-heavy arrivals | All-light arrivals |
 |---|---|---|
 | optimistic (0.2 core) | 6 admitted, 4 violation windows (11.7–17.2 ms) | 6 admitted, 0 violations (but a wrong bet breaks the SLO) |
@@ -51,9 +59,11 @@ The scenario of Section 4.3 becomes a decision comparison (7 cycles): the same s
 
 Reading: the optimistic prior is unsafe under heavy arrivals; a static conservative prior is safe but halves the seats; "probe first, relax on evidence" wins both sides. Together the two panels support the design principle of Section 5: priors are evidence-driven and must be cost-aware.
 
-## 7.3c Empirical Validation of the Censoring-Corrected Estimator (b2, Figure 12)
+## 7.3.2 Empirical Validation of the Censoring-Corrected Estimator (b2, Figure 12)
 
 Five pegged tenants are measured at quotas 20/40/60%: the estimate $\hat d = \min(1, u/(1-t))$ uses only observable counters (quota + throttled time fraction t); the ground truth is then measured by lifting one tenant's quota at a time (the rest stay capped) so five-way contention cannot pollute the reference:
+
+**Table 13.** Estimator validation (b2): quota, throttled fraction, estimate vs truth, error
 
 | quota | mean t | estimate | truth | error |
 |---|---|---|---|---|
@@ -67,6 +77,8 @@ Five pegged tenants are measured at quotas 20/40/60%: the estimate $\hat d = \mi
 
 Under the same knee protocol and service-SLO criterion:
 
+**Table 14.** Shaping comparison: measured safe limit and customer cost per configuration
+
 | Shaping | Safe limit (measured) | 4th tenant violates? | Customer rate (of full speed) |
 |---|---|---|---|
 | No controls | 3 | yes (22.7/20.7 ms) | 100% |
@@ -76,7 +88,7 @@ Under the same knee protocol and service-SLO criterion:
 
 **Reading.** Only isolation raises the safe limit (to ≥5); quotas change tenant speed, not the limit (Section 4.4.1). The cost relocation is visible: isolation moves the cost from "service SLO" to "economy-tier customers", while quotas satisfy neither side. The remaining defenses — memory double gate and IO caps — do not raise the CPU knee but stop their own storms from dragging the service under (they are necessary parts of the synthesis configuration).
 
-## 7.4b Online Admission Comparison (Figure 20)
+## 7.4.1 Online Admission Comparison (Figure 20)
 
 **Protocol.** On the 8-core tenant pool, seven policies (`worstcase` quota-conservative / `fixed` 2x /
 `util80` busy-80% / `quantile` history-quantile / `audible`-style MC convolution / `ours` phase-profile /
@@ -97,7 +109,10 @@ the fixed `ours` stops at **8 in the aligned phase** (profile peak counts 0 → 
 (service P99 <= 10 ms AND customer P5 ≥ 70%). **Scope:** 14 rounds = 7 policies x 2 phases (one round
 per cell; the show4/show5 repeat batches and the show6 arrival-order repeat are separate); "audible-style"
 is a simplified Monte-Carlo re-implementation of the independence-convolution core (**not the full
-AUDIBLE system**).
+AUDIBLE system**); its synchronized failure therefore indicts the independence assumption of that core,
+not the complete original method - a faithful re-implementation against the full system is future work.
+
+**Table 15.** Online admission comparison: stops per policy and phase, with violation evidence
 
 | policy | rand stop | sync stop | sync violation evidence |
 |---|---|---|---|
@@ -109,9 +124,11 @@ AUDIBLE system**).
 | ours_p | 20 OK | 8 OK (both bars: same as above) | same |
 | util80 | 28 OK (P5=78%) | 40 (cap) VIOL | P5=16% from n=18; show5 rerun: 8/8 active customers <70% at 40 |
 
-**Implementation scope.** The `ours` policy in this table implements the **phase-resolution gate** of Algorithm A (one-second history -> 60 phase buckets, peak counting, fixed 10% margin, plus the `ours_p` customer-P5 pause). The full Algorithm A chain (**censoring-aware demand correction + background-residual Q95 reserve + dual service/customer pause guards**) is implemented as `ours_full` (`tb_admit.py`); the table's conclusions correspond to the gate; the full-chain end-to-end run and the component ablations are reported in Section 7.4c.
+**Implementation scope.** The `ours` policy in this table implements the **phase-resolution gate** of Algorithm A (one-second history -> 60 phase buckets, peak counting, fixed 10% margin, plus the `ours_p` customer-P5 pause). The full Algorithm A chain (**censoring-aware demand correction + background-residual Q95 reserve + dual service/customer pause guards**) is implemented as `ours_full` (`tb_admit.py`); the table's conclusions correspond to the gate; the full-chain end-to-end run and the component ablations are reported in Section 7.4.2.
 
 **Observation-axis attribution (measured counterparts of Section 3.6):**
+
+**Table 16.** Observation-axis attribution: missing capability vs measured failure per policy
 
 | Policy | Missing capability | Measured failure |
 |---|---|---|
@@ -133,7 +150,7 @@ repeats are reported above where available.
 sampling out of the burst window (audible/util80 happen to have valid violation evidence via phase drift;
 fixed etc. lack the p5 column); the corrected seven-round rerun (show5) was completed and the sync customer columns are reported via the four-round ladder.
 
-## 7.4c Repeat, Ablation, and Sensitivity Checks (show6-show10)
+## 7.4.2 Repeat, Ablation, and Sensitivity Checks (show6-show12)
 
 **Arrival-order repeat (show6 seed 42 + show12 seeds 101/202; 24 runs).** show6 re-ran all seven policies under a second order and reproduced the aligned-phase stop column exactly (audible-style 32, first violation 34; fixed 16; ours 8; ours_p 8; quantile 8; util80 32, first violation 34; worstcase 8), with random-phase stops in a narrow band (ours 18 vs 16; ours_p 20; audible-style 16; util80 32 vs 28; worstcase 8). show12 then re-ran the core three policies under two further orders: **worstcase/ours/ours_p stop at 8 in the aligned phase in every order**, while random-phase stops vary within a band rather than a point - ours 16/18/18/24 and ours_p 20/20/18/14 across the four orders, worstcase exactly 8 in all of them. The band (~+/-25%) is the honest uncertainty of the random-phase operating point under arrival-order variation; the aligned safety stop is order-invariant.
 
@@ -141,23 +158,27 @@ fixed etc. lack the p5 column); the corrected seven-round rerun (show5) was comp
 
 **Component ablations (show8, one round per cell).**
 
+**Table 17.** Component ablations: aligned and random stops with evidence per arm
+
 | arm | aligned stop | random stop | evidence |
 |---|---|---|---|
 | admission under an 80% quota cap | 10 | 18 | mild aligned oversell (10 = first-fail level of the fine scan); random P5 = 79.3% at stop |
-| 80% cap without censoring correction | 10 | 14 | uncorrected peak is a lower bound -> reserve gate closes early (random P5 = 79.4% at stop) |
+| 80% cap without censoring correction | 10 | 14 | capacity bracket binds at n = 16 (peak 5.86 + prior + reserve 1.20 > 7.20); 14-seat stop within the run-to-run phase-placement band |
 | phase gate removed (full quota) | 32 -> 34 VIOL | 28 | phase blindness reproduces the aligned failure of audible/util80; random phases forgive it (P5 = 99.0% at stop) |
 
-**Reading.** The phase gate is the aligned-phase safety-critical component (removing it re-creates the 32-seat failure); the censoring correction is worth about four random-phase seats at this granularity (14 -> 18); capping admitted tenants at 80% mildly oversells the aligned bracket (8 -> 10, the first failing level). The no-censor conservatism under the cap is reported as measured.
+**Reading.** The phase gate is the aligned-phase safety-critical component (removing it re-creates the 32-seat failure). The two 80%-cap arms differ by four random-phase seats (18 vs 14); **both stops were capacity-bracket deferrals, not guard triggers** (verified in the decision logs: n = 20 and n = 16 respectively), and each round re-randomizes tenant phases independently, so the difference is dominated by run-to-run phase placement (the show12 band is about +/-25%) - the censoring correction's systematic effect is not separable at one round per arm. Capping admitted tenants at 80% mildly oversells the aligned bracket (8 -> 10, the first failing level).
 
 **Dense-sampling confirmation of the boundary (show9, 1 s sampling).** Re-running the sell ladders at one-second resolution confirms the aligned boundary: level 8 holds customer P5 at **97.3%** (per-customer time-P5, median convention) while level 10 collapses to **47.8%**; random 28 holds **75.7%** and 30 falls to **58.3%**, tightening the dense random boundary to [28,30) (the max-rate convention still reads 90.6% at 32 - the convention sensitivity quantified in Section 8.4). Service P99 stays at 0.70-0.75 ms at every level: the binding constraint is the customer rate, not the service tail.
 
-**Guard-metric sensitivity (show10).** Switching the guard metric from max to median keeps the aligned stop at 8 but pulls the random stop down to **4** (pause-monitor triggers on 6/6 checks; P5 = 101.9% at stop): the metric trades random-phase efficiency for conservatism, and max is the balanced default used throughout.
+**Guard-metric sensitivity (show10).** Switching the guard metric from max to median keeps the aligned stop at 8 but pulls the random stop down to **4** (pause-monitor triggers on 6/6 checks; P5 = 101.9% at stop): the metric trades random-phase efficiency for conservatism. Max is the default because the operator's commitment is the worst short-horizon shortfall a tenant can actually observe, and a median guard can smooth away exactly those bursts; thresholds are fixed on validation splits only, and the sensitivity of the operating point to the guard definition is reported here as measured.
 
-**Phase-selective admission (show11, `ours_sel`).** The probation mechanism (candidates observed at 5% quota for 40 s before the admission decision) keeps the aligned stop at 8 and raises the random stop to **24 with no violation** - the highest safe random-phase stop in the comparison (`ours_full` 16, `ours_p` 20), showing that phase evidence acquired before the decision converts into measurable random-phase capacity at equal safety.
+**Phase-selective admission (show11, `ours_sel`).** The probation mechanism (candidates observed at 5% quota for 40 s before the admission decision) keeps the aligned stop at 8 and raises the random stop to **24 with no violation** - the highest safe random-phase stop in the comparison (`ours_full` 16, `ours_p` 20), showing that phase evidence acquired before the decision converts into measurable random-phase capacity at equal safety. The 24-seat figure comes from the probation variant as a **separate configuration**; integrating probation into the full chain and verifying the combined configuration end-to-end is future work.
 
 ## 7.5 Triple-Storm Synthesis (Figure 10)
 
 **Configuration.** Services + probe pinned to cores 0–1; 16 tenants pinned to 2–3; per tenant `memory.high = 800 MiB`, `memory.swap.max = 0`, `io.max = 200/100` IOPS; admission per censoring-aware rules (this validation focuses on the protection envelope; admission does not intervene). **Storm composition.** CPU mix (8 idle + 6 idle/bursty + 2 pegged), memory ballast, and 4K random-write fio, all simultaneously; service probes at 100 req/s for 60 s each.
+
+**Table 18.** Triple-storm synthesis: service percentiles, errors and host state per pass
 
 | Pass | HTTP P50/P99/P999 | Redis P50/P99/P999 | Timeouts/errors | Host state |
 |---|---|---|---|---|
@@ -172,9 +193,11 @@ fixed etc. lack the p5 column); the corrected seven-round rerun (show5) was comp
 
 **Rework repeat (Figure 19).** The rework reran the same storm end-to-end (20 s probes, fresh state per round): **25 of 26 rounds pass** — HTTP P99 mean **4.82 ms** (median 4.02, range 2.95–25.26), Redis mean **3.34 ms** (2.53–4.13, always compliant); **one round (r24) violates at 25.3 ms** — in that round 8 tenants returned no rate samples (degraded state). The envelope has held across **29 of 30 passes (4 pilot + 26 rework)**. **Statistical note:** the optimistic independent-binomial one-sided 95% bound for 29/30 is ~**14.9%** (the earlier 11.7% for 24/24 was an optimistic pre-rework estimate; rounds share host state and are time-correlated, so the bound is indicative — "near-zero violations" is not a long-term guarantee).
 
-## 7.5b Joint Admission + Shaping Validation (j1, Figure 13)
+## 7.5.1 Joint Admission + Shaping Validation (j1, Figure 13)
 
 The protection envelope is fully active (services/probe pinned to cores 0–1; customers to 2–3; per-customer memory double gate at 800 MB with swap.max=0; IO caps), with a background load of four tenants (3 idle + 1 bursty); six candidates arrive one at a time, each capped at 50% on admission. Two admission policies decide within the same envelope:
+
+**Table 19.** Joint admission + shaping (j1): committed seats and canary behavior
 
 | policy | committed seats | service violations | customer-side canary (background idle VM) |
 |---|---|---|---|
