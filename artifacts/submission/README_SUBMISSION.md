@@ -6,7 +6,7 @@
   "Statements and Declarations" section (funding / competing interests / data availability /
   author contributions / AI-assisted tools) and references. Equations are rendered as readable
   Unicode text (the PDF carries typeset math; Word equation-editor conversion can follow at revision).
-- `JNSM_manuscript.pdf` — typeset A4 copy (63 pages, figures embedded) for review convenience.
+- `JNSM_manuscript.pdf` — typeset A4 copy (64 pages, figures embedded) for review convenience.
 - `JNSM_manuscript.rtf` / `.html` / `.md` — alternate/source copies.
 - `Cover_Letter.md` — cover letter; three suggested reviewers with institutional emails (JNSM requirement).
 - `Declarations.md` — same statements as the manuscript section, for the submission interface.
