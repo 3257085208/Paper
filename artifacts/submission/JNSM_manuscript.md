@@ -661,6 +661,8 @@ fixed etc. lack the p5 column); the corrected seven-round rerun (show5) was comp
 
 **Guard-metric sensitivity (show10).** Switching the guard metric from max to median keeps the aligned stop at 8 but pulls the random stop down to **4** (pause-monitor triggers on 6/6 checks; P5 = 101.9% at stop): the metric trades random-phase efficiency for conservatism, and max is the balanced default used throughout.
 
+**Phase-selective admission (show11, `ours_sel`).** The probation mechanism (candidates observed at 5% quota for 40 s before the admission decision) keeps the aligned stop at 8 and raises the random stop to **24 with no violation** - the highest safe random-phase stop in the comparison (`ours_full` 16, `ours_p` 20), showing that phase evidence acquired before the decision converts into measurable random-phase capacity at equal safety.
+
 ## 7.5 Triple-Storm Synthesis (Figure 10)
 
 ![Figure 10 Combined-stress validation (4 runs)](figs/fig10_synthesis.png)
@@ -729,6 +731,8 @@ night-time quiet segment (busy 30.1%), while the 42-h light window covers day an
 peak 66.1%) - the "mostly idle" portrait is a per-VM statement; host-level load follows a day/night
 rhythm, and capacity-model anchors taken from the quiet segment are labeled as such (the controlled
 experiments here align with that segment; day/night peak regimes are future work).
+
+**Second production host (OVH ns503701).** A 6-hour dense window (60 s samples, 344 points) on a second, independent production host: Xeon E5-1630 v4 (4 cores / 8 threads, 62.7 GiB RAM; swap nearly full at inventory time) with **66 running guests, sum vCPU 73 (9.1x)**; host busy mean **30.9%** (peak 44.6%); CPU PSI (some) avg300 7.2 mean / 8.2 peak, PSI (full) 0.0 throughout; guest CPU consumption 1.84 of 8 threads (23%); node memory in use 43.3 of 62.7 GiB (69%); heavy share (>=30% of a vCPU) 2.2%. The portrait reproduces the HK structure at similar density: **9-12x vCPU oversubscription coexisting with a mostly-idle host and zero full-stall pressure**, corroborating that the testbed's scale and the "mostly idle, a few heavy" premise are drawn from field practice.
 
 **Boundaries and the two-state anchor (Figure 31).** The dense window is only 170 minutes and is a
 **night-time quiet segment** (host busy 30.1%, peak 47.2%); the light stream has accumulated **42

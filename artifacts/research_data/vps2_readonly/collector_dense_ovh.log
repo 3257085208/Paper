@@ -3,3 +3,5 @@ samples=60; running_guests=66; output=research_data/vps2_readonly/pve_metrics_ov
 samples=120; running_guests=66; output=research_data/vps2_readonly/pve_metrics_ovh.jsonl
 samples=180; running_guests=66; output=research_data/vps2_readonly/pve_metrics_ovh.jsonl
 samples=240; running_guests=66; output=research_data/vps2_readonly/pve_metrics_ovh.jsonl
+samples=300; running_guests=66; output=research_data/vps2_readonly/pve_metrics_ovh.jsonl
+collection ended: samples=344; started=2026-10-14T04:25:26+00:00; output=research_data/vps2_readonly/pve_metrics_ovh.jsonl
