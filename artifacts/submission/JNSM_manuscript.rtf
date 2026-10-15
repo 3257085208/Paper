@@ -2756,7 +2756,111 @@ Figure 20 Online admission comparison: policy stops vs measured capacity bracket
 \f0\b both stops were capacity-bracket deferrals, not guard triggers
 \f1\b0  (verified in the decision logs: n = 20 and n = 16 respectively), and each round re-randomizes tenant phases independently, so the difference is dominated by run-to-run phase placement (the show12 band is about +/-25%) - the censoring correction's systematic effect is not separable at one round per arm. Capping admitted tenants at 80% mildly oversells the aligned bracket (8 -> 10, the first failing level).\
 
-\f0\b Dense-sampling confirmation of the boundary (show9, 1 s sampling).
+\f0\b Table 18.
+\f1\b0  Unified customer-quality conventions at the boundary (70% bar): safe capacity and first-alarm level per convention and sampling dataset.\
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \tamart213 \tamarb213 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth3063\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx2160
+\clvertalt \clshdrawnil \clwWidth2312\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth4755\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx6480
+\clvertalt \clshdrawnil \clwWidth4755\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+
+\f0\b\fs25\fsmilli12667 \cf2 dataset\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 convention\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 aligned: safe / first alarm\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 random: safe / first alarm\cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \tamart213 \tamarb213 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth3063\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx2160
+\clvertalt \clshdrawnil \clwWidth2312\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth4755\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx6480
+\clvertalt \clshdrawnil \clwWidth4755\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+
+\f1\b0 \cf2 standard 18-sample\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 max (primary)\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 8 / 10 (62.2%)\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 28 / 32 (69.1%)\cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \tamart213 \tamarb213 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth3063\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx2160
+\clvertalt \clshdrawnil \clwWidth2312\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth4755\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx6480
+\clvertalt \clshdrawnil \clwWidth4755\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 standard 18-sample\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 median\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 8 / 10 (58.2%)\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 28 / 32 (61.7%)\cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \tamart213 \tamarb213 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth3063\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx2160
+\clvertalt \clshdrawnil \clwWidth2312\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth4755\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx6480
+\clvertalt \clshdrawnil \clwWidth4755\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 standard 18-sample\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 time-P5\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 8 / 10 (52.7%)\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 26 / 28 (68.6%)\cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \tamart213 \tamarb213 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth3063\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx2160
+\clvertalt \clshdrawnil \clwWidth2312\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth4755\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx6480
+\clvertalt \clshdrawnil \clwWidth4755\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 dense 1-s\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 max\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 >=12 / no alarm <=12 (75.4%)\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 >=32 / no alarm <=32 (90.6%)\cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \tamart213 \tamarb213 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth3063\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx2160
+\clvertalt \clshdrawnil \clwWidth2312\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth4755\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx6480
+\clvertalt \clshdrawnil \clwWidth4755\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 dense 1-s\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 act-median\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 10 / 12 (57.9%)\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 >=32 / no alarm <=32 (76.7%)\cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \tamart213 \tamarb213 \trbrdrl\brdrnil \trbrdrt\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clwWidth3063\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx2160
+\clvertalt \clshdrawnil \clwWidth2312\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth4755\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx6480
+\clvertalt \clshdrawnil \clwWidth4755\clftsWidth3 \clbrdrt\brdrs\brdrw10\brdrcf5 \clbrdrl\brdrs\brdrw10\brdrcf5 \clbrdrb\brdrs\brdrw10\brdrcf5 \clbrdrr\brdrs\brdrw10\brdrcf5 \clpadt80 \clpadl133 \clpadb80 \clpadr133 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 dense 1-s\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 time-P5\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 8 / 10 (47.8%)\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 28 / 30 (58.3%)\cell \lastrow\row
+\pard\pardeftab720\sa160\qj\partightenfactor0
+
+\f0\b\fs30\fsmilli15333 \cf2 Dense-sampling confirmation of the boundary (show9, 1 s sampling).
 \f1\b0  Re-running the sell ladders at one-second resolution confirms the aligned boundary: level 8 holds customer P5 at 
 \f0\b 97.3%
 \f1\b0  (per-customer time-P5, median convention) while level 10 collapses to 
@@ -2783,14 +2887,11 @@ Figure 20 Online admission comparison: policy stops vs measured capacity bracket
 \f1\fs30\fsmilli15333  tracks 
 \f3\fs28\fsmilli14107 p5_max
 \f1\fs30\fsmilli15333  (101-103% at every safe stop) - the two conventions agree once design-idle samples are excluded. 
-\f0\b Detection parity at violating levels (offline, dense ladders).
-\f1\b0  Recomputing both conventions on the 1-s dense ladders shows that at violating levels the activity-conditioned metric alarms at least as strongly as p5_max, and earlier: aligned 8 seats read 99.2% / 98.0% (max / act), 10 seats read 86.2% / 
-\f0\b 71.7%
-\f1\b0 , 12 seats read 75.4% / 
-\f0\b 57.9%
-\f1\b0 ; random 28 reads 95.1% / 90.6% and 32 reads 90.6% / 
-\f0\b 76.7%
-\f1\b0 . The activity-conditioned rule tracks sustained denial rather than the best burst - the strict, safe direction for a guard - and it never misses a violation that p5_max catches. 
+\f0\b Unified convention table (offline, all ladders).
+\f1\b0  Customer quality near the boundary depends on the percentile convention and the sampling dataset; Table 18 reports the alarm behavior under the unified 70% bar. On the standard 18-sample ladders (pooled rounds), all conventions agree at the aligned boundary (safe 8; first alarm 10: max 62.2%, median 58.2%, time-P5 52.7%) and separate at the random end (safe capacities: max 28, median 28, time-P5 26; first alarms: max/median 32 at 69.1/61.7%, time-P5 28 at 68.6%). On the dense 1-s ladders: aligned 8/10/12 read 99.2/86.2/75.4 (max), 98.0/71.7/57.9 (activity-conditioned median), 97.3/47.8/47.2 (time-P5); random 28/30/32 read 95.1/94.3/90.6 (max), 90.6/84.3/76.7 (act-median), 75.7/58.3/55.9 (time-P5). The conventions are nested by construction (time-P5 <= act-median <= max on the same samples), so the informative content is the 
+\f0\b alarm level
+\f1\b0 , not cross-metric comparison: the strict time-P5 convention alarms at aligned 10 and random 30 on dense data (28 on standard data) - the early-warning bound - while the primary max convention alarms at aligned 10 on standard data and not through 12/32 on dense data (dense sampling recovers true peaks, raising max readings). The online guard intentionally follows the primary max convention plus throttle evidence and the service/canary guards (Section 8.4); the strict conventions quantify how much earlier a tightening would fire - adopting one, and its false-alarm rate at safe levels, is future work.\
+
 \f0\b Production observability (honest scope).
 \f1\b0  The activity flag used here is the workload's own work-phase indicator, available in experiments; on an opaque host without a guest agent it is not directly observable. The deployment path is therefore two-track: online, the controller keeps p5_max plus throttle evidence and the service/canary guards (all host-side); p5_act is a validation-grade metric, computable in production with an optional guest agent or by host-side activity inference of the same kind the censoring analysis studies (Section 3.3.1), and its online use is future work.\
 
@@ -2838,7 +2939,7 @@ Figure 10 Combined-stress validation (4 runs)\
 \f0\b Storm composition.
 \f1\b0  CPU mix (8 idle + 6 idle/bursty + 2 pegged), memory ballast, and 4K random-write fio, all simultaneously; service probes at 100 req/s for 60 s each.\
 
-\f0\b Table 18.
+\f0\b Table 19.
 \f1\b0  Triple-storm synthesis: service percentiles, errors and host state per pass\
 
 \itap1\trowd \taflags1 \trgaph108\trleft-108 \tamart213 \tamarb213 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrr\brdrnil 
@@ -2970,7 +3071,7 @@ Figure 13 Joint admission + shaping validation (j1)\
 \fs30\fsmilli15333 \cf2 \strokec2 The protection envelope is fully active (services/probe pinned to cores 0\'961; customers to 2\'963; per-customer memory double gate at 800 MB with swap.max=0; IO caps), with a background load of four tenants (3 idle + 1 bursty); six candidates arrive one at a time, each capped at 50% on admission. Two admission policies decide within the same envelope:\
 \pard\pardeftab720\sa160\qj\partightenfactor0
 
-\f0\b \cf2 Table 19.
+\f0\b \cf2 Table 20.
 \f1\b0  Joint admission + shaping (j1): committed seats and canary behavior\
 
 \itap1\trowd \taflags1 \trgaph108\trleft-108 \tamart213 \tamarb213 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrr\brdrnil 
@@ -3204,7 +3305,7 @@ Figure 15 64-tenant fleet: synchronized vs random (timeline + 3-round repeat)\
 \f0\b \cf2 Results.
 \f1\b0 \
 
-\f0\b Table 20.
+\f0\b Table 21.
 \f1\b0  Production-schedule replay: metrics in random vs aligned phase\
 
 \itap1\trowd \taflags1 \trgaph108\trleft-108 \tamart213 \tamarb213 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrr\brdrnil 
@@ -3314,7 +3415,7 @@ Figure 16 Sell capacity on the physical host: customer experience and service si
 \cf2 from 3.5x to 4x**:\
 \pard\pardeftab720\sa160\qj\partightenfactor0
 
-\f0\b \cf2 Table 21.
+\f0\b \cf2 Table 22.
 \f1\b0  Quality-bar capacities on the physical host: random vs aligned\
 
 \itap1\trowd \taflags1 \trgaph108\trleft-108 \tamart213 \tamarb213 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrr\brdrnil 
@@ -3474,7 +3575,7 @@ i.e., the concentration form $N^*_\{\\text\{mid\}\} = C/(\\rho\\kappa)$.
 \f0\b Validation (Figure 21; 8-core pool, $\\rho$ = 0.20, capmix pools of 3 rounds each):
 \f1\b0 \
 
-\f0\b Table 22.
+\f0\b Table 23.
 \f1\b0  Density law: model prediction vs measured primary-bar capacity\
 
 \itap1\trowd \taflags1 \trgaph108\trleft-108 \tamart213 \tamarb213 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrr\brdrnil 
@@ -3611,7 +3712,7 @@ Figure 28 Phase-Profile Convolution: iid blind vs PPC varying with phase structu
 \f0\b\fs34\fsmilli17333 \cf2 8.7 Consistency with BeroHost\
 \pard\pardeftab720\sa160\qj\partightenfactor0
 
-\fs30\fsmilli15333 \cf2 Table 23.
+\fs30\fsmilli15333 \cf2 Table 24.
 \f1\b0  Cross-testbed summary: nested bed vs physical host\
 
 \itap1\trowd \taflags1 \trgaph108\trleft-108 \tamart213 \tamarb213 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrr\brdrnil 
@@ -3771,7 +3872,7 @@ Figure 22 Micro-period self-audit: 2 ms and 1 s deliver identically (+35% withdr
 \f3\fs28\fsmilli14107 cpu.stat
 \f1\fs30\fsmilli15333  delivery as ground truth:\
 
-\f0\b Table 24.
+\f0\b Table 25.
 \f1\b0  Micro-period self-audit: delivered CPU, throttled time, rate per configuration\
 
 \itap1\trowd \taflags1 \trgaph108\trleft-108 \tamart213 \tamarb213 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrr\brdrnil 

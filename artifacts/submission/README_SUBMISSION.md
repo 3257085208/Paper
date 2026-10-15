@@ -34,6 +34,6 @@
 - Word equation-editor formatting of the display equations can be added at revision if the editors
   request it (the PDF shows them typeset; the DOCX carries them as editable text).
 - One integrated validation of the probation variant with the full chain is **reported in Section 7.4.2**
-  (random 14 / aligned 6 - lower than the full chain's 16/8, a deliberately reported negative result);
+  (random 12-16 across three arrival orders / aligned 6 - lower than the full chain's 16/8, a deliberately reported negative result);
   reconciling candidate pricing with the background reserve, and a faithful re-implementation of the
   full AUDIBLE system, are marked as future work.

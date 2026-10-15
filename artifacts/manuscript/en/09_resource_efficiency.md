@@ -21,7 +21,7 @@ while configs were only ~30 s apart — so **later configs read windows contamin
 faster ones** (the uncapped segment at 25.6M inflated early readings). Clean re-measurement: fresh
 burner window per config + synchronized 60 s windows + guest `cpu.stat` delivery as ground truth:
 
-**Table 24.** Micro-period self-audit: delivered CPU, throttled time, rate per configuration
+**Table 25.** Micro-period self-audit: delivered CPU, throttled time, rate per configuration
 
 | Config | Delivered CPU | Throttled | Rate | Rate/core |
 |---|---|---|---|---|

@@ -710,9 +710,22 @@ fixed etc. lack the p5 column); the corrected seven-round rerun (show5) was comp
 
 **Reading.** The phase gate is the aligned-phase safety-critical component (removing it re-creates the 32-seat failure). The two 80%-cap arms differ by four random-phase seats (18 vs 14); **both stops were capacity-bracket deferrals, not guard triggers** (verified in the decision logs: n = 20 and n = 16 respectively), and each round re-randomizes tenant phases independently, so the difference is dominated by run-to-run phase placement (the show12 band is about +/-25%) - the censoring correction's systematic effect is not separable at one round per arm. Capping admitted tenants at 80% mildly oversells the aligned bracket (8 -> 10, the first failing level).
 
+**Table 18.** Unified customer-quality conventions at the boundary (70% bar): safe capacity and first-alarm level per convention and sampling dataset.
+
+| dataset | convention | aligned: safe / first alarm | random: safe / first alarm |
+|---|---|---|---|
+| standard 18-sample | max (primary) | 8 / 10 (62.2%) | 28 / 32 (69.1%) |
+| standard 18-sample | median | 8 / 10 (58.2%) | 28 / 32 (61.7%) |
+| standard 18-sample | time-P5 | 8 / 10 (52.7%) | 26 / 28 (68.6%) |
+| dense 1-s | max | >=12 / no alarm <=12 (75.4%) | >=32 / no alarm <=32 (90.6%) |
+| dense 1-s | act-median | 10 / 12 (57.9%) | >=32 / no alarm <=32 (76.7%) |
+| dense 1-s | time-P5 | 8 / 10 (47.8%) | 28 / 30 (58.3%) |
+
 **Dense-sampling confirmation of the boundary (show9, 1 s sampling).** Re-running the sell ladders at one-second resolution confirms the aligned boundary: level 8 holds customer P5 at **97.3%** (per-customer time-P5, median convention) while level 10 collapses to **47.8%**; random 28 holds **75.7%** and 30 falls to **58.3%**, tightening the dense random boundary to [28,30) (the max-rate convention still reads 90.6% at 32 - the convention sensitivity quantified in Section 8.4). Service P99 stays at 0.70-0.75 ms at every level: the binding constraint is the customer rate, not the service tail.
 
-**Guard-metric sensitivity (show10).** Switching the guard metric from max to median keeps the aligned stop at 8 but pulls the random stop down to **4** (pause-monitor triggers on 6/6 checks; P5 = 101.9% at stop): the metric trades random-phase efficiency for conservatism. **Guard semantics (precise):** the customer guard consumes one number per admitted tenant - the tenant's rate series (six samples, ordered before the service probes so work phases are captured) summarized per tenant by max (largest observed work-phase rate), med or min - and the guard value is the cross-customer 5th percentile of that summary (p5_max / p5_med / p5_min); admission pauses when it falls below 70% (or the service/canary thresholds fire). The primary bar uses p5_max because idle samples are not evidence of denial: a tenant's work capability is evidenced by its work-phase rate, and sustained contention lowers the max too - a full-speed burst cannot survive sustained overload. Median/min conflate design-idle with contention-throttling and false-alarm: in the show10 median arm every pause check in the random phase tripped (6/6 windows; idle samples dilute each tenant's median), stopping at 4 seats, while the aligned phase keeps tenants active and still stops at 8. The 70% and service thresholds are the pre-declared constants of Section 8.4; the 0.9 budget and hysteresis are fixed on validation splits. **Activity-conditioned cross-check (implemented mid-batch, show14).** To separate design-idle from denial without relying on the max convention, the customer metric is also computed over **active samples only** - per-customer median over the samples where the workload itself reports a work phase (state flag), excluding design-idle samples, then cross-customer P5 (`p5_act`). The false-alarm mechanism is visible directly in the logs: windows whose raw p5_med / p5_min read 0.0% (idle-sample dilution) read 102.6% under the activity-conditioned rule, and across the integrated runs `p5_act` tracks `p5_max` (101-103% at every safe stop) - the two conventions agree once design-idle samples are excluded. **Detection parity at violating levels (offline, dense ladders).** Recomputing both conventions on the 1-s dense ladders shows that at violating levels the activity-conditioned metric alarms at least as strongly as p5_max, and earlier: aligned 8 seats read 99.2% / 98.0% (max / act), 10 seats read 86.2% / **71.7%**, 12 seats read 75.4% / **57.9%**; random 28 reads 95.1% / 90.6% and 32 reads 90.6% / **76.7%**. The activity-conditioned rule tracks sustained denial rather than the best burst - the strict, safe direction for a guard - and it never misses a violation that p5_max catches. **Production observability (honest scope).** The activity flag used here is the workload's own work-phase indicator, available in experiments; on an opaque host without a guest agent it is not directly observable. The deployment path is therefore two-track: online, the controller keeps p5_max plus throttle evidence and the service/canary guards (all host-side); p5_act is a validation-grade metric, computable in production with an optional guest agent or by host-side activity inference of the same kind the censoring analysis studies (Section 3.3.1), and its online use is future work.
+**Guard-metric sensitivity (show10).** Switching the guard metric from max to median keeps the aligned stop at 8 but pulls the random stop down to **4** (pause-monitor triggers on 6/6 checks; P5 = 101.9% at stop): the metric trades random-phase efficiency for conservatism. **Guard semantics (precise):** the customer guard consumes one number per admitted tenant - the tenant's rate series (six samples, ordered before the service probes so work phases are captured) summarized per tenant by max (largest observed work-phase rate), med or min - and the guard value is the cross-customer 5th percentile of that summary (p5_max / p5_med / p5_min); admission pauses when it falls below 70% (or the service/canary thresholds fire). The primary bar uses p5_max because idle samples are not evidence of denial: a tenant's work capability is evidenced by its work-phase rate, and sustained contention lowers the max too - a full-speed burst cannot survive sustained overload. Median/min conflate design-idle with contention-throttling and false-alarm: in the show10 median arm every pause check in the random phase tripped (6/6 windows; idle samples dilute each tenant's median), stopping at 4 seats, while the aligned phase keeps tenants active and still stops at 8. The 70% and service thresholds are the pre-declared constants of Section 8.4; the 0.9 budget and hysteresis are fixed on validation splits. **Activity-conditioned cross-check (implemented mid-batch, show14).** To separate design-idle from denial without relying on the max convention, the customer metric is also computed over **active samples only** - per-customer median over the samples where the workload itself reports a work phase (state flag), excluding design-idle samples, then cross-customer P5 (`p5_act`). The false-alarm mechanism is visible directly in the logs: windows whose raw p5_med / p5_min read 0.0% (idle-sample dilution) read 102.6% under the activity-conditioned rule, and across the integrated runs `p5_act` tracks `p5_max` (101-103% at every safe stop) - the two conventions agree once design-idle samples are excluded. **Unified convention table (offline, all ladders).** Customer quality near the boundary depends on the percentile convention and the sampling dataset; Table 18 reports the alarm behavior under the unified 70% bar. On the standard 18-sample ladders (pooled rounds), all conventions agree at the aligned boundary (safe 8; first alarm 10: max 62.2%, median 58.2%, time-P5 52.7%) and separate at the random end (safe capacities: max 28, median 28, time-P5 26; first alarms: max/median 32 at 69.1/61.7%, time-P5 28 at 68.6%). On the dense 1-s ladders: aligned 8/10/12 read 99.2/86.2/75.4 (max), 98.0/71.7/57.9 (activity-conditioned median), 97.3/47.8/47.2 (time-P5); random 28/30/32 read 95.1/94.3/90.6 (max), 90.6/84.3/76.7 (act-median), 75.7/58.3/55.9 (time-P5). The conventions are nested by construction (time-P5 <= act-median <= max on the same samples), so the informative content is the **alarm level**, not cross-metric comparison: the strict time-P5 convention alarms at aligned 10 and random 30 on dense data (28 on standard data) - the early-warning bound - while the primary max convention alarms at aligned 10 on standard data and not through 12/32 on dense data (dense sampling recovers true peaks, raising max readings). The online guard intentionally follows the primary max convention plus throttle evidence and the service/canary guards (Section 8.4); the strict conventions quantify how much earlier a tightening would fire - adopting one, and its false-alarm rate at safe levels, is future work.
+
+**Production observability (honest scope).** The activity flag used here is the workload's own work-phase indicator, available in experiments; on an opaque host without a guest agent it is not directly observable. The deployment path is therefore two-track: online, the controller keeps p5_max plus throttle evidence and the service/canary guards (all host-side); p5_act is a validation-grade metric, computable in production with an optional guest agent or by host-side activity inference of the same kind the censoring analysis studies (Section 3.3.1), and its online use is future work.
 
 **Phase-selective admission (show11, `ours_sel`).** The probation mechanism (candidates observed at 5% quota for 40 s before the admission decision) keeps the aligned stop at 8 and raises the random stop to **24 with no violation** - the highest safe random-phase stop in the comparison (`ours_full` 16, `ours_p` 20), showing that phase evidence acquired before the decision converts into measurable random-phase capacity at equal safety. **Integrated re-validation (show13, `ours_int` = probation + full-chain background reserve and low-history guards).** End-to-end, the integrated controller stops at **random 12-16 across three arrival orders (14/12/16) and aligned 6 in both repeated orders** (all capacity-bracket deferrals: subset peak 6.1-7.0 + reserve 1.1-1.6 > 7.20). The probation mechanism's 24-seat random figure therefore does **not** survive equal-accounting integration: its gain is consumed by the background-reserve term (which the probation-only decision omitted), and in the aligned phase the probation-priced candidates stop earlier than the class-prior-priced chain (6 vs 8). The unified operating point of the complete system remains `ours_full` (random 16 / aligned 8); the three measured points (24/8 probation-only upper bound, 14/6 integrated, 16/8 full chain) and the accounting difference behind them are reported as measured, and reconciling candidate pricing with the reserve is future work. **Why the integrated stop is lower (analysis).** Two accounting differences explain the drop. (i) The background-reserve term (1.56-1.62 cores against the 7.20-core budget) is charged in the integrated runs but absent from the probation-only decision; at the defer points the subset peak (6.15/6.03) plus reserve exceeds 7.20 while the same peak without reserve is admissible - the reserve alone accounts for the gap. (ii) Candidate pricing differs roughly 3x between conventions: probation prices each candidate by its own corrected measured profile (about 0.6-0.75 cores per aligned candidate at the stop point), while the full chain charges the class prior (about 0.2 cores); the integrated configuration inherits the stricter convention. Reconciling the two (e.g., capping probation-derived candidate billing at the class prior, or explicitly folding the reserve into candidate pricing) and re-validating at equal accounting is future work.
 
@@ -722,7 +735,7 @@ fixed etc. lack the p5 column); the corrected seven-round rerun (show5) was comp
 
 **Configuration.** Services + probe pinned to cores 0–1; 16 tenants pinned to 2–3; per tenant `memory.high = 800 MiB`, `memory.swap.max = 0`, `io.max = 200/100` IOPS; admission per censoring-aware rules (this validation focuses on the protection envelope; admission does not intervene). **Storm composition.** CPU mix (8 idle + 6 idle/bursty + 2 pegged), memory ballast, and 4K random-write fio, all simultaneously; service probes at 100 req/s for 60 s each.
 
-**Table 18.** Triple-storm synthesis: service percentiles, errors and host state per pass
+**Table 19.** Triple-storm synthesis: service percentiles, errors and host state per pass
 
 | Pass | HTTP P50/P99/P999 | Redis P50/P99/P999 | Timeouts/errors | Host state |
 |---|---|---|---|---|
@@ -745,7 +758,7 @@ fixed etc. lack the p5 column); the corrected seven-round rerun (show5) was comp
 
 The protection envelope is fully active (services/probe pinned to cores 0–1; customers to 2–3; per-customer memory double gate at 800 MB with swap.max=0; IO caps), with a background load of four tenants (3 idle + 1 bursty); six candidates arrive one at a time, each capped at 50% on admission. Two admission policies decide within the same envelope:
 
-**Table 19.** Joint admission + shaping (j1): committed seats and canary behavior
+**Table 20.** Joint admission + shaping (j1): committed seats and canary behavior
 
 | policy | committed seats | service violations | customer-side canary (background idle VM) |
 |---|---|---|---|
@@ -866,7 +879,7 @@ half aligned, all inside one 16-core pool (no isolation).
 
 **Results.**
 
-**Table 20.** Production-schedule replay: metrics in random vs aligned phase
+**Table 21.** Production-schedule replay: metrics in random vs aligned phase
 
 | Metric | Random phase | Aligned phase |
 |---|---|---|
@@ -913,7 +926,7 @@ the record)**.
 - **Customers (left)**: same load (20% per tenant), same pool; **safe capacity moves with the quality bar
   from 3.5x to 4x**:
 
-**Table 21.** Quality-bar capacities on the physical host: random vs aligned
+**Table 22.** Quality-bar capacities on the physical host: random vs aligned
 
 | Quality bar | Random safe N | Aligned safe N | Ratio |
 |---|---|---|---|
@@ -964,7 +977,7 @@ the model is used only for cross-configuration extrapolation and as the admissio
 
 **Validation (Figure 21; 8-core pool, $\rho$ = 0.20, capmix pools of 3 rounds each):**
 
-**Table 22.** Density law: model prediction vs measured primary-bar capacity
+**Table 23.** Density law: model prediction vs measured primary-bar capacity
 
 | Configuration | Model prediction N*_mid | Measured (primary P5 ≥ 70% bar) | Deviation |
 |---|---|---|---|
@@ -1020,7 +1033,7 @@ policy *is* the PPC actuator and stops on the synchronized oracle).
 
 ## 8.7 Consistency with BeroHost
 
-**Table 23.** Cross-testbed summary: nested bed vs physical host
+**Table 24.** Cross-testbed summary: nested bed vs physical host
 
 | Result | BeroHost (4-vCPU nested) | Physical host (96 threads) |
 |---|---|---|
@@ -1068,7 +1081,7 @@ while configs were only ~30 s apart — so **later configs read windows contamin
 faster ones** (the uncapped segment at 25.6M inflated early readings). Clean re-measurement: fresh
 burner window per config + synchronized 60 s windows + guest `cpu.stat` delivery as ground truth:
 
-**Table 24.** Micro-period self-audit: delivered CPU, throttled time, rate per configuration
+**Table 25.** Micro-period self-audit: delivered CPU, throttled time, rate per configuration
 
 | Config | Delivered CPU | Throttled | Rate | Rate/core |
 |---|---|---|---|---|

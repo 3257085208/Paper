@@ -55,7 +55,7 @@ half aligned, all inside one 16-core pool (no isolation).
 
 **Results.**
 
-**Table 20.** Production-schedule replay: metrics in random vs aligned phase
+**Table 21.** Production-schedule replay: metrics in random vs aligned phase
 
 | Metric | Random phase | Aligned phase |
 |---|---|---|
@@ -100,7 +100,7 @@ the record)**.
 - **Customers (left)**: same load (20% per tenant), same pool; **safe capacity moves with the quality bar
   from 3.5x to 4x**:
 
-**Table 21.** Quality-bar capacities on the physical host: random vs aligned
+**Table 22.** Quality-bar capacities on the physical host: random vs aligned
 
 | Quality bar | Random safe N | Aligned safe N | Ratio |
 |---|---|---|---|
@@ -147,7 +147,7 @@ the model is used only for cross-configuration extrapolation and as the admissio
 
 **Validation (Figure 21; 8-core pool, $\rho$ = 0.20, capmix pools of 3 rounds each):**
 
-**Table 22.** Density law: model prediction vs measured primary-bar capacity
+**Table 23.** Density law: model prediction vs measured primary-bar capacity
 
 | Configuration | Model prediction N*_mid | Measured (primary P5 ≥ 70% bar) | Deviation |
 |---|---|---|---|
@@ -201,7 +201,7 @@ policy *is* the PPC actuator and stops on the synchronized oracle).
 
 ## 8.7 Consistency with BeroHost
 
-**Table 23.** Cross-testbed summary: nested bed vs physical host
+**Table 24.** Cross-testbed summary: nested bed vs physical host
 
 | Result | BeroHost (4-vCPU nested) | Physical host (96 threads) |
 |---|---|---|
