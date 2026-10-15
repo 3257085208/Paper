@@ -24457,3 +24457,4 @@ samples=1
 Timeout, server 2401:b60:e017:1a::2 not responding.
 session ended after 6 samples; reconnecting in 20s
 samples=1
+samples=12

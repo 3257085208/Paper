@@ -2,7 +2,7 @@
 
 ## Files
 - **`JNSM_manuscript.docx`** — primary editable source (required by JNSM): 31 figures embedded,
-  24 real Word tables and 185 native Office Math objects, title page with affiliation (Fuzhou, China) and corresponding email,
+  25 real Word tables and 185 native Office Math objects, title page with affiliation (Fuzhou, China) and corresponding email,
   "Statements and Declarations" section (funding / competing interests / data availability /
   author contributions / AI-assisted tools) and references. Equations are rendered as readable
   Unicode text (the PDF carries typeset math; Word equation-editor conversion can follow at revision).
