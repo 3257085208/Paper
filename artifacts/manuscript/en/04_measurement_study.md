@@ -126,7 +126,7 @@ Raising the service VMs' `cpu.weight` to 1000 (10×) and 10000 (100×, a verific
 
 ### 4.4.3 Core isolation: the only lever that survives storms on our testbed (Figures 6, 10)
 
-Pinning services and probe to cores 0–1 and tenants to cores 2–3 yields zero violations at 1–5 pegged neighbors (P99 2.9–3.2 ms); tenants share the remaining two cores as expected (about 44% of full speed each at five tenants). The combined-stress synthesis (Section 4.5 / 6.5) reproduces this four times. The cost is explicitly relocated to the "economy tier" — protected services no longer compete.
+Pinning services and probe to cores 0–1 and tenants to cores 2–3 yields zero violations at 1–5 pegged neighbors (P99 2.9–3.2 ms); tenants share the remaining two cores as expected (about 44% of full speed each at five tenants). The combined-stress synthesis (Section 7.5) reproduces this four times. The cost is explicitly relocated to the "economy tier" — protected services no longer compete.
 
 ### 4.4.4 Memory: the double gate (Figure 7)
 

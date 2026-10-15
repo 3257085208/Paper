@@ -97,7 +97,7 @@ On the KVM scheduling side, the community has long studied lock-holder preemptio
 
 ## 2.3 Industrial Practice and Tools
 
-The Kubernetes ecosystem expresses differentiated policies as "overcommit classes": Inditex's k8s-overcommit-operator [10] rewrites resource requests per workload label, and OpenShift's ClusterResourceOverride [11] controls node density through request/limit ratios; KubeVirt [12] exposes a global `cpuAllocationRatio` and its community still requests per-VM overcommit overrides (issue #15710: opened 2025-09, closed unfixed 2026-02), showing that per-customer oversubscription tiers remain poorly supported in practice. Research prototypes SweetSpotVM/SlackVM [13] demonstrate multi-level oversubscription templates with local schedulers; Calabi [14]'s host resource management stacks Gold/Silver/Bronze slices, guest/emulator CPU pools and pinning, with KSM/zram for memory oversubscription. Our work complements these artifacts with quantitative boundaries: for instance, on the memory path, compression/swap is exactly the failure path our measurements recommend keeping off by default (uncapped trials OOM-killed two tenants; capped trials drained host swap), whereas the double-gate (memory.high + memory.swap.max=0) bounds oversubscription without killing tenants or polluting host swap.
+The Kubernetes ecosystem expresses differentiated policies as "overcommit classes": Inditex's k8s-overcommit-operator [10] rewrites resource requests per workload label, and OpenShift's ClusterResourceOverride [11] controls node density through request/limit ratios; KubeVirt [12] exposes a global `cpuAllocationRatio` and its community still requests per-VM overcommit overrides (issue #15710: opened 2025-09, closed unfixed 2026-02), showing that per-customer oversubscription tiers remain poorly supported in practice. Research prototypes SweetSpotVM/SlackVM [13] demonstrate multi-level oversubscription templates with local schedulers; Calabi [14]'s host resource management stacks Gold/Silver/Bronze slices, guest/emulator CPU pools and pinning, with KSM/zram for memory oversubscription. Our work complements these artifacts with quantitative boundaries: for instance, on the memory path, compression/swap is exactly the failure path our measurements recommend keeping off by default (uncapped trials OOM-killed two tenants; capped trials drained host swap), whereas the double-gate (memory.high + memory.swap.max=0) bounds oversubscription without killing tenants or polluting host swap. On the memory path, ORCA [22] combines consolidation prediction with memory oversubscription and reports production deployment experience; its density-versus-regression trade-off is complementary to this work.
 
 ## 2.4 Measurement Methodology
 
@@ -370,7 +370,7 @@ Raising the service VMs' `cpu.weight` to 1000 (10×) and 10000 (100×, a verific
 
 ### 4.4.3 Core isolation: the only lever that survives storms on our testbed (Figures 6, 10)
 
-Pinning services and probe to cores 0–1 and tenants to cores 2–3 yields zero violations at 1–5 pegged neighbors (P99 2.9–3.2 ms); tenants share the remaining two cores as expected (about 44% of full speed each at five tenants). The combined-stress synthesis (Section 4.5 / 6.5) reproduces this four times. The cost is explicitly relocated to the "economy tier" — protected services no longer compete.
+Pinning services and probe to cores 0–1 and tenants to cores 2–3 yields zero violations at 1–5 pegged neighbors (P99 2.9–3.2 ms); tenants share the remaining two cores as expected (about 44% of full speed each at five tenants). The combined-stress synthesis (Section 7.5) reproduces this four times. The cost is explicitly relocated to the "economy tier" — protected services no longer compete.
 
 ### 4.4.4 Memory: the double gate (Figure 7)
 
@@ -410,7 +410,7 @@ Both layers share one set of monitors (service tail latency, host pressure, per-
 
 **Memory.** Double gate plus reserve: per tenant, set `memory.high` (hot-memory budget with $\sum \text{high} \le M_{\text{hot}}$, where $M_{\text{hot}}$ leaves host and service reserves) and `memory.swap.max = 0` (forbid over-users from consuming host swap). Host swap is reserved for services or disabled — Section 4.4.4 shows swap is the amplifier of the reclaim tax; the double gate converts overuse into in-place throttling. If the product promises "no compression", the sales language must also state that, with ballooning off, touched tenant memory is not returned until VM restart (dynamic return and no-compression are mutually exclusive); the hot-memory budget is then the true deliverable memory.
 
-**Block IO.** Per-tenant `io.max` (riops/wiops or bandwidth per sold tier) is the only measured remedy against "IO explosion": host IOPS and business latency snap back immediately, with the cost landing on the throttled tenant's own queueing delay (Section 4.4.5). Two implementation notes: cgroup accounting keys to the whole-disk device (partition numbers may be inert); `io.weight`/`io.latency` depend on an IO scheduler honoring them (the default `none` makes weights no-ops), so do not rely on weights before enabling BFQ. (`io.cost`/iocost offers a scheduler-independent cost model; we did not evaluate it here and draw no conclusions about it.)
+**Block IO.** Per-tenant `io.max` (riops/wiops or bandwidth per sold tier) [17] is the only measured remedy against "IO explosion": host IOPS and business latency snap back immediately, with the cost landing on the throttled tenant's own queueing delay (Section 4.4.5). Two implementation notes: cgroup accounting keys to the whole-disk device (partition numbers may be inert); `io.weight`/`io.latency` depend on an IO scheduler honoring them (the default `none` makes weights no-ops), so do not rely on weights before enabling BFQ. (`io.cost`/iocost offers a scheduler-independent cost model; we did not evaluate it here and draw no conclusions about it.)
 
 **Envelope language.** "Selling 16 vCPU / 48 GiB / 400 GiB" is the **nominal sales envelope**; the protection envelope is: the SLO commitment on $c_{\text{svc}}$ dedicated cores for services + each tenant's $\text{high}$ bytes of hot memory + each tenant's IO cap. The difference between the two envelopes *is* the economy-tier product space — the basis for tiered pricing.
 
@@ -493,7 +493,7 @@ bounds and the trials required for a target bound (zero-failure: <=10% needs >=2
 
 ## 6.1 Testbed
 
-The testbed is a nested host isomorphic to small-provider production: Proxmox VE 8.4.21 (Debian 12 base) running inside a KVM guest (`systemd-detect-virt = kvm`; `/dev/kvm` and `vmx/svm` both available), reporting 4 vCPUs (AMD EPYC 9575F), 19.5 GiB of RAM, one 200 GB virtual disk (cgroup accounting device 8:0), and 1 GB of swap. Ballooning is disabled by default (the return-vs-no-compression tradeoff, Section 4.4.4). The host's idle baseline is 2–4% busy; all background noise is removed during experiments (a local monitoring agent and per-VM apt/man-db/fstrim timers are disabled).
+The testbed is a nested host isomorphic to small-provider production: Proxmox VE 8.4.21 (Debian 12 base) [19] running inside a KVM guest (`systemd-detect-virt = kvm`; `/dev/kvm` and `vmx/svm` both available), reporting 4 vCPUs (AMD EPYC 9575F), 19.5 GiB of RAM, one 200 GB virtual disk (cgroup accounting device 8:0), and 1 GB of swap. Ballooning is disabled by default (the return-vs-no-compression tradeoff, Section 4.4.4). The host's idle baseline is 2–4% busy; all background noise is removed during experiments (a local monitoring agent and per-VM apt/man-db/fstrim timers are disabled).
 
 Load topology: 2 service VMs (HTTP/nginx, Redis; 1 vCPU / 1 GiB each), 1 probe VM, and 16 customer VMs (1 vCPU, 3072 MiB; some earlier experiments used 1024/5120 MiB, noted per section). All VMs are clones of one Debian 12 cloud template (cloud-init injects networking and keys); customer VMs carry no persistent agents.
 
@@ -744,7 +744,7 @@ fixed etc. lack the p5 column); the corrected seven-round rerun (show5) was comp
 | syn3 | — / 3.01 / — | — / 2.70 / — | 0 / 0 | completed cleanly (customer-side 13/16 collected) |
 | syn4 | — / 3.46 / — | — / 3.35 / — | 0 / 0 | same (pegged tenants alive throughout) |
 
-**Reading.** All four passes hold "service P99 ≤ 10 ms" (HTTP margin ≈ 3–4×); Redis in syn2 shows a heavier tail (p999 27.5 ms, max 74 ms at single-response level, no timeouts), reported as measured. Compared with the unprotected cases of Section 4 (CPU storm 21–23 ms; disk storm 12 ms; memory storm killing two customer VMs), the suite defuses all three storms at once. The customer-side cost matches design expectations: memory and IO caps throttle over-users first (some tenants briefly unresponsive over SSH) — the normal operating state of the economy tier.
+**Reading.** All four passes hold "service P99 ≤ 10 ms" (HTTP margin ≈ 3–4×); Redis in syn2 shows a heavier tail (P999 27.5 ms, max 74 ms at single-response level, no timeouts), reported as measured. Compared with the unprotected cases of Section 4 (CPU storm 21–23 ms; disk storm 12 ms; memory storm killing two customer VMs), the suite defuses all three storms at once. The customer-side cost matches design expectations: memory and IO caps throttle over-users first (some tenants briefly unresponsive over SSH) — the normal operating state of the economy tier.
 
 **Collection note.** Customer-side detail under hard throttling collects incompletely (13/16 in syn3); service-side metrics carry the protection conclusion, with customer-side work rates and throttle counters as corroborating evidence.
 
@@ -1103,7 +1103,7 @@ untested (future work).
 **Done so far.** (i) **KSM fleet dedup (ksm1; see the kernel documentation [21])**: 64 same-image VMs share **21.4 GiB = 33.4% of fleet RAM**;
 ksmd ≈ 0.16 core; service P99 0.73→0.76 ms (zero regression). Cost boundaries: write-CoW latency untested;
 cross-tenant dedup carries known side-channel concerns — enable per trust domain in production.
-(ii) **Free-page reporting (manual verification, 300 MB)**: host `memory.current` 315→629 MB with the guest
+(ii) **Free-page reporting [20] (manual verification, 300 MB)**: host `memory.current` 315→629 MB with the guest
 allocation and returns 6–12 s after free; guest `MemTotal` stays 973 MB throughout. Side finding: an idle
 "1 GB" VM holds only 156–315 MB of host RAM (FPR has been returning free pages all along).
 (iii) Automated FPR (fpr5, 300 MB): host `memory.current` 571→875→570 MB (vm312) and 581→878→575 MB

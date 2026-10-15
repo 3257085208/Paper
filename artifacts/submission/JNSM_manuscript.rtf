@@ -244,7 +244,7 @@ On the KVM scheduling side, the community has long studied lock-holder preemptio
 
 \f1\b0\fs30\fsmilli15333 \cf2 The Kubernetes ecosystem expresses differentiated policies as "overcommit classes": Inditex's k8s-overcommit-operator [10] rewrites resource requests per workload label, and OpenShift's ClusterResourceOverride [11] controls node density through request/limit ratios; KubeVirt [12] exposes a global 
 \f3\fs28\fsmilli14107 cpuAllocationRatio
-\f1\fs30\fsmilli15333  and its community still requests per-VM overcommit overrides (issue #15710: opened 2025-09, closed unfixed 2026-02), showing that per-customer oversubscription tiers remain poorly supported in practice. Research prototypes SweetSpotVM/SlackVM [13] demonstrate multi-level oversubscription templates with local schedulers; Calabi [14]'s host resource management stacks Gold/Silver/Bronze slices, guest/emulator CPU pools and pinning, with KSM/zram for memory oversubscription. Our work complements these artifacts with quantitative boundaries: for instance, on the memory path, compression/swap is exactly the failure path our measurements recommend keeping off by default (uncapped trials OOM-killed two tenants; capped trials drained host swap), whereas the double-gate (memory.high + memory.swap.max=0) bounds oversubscription without killing tenants or polluting host swap.\
+\f1\fs30\fsmilli15333  and its community still requests per-VM overcommit overrides (issue #15710: opened 2025-09, closed unfixed 2026-02), showing that per-customer oversubscription tiers remain poorly supported in practice. Research prototypes SweetSpotVM/SlackVM [13] demonstrate multi-level oversubscription templates with local schedulers; Calabi [14]'s host resource management stacks Gold/Silver/Bronze slices, guest/emulator CPU pools and pinning, with KSM/zram for memory oversubscription. Our work complements these artifacts with quantitative boundaries: for instance, on the memory path, compression/swap is exactly the failure path our measurements recommend keeping off by default (uncapped trials OOM-killed two tenants; capped trials drained host swap), whereas the double-gate (memory.high + memory.swap.max=0) bounds oversubscription without killing tenants or polluting host swap. On the memory path, ORCA [22] combines consolidation prediction with memory oversubscription and reports production deployment experience; its density-versus-regression trade-off is complementary to this work.\
 \pard\pardeftab720\sa160\partightenfactor0
 
 \f0\b\fs34\fsmilli17333 \cf2 2.4 Measurement Methodology\
@@ -1317,7 +1317,7 @@ Figure 9 Quota pulse: service P99\
 \f0\b\fs32 \cf2 4.4.3 Core isolation: the only lever that survives storms on our testbed (Figures 6, 10)\
 \pard\pardeftab720\sa160\qj\partightenfactor0
 
-\f1\b0\fs30\fsmilli15333 \cf2 Pinning services and probe to cores 0\'961 and tenants to cores 2\'963 yields zero violations at 1\'965 pegged neighbors (P99 2.9\'963.2 ms); tenants share the remaining two cores as expected (about 44% of full speed each at five tenants). The combined-stress synthesis (Section 4.5 / 6.5) reproduces this four times. The cost is explicitly relocated to the "economy tier" \'97 protected services no longer compete.\
+\f1\b0\fs30\fsmilli15333 \cf2 Pinning services and probe to cores 0\'961 and tenants to cores 2\'963 yields zero violations at 1\'965 pegged neighbors (P99 2.9\'963.2 ms); tenants share the remaining two cores as expected (about 44% of full speed each at five tenants). The combined-stress synthesis (Section 7.5) reproduces this four times. The cost is explicitly relocated to the "economy tier" \'97 protected services no longer compete.\
 \pard\pardeftab720\sa133\partightenfactor0
 
 \f0\b\fs32 \cf2 4.4.4 Memory: the double gate (Figure 7)\
@@ -1432,7 +1432,7 @@ Figure 8 Block-IO cap (io.max)\
 \f0\b Block IO.
 \f1\b0  Per-tenant 
 \f3\fs28\fsmilli14107 io.max
-\f1\fs30\fsmilli15333  (riops/wiops or bandwidth per sold tier) is the only measured remedy against "IO explosion": host IOPS and business latency snap back immediately, with the cost landing on the throttled tenant's own queueing delay (Section 4.4.5). Two implementation notes: cgroup accounting keys to the whole-disk device (partition numbers may be inert); 
+\f1\fs30\fsmilli15333  (riops/wiops or bandwidth per sold tier) [17] is the only measured remedy against "IO explosion": host IOPS and business latency snap back immediately, with the cost landing on the throttled tenant's own queueing delay (Section 4.4.5). Two implementation notes: cgroup accounting keys to the whole-disk device (partition numbers may be inert); 
 \f3\fs28\fsmilli14107 io.weight
 \f1\fs30\fsmilli15333 /
 \f3\fs28\fsmilli14107 io.latency
@@ -1672,7 +1672,7 @@ bounds and the trials required for a target bound (zero-failure: <=10% needs >=2
 \fs34\fsmilli17333 \cf2 6.1 Testbed\
 \pard\pardeftab720\sa160\qj\partightenfactor0
 
-\f1\b0\fs30\fsmilli15333 \cf2 The testbed is a nested host isomorphic to small-provider production: Proxmox VE 8.4.21 (Debian 12 base) running inside a KVM guest (
+\f1\b0\fs30\fsmilli15333 \cf2 The testbed is a nested host isomorphic to small-provider production: Proxmox VE 8.4.21 (Debian 12 base) [19] running inside a KVM guest (
 \f3\fs28\fsmilli14107 systemd-detect-virt = kvm
 \f1\fs30\fsmilli15333 ; 
 \f3\fs28\fsmilli14107 /dev/kvm
@@ -3031,7 +3031,7 @@ Figure 10 Combined-stress validation (4 runs)\
 \pard\pardeftab720\sa160\qj\partightenfactor0
 
 \f0\b\fs30\fsmilli15333 \cf2 Reading.
-\f1\b0  All four passes hold "service P99 \uc0\u8804  10 ms" (HTTP margin \u8776  3\'964\'d7); Redis in syn2 shows a heavier tail (p999 27.5 ms, max 74 ms at single-response level, no timeouts), reported as measured. Compared with the unprotected cases of Section 4 (CPU storm 21\'9623 ms; disk storm 12 ms; memory storm killing two customer VMs), the suite defuses all three storms at once. The customer-side cost matches design expectations: memory and IO caps throttle over-users first (some tenants briefly unresponsive over SSH) \'97 the normal operating state of the economy tier.\
+\f1\b0  All four passes hold "service P99 \uc0\u8804  10 ms" (HTTP margin \u8776  3\'964\'d7); Redis in syn2 shows a heavier tail (P999 27.5 ms, max 74 ms at single-response level, no timeouts), reported as measured. Compared with the unprotected cases of Section 4 (CPU storm 21\'9623 ms; disk storm 12 ms; memory storm killing two customer VMs), the suite defuses all three storms at once. The customer-side cost matches design expectations: memory and IO caps throttle over-users first (some tenants briefly unresponsive over SSH) \'97 the normal operating state of the economy tier.\
 
 \f0\b Collection note.
 \f1\b0  Customer-side detail under hard throttling collects incompletely (13/16 in syn3); service-side metrics carry the protection conclusion, with customer-side work rates and throttle counters as corroborating evidence.\
@@ -3970,7 +3970,7 @@ Figure 22 Micro-period self-audit: 2 ms and 1 s deliver identically (+35% withdr
 \f1\b0 : 64 same-image VMs share 
 \f0\b 21.4 GiB = 33.4% of fleet RAM
 \f1\b0 ; ksmd \uc0\u8776  0.16 core; service P99 0.73\u8594 0.76 ms (zero regression). Cost boundaries: write-CoW latency untested; cross-tenant dedup carries known side-channel concerns \'97 enable per trust domain in production. (ii) 
-\f0\b Free-page reporting (manual verification, 300 MB)
+\f0\b Free-page reporting [20] (manual verification, 300 MB)
 \f1\b0 : host 
 \f3\fs28\fsmilli14107 memory.current
 \f1\fs30\fsmilli15333  315\uc0\u8594 629 MB with the guest allocation and returns 6\'9612 s after free; guest 

@@ -43,7 +43,7 @@ untested (future work).
 **Done so far.** (i) **KSM fleet dedup (ksm1; see the kernel documentation [21])**: 64 same-image VMs share **21.4 GiB = 33.4% of fleet RAM**;
 ksmd ≈ 0.16 core; service P99 0.73→0.76 ms (zero regression). Cost boundaries: write-CoW latency untested;
 cross-tenant dedup carries known side-channel concerns — enable per trust domain in production.
-(ii) **Free-page reporting (manual verification, 300 MB)**: host `memory.current` 315→629 MB with the guest
+(ii) **Free-page reporting [20] (manual verification, 300 MB)**: host `memory.current` 315→629 MB with the guest
 allocation and returns 6–12 s after free; guest `MemTotal` stays 973 MB throughout. Side finding: an idle
 "1 GB" VM holds only 156–315 MB of host RAM (FPR has been returning free pages all along).
 (iii) Automated FPR (fpr5, 300 MB): host `memory.current` 571→875→570 MB (vm312) and 581→878→575 MB
