@@ -49,7 +49,7 @@
 \f0\b\fs34\fsmilli17333 \cf2 \strokec2 Abstract\
 \pard\pardeftab720\sa160\qj\partightenfactor0
 
-\f1\b0\fs30\fsmilli15333 \cf2 Small VPS providers pack many cheap, mostly-idle, occasionally-bursty tenants onto few physical cores; oversubscription is their business model. We recast safe oversubscription as three ordered problems whose bottleneck is observational capability. First, quota censoring hides demand: the point estimate equals the running-stretch mean, exact only when running and throttled stretch means agree; a conditional floor holds under continuous saturation; and from aggregate counters alone no estimator can be correct for all workloads, since two processes can produce identical observations with different demand. Across 180 cycles, throttle-corrected estimates track the truth while naive quota-release decisions violate the SLO in all 30 independent rounds. Second, capacity is set by phase structure, not average utilization: at the same 20% duty, random-phase and aligned fleets differ 3.5x in safe capacity (28 versus 8 seats at customer P5 >= 70%), and a 35%-busy set collapsing while a 98%-busy set stays safe shows that safety cannot be read off utilization. Third, the sampling rate must resolve the bursts it prices. Together these capabilities form an observation set that a risk-calibrated admission controller implements: in the 14 evaluated scenarios it admitted 16-20 tenants under randomized phases and stopped at eight under aligned phases while meeting the customer-quality bar, whereas baseline policies either oversold (customer P5 collapsing to 16%) or wasted 2-3x capacity. All claims rest on mass repeats, two testbeds, read-only telemetry from production hosts we operate, and released artifacts.\
+\f1\b0\fs30\fsmilli15333 \cf2 Small VPS providers pack many cheap, mostly-idle, occasionally-bursty tenants onto few physical cores; oversubscription is their business model. We recast safe oversubscription as three ordered problems whose bottleneck is observational capability. First, quota censoring hides demand: the point estimate equals the running-stretch mean, exact only when running and throttled stretch means agree; a conditional floor holds under continuous saturation; and from aggregate counters alone no estimator can be correct for all workloads, since two processes can produce identical observations with different demand. Across 180 cycles, throttle-corrected estimates track the truth while naive quota-release decisions violate the SLO in all 30 independent rounds. Second, capacity is set by phase structure, not average utilization: at the same 20% duty, random-phase and aligned fleets differ 3.5x in safe capacity (28 versus 8 seats at customer P5 >= 70%), and a 35%-busy set collapsing while a 98%-busy set stays safe shows that safety cannot be read off utilization. Third, the sampling rate must resolve the bursts it prices. Together these capabilities form an observation set that a risk-calibrated admission controller implements: in the 14 evaluated scenarios it admitted 16-20 tenants under randomized phases and stopped at eight under aligned phases while meeting the customer-quality bar, whereas baseline policies either oversold (customer P5 collapsing to 16%) or wasted 2-3x capacity (these are the original policy-comparison figures; the integrated probation variant is reported separately and is more conservative, Section 7.4.2). All claims rest on mass repeats, two testbeds, read-only telemetry from production hosts we operate, and released artifacts.\
 \pard\pardeftab720\sa160\partightenfactor0
 
 \f0\b\fs34\fsmilli17333 \cf2 Keywords\
@@ -2782,7 +2782,17 @@ Figure 20 Online admission comparison: policy stops vs measured capacity bracket
 \f3\fs28\fsmilli14107 p5_act
 \f1\fs30\fsmilli15333  tracks 
 \f3\fs28\fsmilli14107 p5_max
-\f1\fs30\fsmilli15333  (101-103% at every safe stop) - the two conventions agree once design-idle samples are excluded.\
+\f1\fs30\fsmilli15333  (101-103% at every safe stop) - the two conventions agree once design-idle samples are excluded. 
+\f0\b Detection parity at violating levels (offline, dense ladders).
+\f1\b0  Recomputing both conventions on the 1-s dense ladders shows that at violating levels the activity-conditioned metric alarms at least as strongly as p5_max, and earlier: aligned 8 seats read 99.2% / 98.0% (max / act), 10 seats read 86.2% / 
+\f0\b 71.7%
+\f1\b0 , 12 seats read 75.4% / 
+\f0\b 57.9%
+\f1\b0 ; random 28 reads 95.1% / 90.6% and 32 reads 90.6% / 
+\f0\b 76.7%
+\f1\b0 . The activity-conditioned rule tracks sustained denial rather than the best burst - the strict, safe direction for a guard - and it never misses a violation that p5_max catches. 
+\f0\b Production observability (honest scope).
+\f1\b0  The activity flag used here is the workload's own work-phase indicator, available in experiments; on an opaque host without a guest agent it is not directly observable. The deployment path is therefore two-track: online, the controller keeps p5_max plus throttle evidence and the service/canary guards (all host-side); p5_act is a validation-grade metric, computable in production with an optional guest agent or by host-side activity inference of the same kind the censoring analysis studies (Section 3.3.1), and its online use is future work.\
 
 \f0\b Phase-selective admission (show11, 
 \f5\fs28\fsmilli14107 ours_sel

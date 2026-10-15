@@ -27,7 +27,8 @@ must resolve the bursts it prices. Together these capabilities form an observati
 risk-calibrated admission controller implements: in the 14 evaluated scenarios it admitted 16-20
 tenants under randomized phases and stopped at eight under aligned phases while meeting the
 customer-quality bar, whereas baseline policies either oversold (customer P5 collapsing to 16%) or
-wasted 2-3x capacity. All claims rest on
+wasted 2-3x capacity (these are the original policy-comparison figures; the integrated probation
+variant is reported separately and is more conservative, Section 7.4.2). All claims rest on
 mass repeats, two testbeds, read-only telemetry from production hosts we operate, and released
 artifacts.
 

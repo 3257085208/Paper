@@ -1,8 +1,8 @@
 # JNSM 投稿全流程（2026-10 版）
 
 ## 0. 准备（都已就绪）
-- 正文：`JNSM_manuscript.docx`（**可编辑源文件，31 图内嵌 + 22 张真 Word 表格**；JNSM 强制要求可编辑源）
-- 排版副本：`JNSM_manuscript.pdf`（61 页，与 docx 同源；审读用）
+- 正文：`JNSM_manuscript.docx`（**可编辑源文件，31 图内嵌 + 24 张真 Word 表格 + 185 个原生 Office Math 公式**；JNSM 强制要求可编辑源）
+- 排版副本：`JNSM_manuscript.pdf`（64 页，与 docx 同源；审读用）
 - 图件：`figures/`（31 张 PNG，图内已按 JNSM 要求去掉嵌入标题）
 - 投稿信：`Cover_Letter.md`（3 位建议审稿人均为机构邮箱，符合 JNSM 要求）
 - 声明：`Declarations.md`（正文末尾已有 "Statements and Declarations" 节；界面还要再填一次，见下）
